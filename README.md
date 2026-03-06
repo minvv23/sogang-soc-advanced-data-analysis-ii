@@ -114,4 +114,4 @@
 
 ## 연락처
 
-minvv23@gmail.com / minvv23@kaist.ac.kr / minvv23@underscore.kr
+minvv23 [at] gmail [dot] com / minvv23 [at] kaist [dot] ac [dot] kr / minvv23 [at] underscore [dot] kr
