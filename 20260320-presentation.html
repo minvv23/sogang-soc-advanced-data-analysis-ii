@@ -67,6 +67,11 @@ html, body {
   text-align: center;
   background: linear-gradient(135deg, #f8f9ff 0%, #eef1f8 100%);
 }
+.slide.slide-title .slide-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .slide-title h1 {
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 700;
@@ -95,6 +100,11 @@ html, body {
   text-align: center;
   background: var(--accent);
   color: white;
+}
+.slide.slide-divider .slide-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .slide-divider .section-number {
   font-size: clamp(3rem, 6vw, 5rem);
