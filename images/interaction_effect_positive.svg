@@ -59,9 +59,9 @@
 
   <!-- 라벨 -->
   <rect x="542" y="78" width="96" height="22" fill="#fce4ec" rx="4"/>
-  <text x="590" y="94" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">여성 (M=0)</text>
+  <text x="590" y="94" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">여성 (Sex=0)</text>
   <rect x="542" y="158" width="96" height="22" fill="#e3f2fd" rx="4"/>
-  <text x="590" y="174" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">남성 (M=1)</text>
+  <text x="590" y="174" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">남성 (Sex=1)</text>
 
   <!-- 절편 차이 (β₁) — 거의 없음을 보여줌 -->
   <line x1="130" y1="242" x2="130" y2="248" stroke="#ff9800" stroke-width="2" stroke-dasharray="5,3"/>
