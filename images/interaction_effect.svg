@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 480" font-family="'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">
+  <defs>
+    <style>
+      text { font-size: 14px; fill: #333; }
+      .title { font-size: 16px; font-weight: bold; fill: #222; }
+      .label { font-size: 13px; fill: #555; }
+      .axis-label { font-size: 14px; fill: #444; font-weight: bold; }
+      .eq { font-size: 13px; font-weight: bold; }
+    </style>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+  </defs>
+
+  <!-- 배경 -->
+  <rect width="750" height="480" fill="#fafafa" rx="8"/>
+
+  <!-- 제목 -->
+  <text x="375" y="30" text-anchor="middle" class="title">교차효과: 더미(성별) × 연속형(소득) — 두 직선의 기울기가 다르다</text>
+
+  <!-- 축 -->
+  <line x1="80" y1="380" x2="620" y2="380" stroke="#666" stroke-width="1.5" marker-end="url(#arrow2)"/>
+  <line x1="80" y1="380" x2="80" y2="50" stroke="#666" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+  <!-- 축 레이블 -->
+  <text x="370" y="420" text-anchor="middle" class="axis-label">소득 (백만 원)</text>
+  <text x="25" y="215" text-anchor="middle" transform="rotate(-90, 25, 215)" class="axis-label">부정선거론 수용률 (%)</text>
+
+  <!-- Y축 눈금 -->
+  <line x1="75" y1="350" x2="80" y2="350" stroke="#999"/><text x="70" y="354" text-anchor="end" class="label">20</text>
+  <line x1="75" y1="290" x2="80" y2="290" stroke="#999"/><text x="70" y="294" text-anchor="end" class="label">30</text>
+  <line x1="75" y1="230" x2="80" y2="230" stroke="#999"/><text x="70" y="234" text-anchor="end" class="label">40</text>
+  <line x1="75" y1="170" x2="80" y2="170" stroke="#999"/><text x="70" y="174" text-anchor="end" class="label">50</text>
+  <line x1="75" y1="110" x2="80" y2="110" stroke="#999"/><text x="70" y="114" text-anchor="end" class="label">60</text>
+
+  <!-- X축 눈금 -->
+  <line x1="160" y1="380" x2="160" y2="385" stroke="#999"/><text x="160" y="400" text-anchor="middle" class="label">2</text>
+  <line x1="260" y1="380" x2="260" y2="385" stroke="#999"/><text x="260" y="400" text-anchor="middle" class="label">4</text>
+  <line x1="360" y1="380" x2="360" y2="385" stroke="#999"/><text x="360" y="400" text-anchor="middle" class="label">6</text>
+  <line x1="460" y1="380" x2="460" y2="385" stroke="#999"/><text x="460" y="400" text-anchor="middle" class="label">8</text>
+  <line x1="560" y1="380" x2="560" y2="385" stroke="#999"/><text x="560" y="400" text-anchor="middle" class="label">10</text>
+
+  <!-- 그리드 -->
+  <line x1="80" y1="350" x2="620" y2="350" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="290" x2="620" y2="290" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="230" x2="620" y2="230" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="170" x2="620" y2="170" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="110" x2="620" y2="110" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <!-- 매핑: X축 1단위=50px (X=0 → x=80), Y축 1%=6px (Y=0 → y=380) -->
+  <!-- 남성: Y = 45 - 0.8X → (X=0, Y=45→y=110), (X=10, Y=37→y=158) wait -->
+  <!-- 다시: 소득 범위 1~10, Y% 범위 20~60 -->
+  <!-- 남성: Y = 55 - 2.5X → (X=1, Y=52.5), (X=10, Y=30) -->
+  <!-- 여성: Y = 45 - 1.5X → (X=1, Y=43.5), (X=10, Y=30) -->
+  <!-- 이러면 교차점이 생겨서... 다르게 하자 -->
+  <!-- 남성: Y = 60 - 3X → (X=1,57)(X=10,30) — 기울기 급함 -->
+  <!-- 여성: Y = 42 - 1.2X → (X=1,40.8)(X=10,30) — 기울기 완만 -->
+  <!-- 이것도 겹침. 더 분리하자 -->
+  <!-- 남성: Y = 62 - 3X → (X=2,56)(X=10,32) -->
+  <!-- 여성: Y = 45 - 1X → (X=2,43)(X=10,35) -->
+  <!-- 화면좌표: Y% → y = 380 - Y*6, X → x = 80 + X*50 -->
+
+  <!-- 남성 회귀선: Y=62-3X → (X=1: 59→y=26, X=10: 32→y=188) → 화면 (130, 26) (580, 188) -->
+  <!-- 아 Y가 60 넘어감. 범위 조정 -->
+  <!-- 남성: Y = 58 - 2.6X → (X=1,55.4)(X=10,32) -->
+  <!-- 여성: Y = 44 - 1.0X → (X=1,43)(X=10,34) -->
+  <!-- 화면: 남성 (X=1)→(130, 380-55.4*6)=(130,47.6), (X=10)→(580, 380-32*6)=(580,188) -->
+  <!-- 여성: (X=1)→(130, 380-43*6)=(130,122), (X=10)→(580, 380-34*6)=(580,176) -->
+
+  <!-- 남성 회귀선 (파란색, 기울기 급함) -->
+  <line x1="110" y1="75" x2="590" y2="195" stroke="#1565c0" stroke-width="2.5"/>
+  <!-- 여성 회귀선 (빨간색, 기울기 완만) -->
+  <line x1="110" y1="135" x2="590" y2="195" stroke="#c62828" stroke-width="2.5"/>
+
+  <!-- 남성 라벨 -->
+  <rect x="95" y="52" width="110" height="22" fill="#e3f2fd" rx="4"/>
+  <text x="150" y="68" text-anchor="middle" class="eq" fill="#1565c0">남성 (Male=1)</text>
+
+  <!-- 여성 라벨 -->
+  <rect x="95" y="112" width="110" height="22" fill="#fce4ec" rx="4"/>
+  <text x="150" y="128" text-anchor="middle" class="eq" fill="#c62828">여성 (Male=0)</text>
+
+  <!-- β₁ = 절편 차이 표시 -->
+  <line x1="105" y1="75" x2="105" y2="135" stroke="#ff9800" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="60" y="108" text-anchor="middle" font-size="13" fill="#e65100" font-weight="bold">β₁</text>
+  <text x="60" y="122" text-anchor="middle" font-size="11" fill="#e65100">(절편 차이)</text>
+
+  <!-- 기울기 차이 설명 -->
+  <!-- 남성 기울기 삼각형 -->
+  <line x1="300" y1="135" x2="400" y2="135" stroke="#1565c0" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="400" y1="135" x2="400" y2="160" stroke="#1565c0" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="350" y="130" text-anchor="middle" font-size="11" fill="#1565c0">ΔX</text>
+  <text x="418" y="152" font-size="11" fill="#1565c0">β₂+β₃</text>
+
+  <!-- 여성 기울기 삼각형 -->
+  <line x1="300" y1="162" x2="400" y2="162" stroke="#c62828" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="400" y1="162" x2="400" y2="174" stroke="#c62828" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="350" y="158" text-anchor="middle" font-size="11" fill="#c62828">ΔX</text>
+  <text x="418" y="174" font-size="11" fill="#c62828">β₂</text>
+
+  <!-- 범례 박스 -->
+  <rect x="630" y="70" width="110" height="145" fill="white" rx="6" stroke="#ddd" stroke-width="1"/>
+  <text x="685" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">계수 해석</text>
+
+  <line x1="645" y1="105" x2="670" y2="105" stroke="#ff9800" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="678" y="109" font-size="11" fill="#555">β₁: 절편 차이</text>
+
+  <line x1="645" y1="130" x2="670" y2="130" stroke="#c62828" stroke-width="2"/>
+  <text x="678" y="134" font-size="11" fill="#555">β₂: 여성 기울기</text>
+
+  <line x1="645" y1="155" x2="670" y2="155" stroke="#1565c0" stroke-width="2"/>
+  <text x="678" y="159" font-size="11" fill="#555">β₂+β₃:</text>
+  <text x="678" y="172" font-size="11" fill="#555">남성 기울기</text>
+
+  <rect x="641" y="183" width="93" height="25" fill="#fff3e0" rx="3"/>
+  <text x="687" y="200" text-anchor="middle" font-size="11" fill="#e65100" font-weight="bold">β₃ = 기울기 차이</text>
+
+  <!-- 하단 수식 -->
+  <rect x="80" y="435" width="580" height="35" fill="#f5f5f5" rx="5"/>
+  <text x="370" y="457" text-anchor="middle" font-size="14" fill="#333">ŷ = β₀ + β₁·Male + β₂·소득 + <tspan font-weight="bold" fill="#d32f2f">β₃·(Male × 소득)</tspan></text>
+
+  <!-- β₃=0 설명 -->
+  <text x="375" y="475" text-anchor="middle" font-size="12" fill="#777">β₃ = 0이면 두 직선은 평행 (= 교차효과 없음) │ β₃ ≠ 0이면 기울기가 다름 (= 교차효과 있음)</text>
+</svg>

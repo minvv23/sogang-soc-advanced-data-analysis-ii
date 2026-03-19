@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 480" font-family="'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">
+  <defs>
+    <style>
+      text { font-size: 14px; fill: #333; }
+      .title { font-size: 16px; font-weight: bold; fill: #222; }
+      .label { font-size: 13px; fill: #555; }
+      .axis-label { font-size: 14px; fill: #444; font-weight: bold; }
+      .annotation { font-size: 12px; fill: #777; }
+      .callout { font-size: 13px; fill: #1565c0; font-weight: bold; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+  </defs>
+
+  <!-- 배경 -->
+  <rect width="750" height="480" fill="#fafafa" rx="8"/>
+
+  <!-- 제목 -->
+  <text x="375" y="30" text-anchor="middle" class="title">같은 회귀선이 "추정"이자 "예측"이다</text>
+
+  <!-- 축 -->
+  <line x1="80" y1="400" x2="680" y2="400" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="80" y1="400" x2="80" y2="50" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 축 레이블 -->
+  <text x="400" y="440" text-anchor="middle" class="axis-label">X (소득, 백만 원)</text>
+  <text x="30" y="225" text-anchor="middle" transform="rotate(-90, 30, 225)" class="axis-label">Y (부정선거론 수용률, %)</text>
+
+  <!-- Y축 눈금 -->
+  <line x1="75" y1="360" x2="80" y2="360" stroke="#999"/><text x="70" y="364" text-anchor="end" class="label">20</text>
+  <line x1="75" y1="300" x2="80" y2="300" stroke="#999"/><text x="70" y="304" text-anchor="end" class="label">30</text>
+  <line x1="75" y1="240" x2="80" y2="240" stroke="#999"/><text x="70" y="244" text-anchor="end" class="label">40</text>
+  <line x1="75" y1="180" x2="80" y2="180" stroke="#999"/><text x="70" y="184" text-anchor="end" class="label">50</text>
+  <line x1="75" y1="120" x2="80" y2="120" stroke="#999"/><text x="70" y="124" text-anchor="end" class="label">60</text>
+
+  <!-- X축 눈금 -->
+  <line x1="160" y1="400" x2="160" y2="405" stroke="#999"/><text x="160" y="420" text-anchor="middle" class="label">2</text>
+  <line x1="280" y1="400" x2="280" y2="405" stroke="#999"/><text x="280" y="420" text-anchor="middle" class="label">4</text>
+  <line x1="400" y1="400" x2="400" y2="405" stroke="#999"/><text x="400" y="420" text-anchor="middle" class="label">6</text>
+  <line x1="520" y1="400" x2="520" y2="405" stroke="#999"/><text x="520" y="420" text-anchor="middle" class="label">8</text>
+  <line x1="640" y1="400" x2="640" y2="405" stroke="#999"/><text x="640" y="420" text-anchor="middle" class="label">10</text>
+
+  <!-- 그리드 (연한 점선) -->
+  <line x1="80" y1="360" x2="680" y2="360" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="300" x2="680" y2="300" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="240" x2="680" y2="240" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="180" x2="680" y2="180" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="120" x2="680" y2="120" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <!-- 산점도 (scatter points) -->
+  <!-- 회귀선: Y = 58 - 3.5X → 화면: y = 108 + (X_screen - 80) * 0.583 ... -->
+  <!-- 회귀선 맵핑: X=0→y=108(=58%), X=10→y=360(=23.5%) 대략 -->
+  <!-- 실제 매핑: X축 1단위=60px, Y축 1%=6px, 원점(X=0,Y=0)=(80,400) -->
+  <!-- Y% → y_screen = 400 - Y*6, X백만 → x_screen = 80 + X*60 -->
+  <!-- 회귀선: Y=55 - 3X → (X=1, Y=52), (X=10, Y=25) -->
+
+  <circle cx="140" cy="100" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="155" cy="125" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="170" cy="90" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="195" cy="145" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="220" cy="115" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="210" cy="160" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="250" cy="130" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="240" cy="175" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="275" cy="150" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="290" cy="195" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="310" cy="170" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="325" cy="210" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="340" cy="185" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="365" cy="225" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="380" cy="195" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="395" cy="250" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="420" cy="215" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="435" cy="260" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="460" cy="235" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="475" cy="275" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="500" cy="250" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="515" cy="295" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="535" cy="270" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="555" cy="310" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="575" cy="280" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="595" cy="325" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="615" cy="295" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="630" cy="340" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="650" cy="310" r="5" fill="#E57373" opacity="0.6"/>
+  <circle cx="660" cy="355" r="5" fill="#E57373" opacity="0.6"/>
+
+  <!-- 회귀선 -->
+  <line x1="100" y1="88" x2="670" y2="355" stroke="#1565c0" stroke-width="2.5" stroke-dasharray="8,4"/>
+
+  <!-- β₁ 기울기 표시 -->
+  <line x1="300" y1="182" x2="420" y2="182" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="420" y1="182" x2="420" y2="226" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="360" y="175" text-anchor="middle" class="label">ΔX = 1단위</text>
+  <text x="445" y="210" class="callout">Δŷ = β̂₁</text>
+
+  <!-- 추정 관점 callout -->
+  <rect x="430" y="55" width="290" height="55" fill="#e3f2fd" rx="6" stroke="#90caf9" stroke-width="1"/>
+  <text x="445" y="75" font-size="13" fill="#1565c0" font-weight="bold">추정 관점 (사회과학)</text>
+  <text x="445" y="95" font-size="12" fill="#1565c0">"기울기 β̂₁ = 소득이 Y에 미치는 효과"</text>
+
+  <!-- 예측 관점 callout -->
+  <rect x="430" y="120" width="290" height="55" fill="#fce4ec" rx="6" stroke="#ef9a9a" stroke-width="1"/>
+  <text x="445" y="140" font-size="13" fill="#c62828" font-weight="bold">예측 관점 (머신러닝)</text>
+  <text x="445" y="160" font-size="12" fill="#c62828">"새 X에 대해 직선 위의 ŷ 값을 읽는다"</text>
+
+  <!-- 수식 -->
+  <text x="375" y="467" text-anchor="middle" font-size="15" fill="#333" font-weight="bold">ŷᵢ = β̂₀ + β̂₁ · Xᵢ</text>
+</svg>
