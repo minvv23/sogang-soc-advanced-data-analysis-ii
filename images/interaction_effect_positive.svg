@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 500" font-family="Pretendard, Apple SD Gothic Neo, Malgun Gothic, sans-serif">
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+  </defs>
+
+  <rect width="750" height="500" fill="#fafafa" rx="8"/>
+
+  <text x="360" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#222">교차효과: 더미(성별) × 연속형(교육연수) — 양의 기울기 예시</text>
+  <text x="360" y="52" text-anchor="middle" font-size="13" fill="#777">교육연수가 높을수록 정치 관심도가 높아지되, 여성에서 그 효과가 더 강하다</text>
+
+  <!-- 축 -->
+  <line x1="90" y1="410" x2="610" y2="410" stroke="#666" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="90" y1="410" x2="90" y2="70" stroke="#666" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+  <text x="360" y="450" text-anchor="middle" font-size="14" font-weight="bold" fill="#444">교육연수 (년)</text>
+  <text x="35" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#444" transform="rotate(-90, 35, 240)">정치 관심도 (0~100)</text>
+
+  <!-- Y축 눈금 -->
+  <line x1="85" y1="380" x2="90" y2="380" stroke="#aaa"/>
+  <text x="78" y="384" text-anchor="end" font-size="12" fill="#666">20</text>
+  <line x1="85" y1="320" x2="90" y2="320" stroke="#aaa"/>
+  <text x="78" y="324" text-anchor="end" font-size="12" fill="#666">30</text>
+  <line x1="85" y1="260" x2="90" y2="260" stroke="#aaa"/>
+  <text x="78" y="264" text-anchor="end" font-size="12" fill="#666">40</text>
+  <line x1="85" y1="200" x2="90" y2="200" stroke="#aaa"/>
+  <text x="78" y="204" text-anchor="end" font-size="12" fill="#666">50</text>
+  <line x1="85" y1="140" x2="90" y2="140" stroke="#aaa"/>
+  <text x="78" y="144" text-anchor="end" font-size="12" fill="#666">60</text>
+
+  <!-- X축 눈금 (교육연수 6~16) -->
+  <line x1="140" y1="410" x2="140" y2="415" stroke="#aaa"/>
+  <text x="140" y="430" text-anchor="middle" font-size="12" fill="#666">6</text>
+  <line x1="240" y1="410" x2="240" y2="415" stroke="#aaa"/>
+  <text x="240" y="430" text-anchor="middle" font-size="12" fill="#666">8</text>
+  <line x1="340" y1="410" x2="340" y2="415" stroke="#aaa"/>
+  <text x="340" y="430" text-anchor="middle" font-size="12" fill="#666">10</text>
+  <line x1="440" y1="410" x2="440" y2="415" stroke="#aaa"/>
+  <text x="440" y="430" text-anchor="middle" font-size="12" fill="#666">12</text>
+  <line x1="540" y1="410" x2="540" y2="415" stroke="#aaa"/>
+  <text x="540" y="430" text-anchor="middle" font-size="12" fill="#666">14</text>
+
+  <!-- 그리드 -->
+  <line x1="90" y1="380" x2="600" y2="380" stroke="#eee" stroke-dasharray="4,4"/>
+  <line x1="90" y1="320" x2="600" y2="320" stroke="#eee" stroke-dasharray="4,4"/>
+  <line x1="90" y1="260" x2="600" y2="260" stroke="#eee" stroke-dasharray="4,4"/>
+  <line x1="90" y1="200" x2="600" y2="200" stroke="#eee" stroke-dasharray="4,4"/>
+  <line x1="90" y1="140" x2="600" y2="140" stroke="#eee" stroke-dasharray="4,4"/>
+
+  <!-- 매핑: X축 6~16, 1단위=50px, X=6->x=140. Y% -> y = 410 - Y*6 -->
+  <!-- 여성: Y = 10 + 3.0*X -> @X=6: Y=28, y=242. @X=14: Y=52, y=98 -->
+  <!-- 남성: Y = 18 + 1.5*X -> @X=6: Y=27, y=248. @X=14: Y=39, y=176 -->
+
+  <!-- 여성 회귀선 (빨간색, 기울기 급함 — 양의 방향) -->
+  <line x1="140" y1="242" x2="540" y2="98" stroke="#c62828" stroke-width="3"/>
+  <!-- 남성 회귀선 (파란색, 기울기 완만 — 양의 방향) -->
+  <line x1="140" y1="248" x2="540" y2="176" stroke="#1565c0" stroke-width="3"/>
+
+  <!-- 라벨 -->
+  <rect x="542" y="78" width="96" height="22" fill="#fce4ec" rx="4"/>
+  <text x="590" y="94" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">여성 (M=0)</text>
+  <rect x="542" y="158" width="96" height="22" fill="#e3f2fd" rx="4"/>
+  <text x="590" y="174" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">남성 (M=1)</text>
+
+  <!-- 절편 차이 (β₁) — 거의 없음을 보여줌 -->
+  <line x1="130" y1="242" x2="130" y2="248" stroke="#ff9800" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="125" y1="242" x2="135" y2="242" stroke="#ff9800" stroke-width="2"/>
+  <line x1="125" y1="248" x2="135" y2="248" stroke="#ff9800" stroke-width="2"/>
+  <text x="108" y="250" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">β₁</text>
+  <text x="108" y="264" text-anchor="middle" font-size="10" fill="#e65100">(작음)</text>
+
+  <!-- 여성 기울기 삼각형 -->
+  <line x1="290" y1="170" x2="390" y2="170" stroke="#c62828" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="290" y1="170" x2="290" y2="134" stroke="#c62828" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="340" y="186" text-anchor="middle" font-size="11" fill="#c62828">ΔX</text>
+  <text x="272" y="156" font-size="12" font-weight="bold" fill="#c62828" text-anchor="end">β₂</text>
+
+  <!-- 남성 기울기 삼각형 -->
+  <line x1="290" y1="215" x2="390" y2="215" stroke="#1565c0" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <line x1="290" y1="215" x2="290" y2="197" stroke="#1565c0" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <text x="340" y="230" text-anchor="middle" font-size="11" fill="#1565c0">ΔX</text>
+  <text x="272" y="210" font-size="12" font-weight="bold" fill="#1565c0" text-anchor="end">β₂+β₃</text>
+
+  <!-- 기울기 차이 강조 화살표 -->
+  <line x1="555" y1="98" x2="555" y2="176" stroke="#9c27b0" stroke-width="2" stroke-dasharray="4,3"/>
+  <line x1="550" y1="98" x2="560" y2="98" stroke="#9c27b0" stroke-width="2"/>
+  <line x1="550" y1="176" x2="560" y2="176" stroke="#9c27b0" stroke-width="2"/>
+  <text x="575" y="140" font-size="12" font-weight="bold" fill="#9c27b0">기울기</text>
+  <text x="575" y="155" font-size="12" font-weight="bold" fill="#9c27b0">차이 ↑</text>
+
+  <!-- 범례 -->
+  <rect x="630" y="230" width="112" height="130" fill="white" rx="6" stroke="#ddd" stroke-width="1"/>
+  <text x="686" y="252" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">계수 해석</text>
+  <line x1="642" y1="270" x2="668" y2="270" stroke="#ff9800" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="675" y="274" font-size="11" fill="#555">β₁: 절편 차이</text>
+  <line x1="642" y1="296" x2="668" y2="296" stroke="#c62828" stroke-width="2.5"/>
+  <text x="675" y="300" font-size="11" fill="#555">β₂: 여성 기울기</text>
+  <line x1="642" y1="322" x2="668" y2="322" stroke="#1565c0" stroke-width="2.5"/>
+  <text x="675" y="326" font-size="11" fill="#555">β₂+β₃:</text>
+  <text x="675" y="340" font-size="11" fill="#555">남성 기울기</text>
+
+  <!-- 하단 설명 -->
+  <rect x="90" y="458" width="560" height="34" fill="#f3e5f5" rx="5"/>
+  <text x="370" y="475" text-anchor="middle" font-size="13" fill="#6a1b9a">β₃ &lt; 0: 남성의 기울기(β₂+β₃)가 여성의 기울기(β₂)보다 작다</text>
+  <text x="370" y="491" text-anchor="middle" font-size="12" fill="#6a1b9a">→ 교육의 정치 관심도 효과가 여성에서 더 강하게 나타난다</text>
+</svg>

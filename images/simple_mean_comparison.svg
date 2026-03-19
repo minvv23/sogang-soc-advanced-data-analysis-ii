@@ -38,5 +38,5 @@
 
   <!-- 하단 수식 -->
   <rect x="60" y="310" width="330" height="28" fill="#e3f2fd" rx="4"/>
-  <text x="225" y="329" text-anchor="middle" font-size="12" fill="#1565c0" font-weight="bold">b1 = 48.8 - 39.0 = 9.8%p (남성 평균 - 여성 평균)</text>
+  <text x="225" y="329" text-anchor="middle" font-size="12" fill="#1565c0" font-weight="bold">β̂₁ = 48.8 - 39.0 = 9.8%p (남성 평균 − 여성 평균)</text>
 </svg>
