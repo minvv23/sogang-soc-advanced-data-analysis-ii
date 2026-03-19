@@ -1732,6 +1732,17 @@ flowchart LR
     fontFamily: "'Noto Sans KR', sans-serif"
   });
 
+  // ===== 0. CONFIGURE MARKED — disable strikethrough (~ is used in Korean text) =====
+  marked.use({
+    gfm: true,
+    extensions: [{
+      name: 'del',
+      level: 'inline',
+      start(src) { return undefined; },
+      tokenizer(src) { return undefined; }
+    }]
+  });
+
   // ===== 1. EXTRACT MARKDOWN =====
   const rawMd = document.getElementById('markdown-source').textContent;
 
@@ -1973,14 +1984,7 @@ flowchart LR
     }
   });
 
-  // Click to advance (not on links/buttons/scrollable)
-  container.addEventListener('click', (e) => {
-    if (e.target.closest('a, button, .mermaid')) return;
-    const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    if (x < rect.width * 0.3) prevSlide();
-    else nextSlide();
-  });
+  // Click navigation removed — use keyboard arrows or nav buttons only
 
   // Touch swipe
   let touchStartX = 0;
