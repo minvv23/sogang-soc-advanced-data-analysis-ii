@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="350" viewBox="0 0 800 350" font-family="'Noto Sans KR', sans-serif">
+  <defs>
+    <clipPath id="clipLeft">
+      <rect x="60" y="55" width="300" height="230"/>
+    </clipPath>
+    <clipPath id="clipRight">
+      <rect x="440" y="55" width="300" height="230"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="350" fill="#ffffff" rx="8"/>
+
+  <!-- ==================== LEFT PLOT: Homoskedasticity ==================== -->
+  <rect x="40" y="40" width="340" height="260" fill="#fafcff" rx="4" stroke="#dde5f0" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="210" y="30" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">등분산 (Homoskedasticity)</text>
+
+  <!-- Axes -->
+  <line x1="80" y1="265" x2="350" y2="265" stroke="#1a1a2e" stroke-width="1.5"/>
+  <line x1="80" y1="265" x2="80" y2="65" stroke="#1a1a2e" stroke-width="1.5"/>
+  <text x="215" y="295" text-anchor="middle" fill="#1a1a2e" font-size="12">X</text>
+  <text x="55" y="165" text-anchor="middle" fill="#1a1a2e" font-size="12" transform="rotate(-90,55,165)">Y</text>
+
+  <!-- Confidence band - constant width -->
+  <polygon points="90,210 340,130 340,170 90,250" fill="#e8f0fe" opacity="0.6"/>
+
+  <!-- Regression line -->
+  <line x1="90" y1="230" x2="340" y2="150" stroke="#0055aa" stroke-width="2.5"/>
+
+  <!-- Scatter points - evenly distributed around line, clip to plot area -->
+  <g clip-path="url(#clipLeft)">
+    <!-- Points near x=100 range, y center ~225 -->
+    <circle cx="95" cy="218" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="100" cy="238" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="108" cy="225" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="103" cy="210" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="112" cy="232" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="97" cy="242" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="115" cy="215" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=140 range, y center ~215 -->
+    <circle cx="135" cy="208" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="142" cy="222" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="148" cy="200" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="138" cy="228" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="150" cy="213" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="132" cy="218" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="145" cy="205" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=180 range, y center ~205 -->
+    <circle cx="175" cy="195" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="182" cy="212" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="188" cy="198" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="178" cy="218" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="190" cy="190" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="172" cy="208" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="185" cy="202" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=220 range, y center ~195 -->
+    <circle cx="215" cy="185" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="222" cy="200" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="228" cy="188" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="218" cy="208" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="225" cy="178" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="212" cy="198" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="230" cy="192" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=260 range, y center ~185 -->
+    <circle cx="255" cy="175" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="262" cy="192" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="268" cy="178" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="258" cy="198" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="265" cy="170" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="252" cy="188" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="270" cy="182" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=300 range, y center ~170 -->
+    <circle cx="295" cy="160" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="302" cy="178" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="308" cy="163" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="298" cy="182" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="310" cy="155" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="292" cy="172" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="315" cy="168" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=330 range, y center ~160 -->
+    <circle cx="325" cy="150" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="332" cy="165" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="338" cy="153" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="328" cy="170" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="335" cy="145" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="322" cy="162" r="3" fill="#888" opacity="0.5"/>
+  </g>
+
+  <!-- Check mark -->
+  <text x="210" y="315" text-anchor="middle" fill="#2a8c4a" font-size="13" font-weight="600">Var(ε) = σ²  (일정)</text>
+
+
+  <!-- ==================== RIGHT PLOT: Heteroskedasticity ==================== -->
+  <rect x="420" y="40" width="340" height="260" fill="#fff8f8" rx="4" stroke="#f0dde0" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="590" y="30" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">이분산 (Heteroskedasticity)</text>
+
+  <!-- Axes -->
+  <line x1="460" y1="265" x2="730" y2="265" stroke="#1a1a2e" stroke-width="1.5"/>
+  <line x1="460" y1="265" x2="460" y2="65" stroke="#1a1a2e" stroke-width="1.5"/>
+  <text x="595" y="295" text-anchor="middle" fill="#1a1a2e" font-size="12">X</text>
+  <text x="435" y="165" text-anchor="middle" fill="#1a1a2e" font-size="12" transform="rotate(-90,435,165)">Y</text>
+
+  <!-- Confidence band - widening (funnel shape) -->
+  <polygon points="470,228 720,100 720,200 470,242" fill="#fce8e8" opacity="0.5"/>
+
+  <!-- Regression line -->
+  <line x1="470" y1="235" x2="720" y2="150" stroke="#0055aa" stroke-width="2.5"/>
+
+  <!-- Scatter points - funnel shape, tight on left, spread on right -->
+  <g clip-path="url(#clipRight)">
+    <!-- Points near x=475-490, very tight spread around y~233 -->
+    <circle cx="475" cy="231" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="480" cy="236" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="485" cy="229" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="478" cy="238" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="490" cy="233" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="483" cy="227" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="488" cy="237" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=510-525, slightly more spread, center ~222 -->
+    <circle cx="510" cy="215" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="515" cy="228" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="520" cy="210" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="512" cy="232" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="525" cy="218" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="518" cy="225" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="508" cy="220" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=550-565, moderate spread, center ~210 -->
+    <circle cx="548" cy="195" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="555" cy="220" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="560" cy="198" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="552" cy="225" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="565" cy="200" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="545" cy="215" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="558" cy="205" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=590-610, more spread, center ~195 -->
+    <circle cx="590" cy="172" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="598" cy="212" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="605" cy="178" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="592" cy="218" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="610" cy="185" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="588" cy="208" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="602" cy="195" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="595" cy="165" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=640-660, wide spread, center ~180 -->
+    <circle cx="640" cy="148" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="648" cy="205" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="655" cy="155" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="642" cy="215" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="660" cy="162" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="638" cy="200" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="652" cy="175" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="645" cy="140" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="658" cy="195" r="3" fill="#888" opacity="0.5"/>
+
+    <!-- Points near x=690-720, very wide spread, center ~160 -->
+    <circle cx="690" cy="115" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="698" cy="200" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="705" cy="125" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="692" cy="210" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="715" cy="140" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="688" cy="195" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="710" cy="160" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="695" cy="108" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="718" cy="185" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="700" cy="145" r="3" fill="#888" opacity="0.5"/>
+    <circle cx="712" cy="192" r="3" fill="#888" opacity="0.5"/>
+  </g>
+
+  <!-- Warning -->
+  <text x="590" y="315" text-anchor="middle" fill="#cc3333" font-size="13" font-weight="600">Var(ε|X) = σ²(X)  (X에 따라 변함)</text>
+
+  <!-- Divider -->
+  <line x1="400" y1="20" x2="400" y2="330" stroke="#dde5f0" stroke-width="1" stroke-dasharray="4,4"/>
+</svg>

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400" font-family="'Noto Sans KR', sans-serif">
+  <defs>
+    <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0055aa"/>
+      <stop offset="100%" stop-color="#3388cc"/>
+    </linearGradient>
+    <linearGradient id="barGradStd" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0055aa"/>
+      <stop offset="100%" stop-color="#0077dd"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="#ffffff" rx="8"/>
+
+  <!-- Main title -->
+  <text x="400" y="35" text-anchor="middle" fill="#1a1a2e" font-size="18" font-weight="700">비표준화 계수 vs 표준화 계수 비교</text>
+
+  <!-- LEFT PANEL: Unstandardized -->
+  <rect x="20" y="50" width="370" height="280" fill="#f8faff" rx="6" stroke="#dde5f0" stroke-width="1"/>
+  <text x="205" y="75" text-anchor="middle" fill="#1a1a2e" font-size="14" font-weight="600">비표준화 계수 (b)</text>
+
+  <!-- Scale line left -->
+  <line x1="170" y1="90" x2="170" y2="290" stroke="#ccd6e6" stroke-width="1"/>
+  <line x1="170" y1="290" x2="375" y2="290" stroke="#aab5c8" stroke-width="1.5"/>
+
+  <!-- Tick marks and labels for left (max ~1.2) -->
+  <text x="170" y="305" text-anchor="middle" fill="#666" font-size="9">0</text>
+  <text x="238" y="305" text-anchor="middle" fill="#666" font-size="9">0.4</text>
+  <text x="306" y="305" text-anchor="middle" fill="#666" font-size="9">0.8</text>
+  <text x="375" y="305" text-anchor="middle" fill="#666" font-size="9">1.2</text>
+  <line x1="238" y1="288" x2="238" y2="292" stroke="#aab5c8" stroke-width="1"/>
+  <line x1="306" y1="288" x2="306" y2="292" stroke="#aab5c8" stroke-width="1"/>
+  <line x1="375" y1="288" x2="375" y2="292" stroke="#aab5c8" stroke-width="1"/>
+
+  <!-- Bar 1: 소득 0.003 -> basically invisible at this scale (0.003/1.2 * 205 ≈ 0.5px) -->
+  <text x="165" y="138" text-anchor="end" fill="#1a1a2e" font-size="12">소득 (만 원)</text>
+  <rect x="170" y="123" width="0.5" height="24" fill="url(#barGrad)" rx="2"/>
+  <text x="178" y="139" text-anchor="start" fill="#0055aa" font-size="11" font-weight="600">0.003</text>
+
+  <!-- Bar 2: 교육연수 1.200 -> full width (1.2/1.2 * 205 = 205) -->
+  <text x="165" y="198" text-anchor="end" fill="#1a1a2e" font-size="12">교육연수 (년)</text>
+  <rect x="170" y="183" width="205" height="24" fill="url(#barGrad)" rx="2"/>
+  <text x="380" y="199" text-anchor="start" fill="#0055aa" font-size="11" font-weight="600">1.200</text>
+
+  <!-- Bar 3: 뉴스소비 0.450 -> (0.45/1.2 * 205 ≈ 77) -->
+  <text x="165" y="258" text-anchor="end" fill="#1a1a2e" font-size="12">뉴스소비 (시간)</text>
+  <rect x="170" y="243" width="77" height="24" fill="url(#barGrad)" rx="2"/>
+  <text x="252" y="259" text-anchor="start" fill="#0055aa" font-size="11" font-weight="600">0.450</text>
+
+  <!-- Problem indicator -->
+  <text x="205" y="325" text-anchor="middle" fill="#cc3333" font-size="11" font-weight="500">⚠ 단위가 달라 비교 불가</text>
+
+
+  <!-- RIGHT PANEL: Standardized -->
+  <rect x="410" y="50" width="370" height="280" fill="#f0f6ff" rx="6" stroke="#b8cce8" stroke-width="1.5"/>
+  <text x="595" y="75" text-anchor="middle" fill="#1a1a2e" font-size="14" font-weight="600">표준화 계수 (β*)</text>
+
+  <!-- Scale line right -->
+  <line x1="540" y1="90" x2="540" y2="290" stroke="#ccd6e6" stroke-width="1"/>
+  <line x1="540" y1="290" x2="762" y2="290" stroke="#aab5c8" stroke-width="1.5"/>
+
+  <!-- Tick marks and labels for right (max ~0.4) -->
+  <text x="540" y="305" text-anchor="middle" fill="#666" font-size="9">0</text>
+  <text x="596" y="305" text-anchor="middle" fill="#666" font-size="9">0.1</text>
+  <text x="651" y="305" text-anchor="middle" fill="#666" font-size="9">0.2</text>
+  <text x="706" y="305" text-anchor="middle" fill="#666" font-size="9">0.3</text>
+  <text x="762" y="305" text-anchor="middle" fill="#666" font-size="9">0.4</text>
+  <line x1="596" y1="288" x2="596" y2="292" stroke="#aab5c8" stroke-width="1"/>
+  <line x1="651" y1="288" x2="651" y2="292" stroke="#aab5c8" stroke-width="1"/>
+  <line x1="706" y1="288" x2="706" y2="292" stroke="#aab5c8" stroke-width="1"/>
+  <line x1="762" y1="288" x2="762" y2="292" stroke="#aab5c8" stroke-width="1"/>
+
+  <!-- Bar 1: 소득 0.35 -> (0.35/0.4 * 222 ≈ 194) -->
+  <text x="535" y="138" text-anchor="end" fill="#1a1a2e" font-size="12">소득</text>
+  <rect x="540" y="123" width="194" height="24" fill="url(#barGradStd)" rx="2"/>
+  <text x="739" y="139" text-anchor="start" fill="#0055aa" font-size="11" font-weight="600">0.35</text>
+
+  <!-- Bar 2: 교육연수 0.28 -> (0.28/0.4 * 222 ≈ 155) -->
+  <text x="535" y="198" text-anchor="end" fill="#1a1a2e" font-size="12">교육연수</text>
+  <rect x="540" y="183" width="155" height="24" fill="url(#barGradStd)" rx="2"/>
+  <text x="700" y="199" text-anchor="start" fill="#0055aa" font-size="11" font-weight="600">0.28</text>
+
+  <!-- Bar 3: 뉴스소비 0.15 -> (0.15/0.4 * 222 ≈ 83) -->
+  <text x="535" y="258" text-anchor="end" fill="#1a1a2e" font-size="12">뉴스소비</text>
+  <rect x="540" y="243" width="83" height="24" fill="url(#barGradStd)" rx="2"/>
+  <text x="628" y="259" text-anchor="start" fill="#0055aa" font-size="11" font-weight="600">0.15</text>
+
+  <!-- Success indicator -->
+  <text x="595" y="325" text-anchor="middle" fill="#0055aa" font-size="11" font-weight="500">상대적 중요도가 명확히 드러남</text>
+
+  <!-- Connecting arrow -->
+  <line x1="395" y1="190" x2="405" y2="190" stroke="#0055aa" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0055aa"/>
+    </marker>
+  </defs>
+  <text x="400" y="175" text-anchor="middle" fill="#0055aa" font-size="20" font-weight="700">→</text>
+
+  <!-- Bottom note -->
+  <rect x="150" y="348" width="500" height="36" fill="#e8f0fe" rx="18"/>
+  <text x="400" y="371" text-anchor="middle" fill="#0055aa" font-size="13" font-weight="600">→ 단위가 다른 변수의 상대적 영향력 비교가 가능</text>
+</svg>
