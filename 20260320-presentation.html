@@ -259,8 +259,55 @@ html, body {
   font-size: 0.85rem;
   color: var(--gray-600);
   font-variant-numeric: tabular-nums;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
 }
+#slide-counter:hover { background: var(--gray-200); }
+
+#page-jump {
+  position: fixed;
+  bottom: 8px; right: 16px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  z-index: 200;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+#page-jump input {
+  width: 48px;
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 3px 6px;
+  text-align: center;
+  outline: none;
+}
+#page-jump input:focus { border-color: var(--accent); }
+#page-jump .jump-total {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+}
+#page-jump button {
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+#page-jump button:hover { opacity: 0.85; }
 
 #section-indicator {
   position: fixed;
@@ -332,6 +379,11 @@ body:hover #nav-buttons { opacity: 1; }
   <div id="progress-bar"><div id="progress-fill"></div></div>
 </div>
 <div id="slide-counter"></div>
+<div id="page-jump">
+  <input type="text" id="page-jump-input" inputmode="numeric" pattern="[0-9]*" placeholder="#">
+  <span class="jump-total" id="page-jump-total"></span>
+  <button id="page-jump-btn">이동</button>
+</div>
 <div id="section-indicator"></div>
 <div id="nav-buttons">
   <button onclick="prevSlide()">← 이전</button>
@@ -1980,6 +2032,390 @@ flowchart LR
 기본 SE가 이분산을 무시해서 표준오차를 과소추정한 결과, 실제로는 유의하지 않은 효과가 유의하게 나온 것이다. <strong>Robust SE를 쓰지 않았다면 잘못된 결론을 내릴 뻔했다.</strong>
 
 이것이 "그냥 항상 Robust SE를 쓰라"는 조언의 근거다. 비용은 없고 보험 효과는 크다.
+
+---
+
+## 15. [맛보기] 선형대수로 이해하는 OLS — "회귀분석은 정사영이다"
+
+### 이 챕터의 목적
+
+지금까지 OLS를 미분으로 도출했다. $\frac{\partial S}{\partial \beta} = 0$으로 놓고, 식을 풀어서 $\hat{\beta}_1 = \frac{\text{Cov}(X,Y)}{\text{Var}(X)}$를 얻었다. 독립변수가 하나일 때는 이것으로 충분하다.
+
+그런데 독립변수가 $k$개가 되면? 편미분을 $k+1$번 해야 하고, 연립방정식 $k+1$개를 풀어야 한다. 독립변수가 10개면 편미분 11번, 연립방정식 11개. 가능은 하지만 끔찍하다.
+
+<strong>선형대수(행렬)를 쓰면 이 모든 것이 한 줄로 끝난다:</strong>
+
+$$\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$$
+
+하지만 이 공식이 진짜 강력한 이유는 단순히 "식이 짧아서"가 아니다. 행렬로 표현하면 OLS가 <strong>기하학적으로 무엇을 하는 것인지</strong>가 드러난다. 그것이 바로 <strong>정사영(orthogonal projection)</strong>이다.
+
+이 챕터는 선형대수를 전혀 모르는 학생을 전제한다. 행렬 곱셈을 들어본 적은 있지만 제대로 배운 적은 없는 수준에서 출발한다.
+
+---
+
+### Step 0: 행렬과 벡터 — 딱 필요한 만큼만
+
+#### 벡터: 숫자를 세로로 쌓은 것
+
+<strong>벡터(vector)</strong>는 숫자를 세로로 나열한 것이다.
+
+$$\mathbf{y} = \begin{pmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{pmatrix}$$
+
+$n$명의 응답자가 있으면, $\mathbf{y}$는 $n \times 1$ 벡터다. 각 원소 $y_i$는 $i$번째 사람의 종속변수 값이다.
+
+<strong>기하학적 의미</strong>: $n$개의 숫자로 이루어진 벡터는 <strong>$n$차원 공간의 한 점(또는 원점에서 그 점으로 향하는 화살표)</strong>이다. 2차원 벡터 $(3,\ 4)^T$는 2차원 평면의 점 $(3, 4)$이자 원점에서 그 점으로 향하는 화살표다. 3차원 벡터는 3차원 공간의 화살표다. $n$차원 벡터는... 그림으로 그리기는 어렵지만 수학적으로는 정확히 같은 논리다.
+
+#### 행렬: 벡터를 옆으로 나란히 놓은 것
+
+<strong>행렬(matrix)</strong>은 숫자를 직사각형으로 배열한 것이다.
+
+$$\mathbf{X} = \begin{pmatrix} 1 & X_{11} & X_{12} & \cdots & X_{1k} \\ 1 & X_{21} & X_{22} & \cdots & X_{2k} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & X_{n1} & X_{n2} & \cdots & X_{nk} \end{pmatrix}$$
+
+- 행(row)은 가로줄: 각 행은 한 사람의 데이터
+- 열(column)은 세로줄: 각 열은 하나의 변수
+- 맨 왼쪽의 1로 이루어진 열은 <strong>절편(intercept)</strong>을 위한 열이다. 왜 1인가? $\beta_0 \times 1 = \beta_0$이 되게 하려고
+- $\mathbf{X}$는 $n \times (k+1)$ 행렬이다 (응답자 $n$명, 절편 포함 변수 $k+1$개)
+
+<strong>열 벡터로 보기</strong>: 행렬 $\mathbf{X}$를 "열(column)의 모음"으로 볼 수 있다.
+
+$$\mathbf{X} = \begin{pmatrix} \mathbf{x}_0 & \mathbf{x}_1 & \mathbf{x}_2 & \cdots & \mathbf{x}_k \end{pmatrix}$$
+
+여기서:
+
+$$\mathbf{x}_0 = \begin{pmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{pmatrix}, \quad \mathbf{x}_1 = \begin{pmatrix} X_{11} \\ X_{21} \\ \vdots \\ X_{n1} \end{pmatrix}, \quad \ldots$$
+
+각 열 벡터 $\mathbf{x}_j$는 $n$차원 공간의 화살표 하나다. 이 "열 벡터"라는 개념이 이 챕터의 핵심이 된다.
+
+#### 행렬 곱셈: 왜 이렇게 정의했는가
+
+행렬 곱셈의 규칙은 처음 보면 이상하게 느껴진다. 왜 원소끼리 그냥 곱하지 않고, "행 × 열"로 복잡하게 정의했을까? 이유는 <strong>연립방정식을 한 번에 쓰기 위해서</strong>다.
+
+연립방정식:
+
+$$y_1 = \beta_0 + \beta_1 X_{11} + \beta_2 X_{12}$$
+$$y_2 = \beta_0 + \beta_1 X_{21} + \beta_2 X_{22}$$
+$$y_3 = \beta_0 + \beta_1 X_{31} + \beta_2 X_{32}$$
+
+이것을 행렬로 쓰면:
+
+$$\begin{pmatrix} y_1 \\ y_2 \\ y_3 \end{pmatrix} = \begin{pmatrix} 1 & X_{11} & X_{12} \\ 1 & X_{21} & X_{22} \\ 1 & X_{31} & X_{32} \end{pmatrix} \begin{pmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \end{pmatrix}$$
+
+$$\mathbf{y} = \mathbf{X}\boldsymbol{\beta}$$
+
+$n$개의 식을 한 줄로 압축한 것이다. 행렬 곱셈의 "행 × 열" 규칙은 이 압축이 작동하도록 설계된 것이다.
+
+#### 전치(transpose): 행과 열을 바꾸기
+
+행렬 $\mathbf{X}$의 전치(transpose) $\mathbf{X}'$ (또는 $\mathbf{X}^T$)는 행과 열을 뒤집은 것이다.
+
+$$\mathbf{X} = \begin{pmatrix} 1 & 3 \\ 1 & 5 \\ 1 & 7 \end{pmatrix} \quad \Rightarrow \quad \mathbf{X}' = \begin{pmatrix} 1 & 1 & 1 \\ 3 & 5 & 7 \end{pmatrix}$$
+
+$n \times (k+1)$ 행렬의 전치는 $(k+1) \times n$ 행렬이 된다.
+
+#### 내적(dot product): 두 벡터의 "닮은 정도"
+
+두 벡터 $\mathbf{a}$, $\mathbf{b}$의 <strong>내적</strong>은:
+
+$$\mathbf{a} \cdot \mathbf{b} = \mathbf{a}'\mathbf{b} = \sum_{i=1}^{n} a_i b_i$$
+
+내적은 <strong>하나의 숫자</strong>를 반환한다. 기하학적으로 내적은 "두 벡터가 같은 방향을 가리키는 정도"를 측정한다.
+
+- $\mathbf{a}'\mathbf{b} > 0$: 비슷한 방향
+- $\mathbf{a}'\mathbf{b} = 0$: <strong>수직(직교, orthogonal)</strong> — 이 챕터에서 가장 중요한 경우
+- $\mathbf{a}'\mathbf{b} < 0$: 반대 방향
+
+<strong>내적이 0이면 두 벡터는 수직이다.</strong> 이 단순한 사실이 OLS의 기하학 전체를 지탱한다.
+
+---
+
+### Step 1: OLS 목적 함수를 행렬로 쓰기
+
+섹션 1에서 도출한 OLS 목적 함수를 떠올려보자:
+
+$$\min_{\boldsymbol{\beta}} \sum_{i=1}^{n} (y_i - \beta_0 - \beta_1 X_{i1} - \cdots - \beta_k X_{ik})^2$$
+
+괄호 안의 $y_i - \beta_0 - \beta_1 X_{i1} - \cdots$는 $i$번째 잔차다. 이것을 벡터로 쓰면:
+
+$$\mathbf{e} = \mathbf{y} - \mathbf{X}\boldsymbol{\beta}$$
+
+잔차 제곱<strong>합</strong>은? 벡터의 각 원소를 제곱해서 더한 것이다. 이것은 벡터 자기 자신과의 내적이다:
+
+$$\sum_{i=1}^{n} e_i^2 = \mathbf{e}'\mathbf{e} = (\mathbf{y} - \mathbf{X}\boldsymbol{\beta})'(\mathbf{y} - \mathbf{X}\boldsymbol{\beta})$$
+
+따라서 OLS 목적 함수는:
+
+$$\min_{\boldsymbol{\beta}}\ (\mathbf{y} - \mathbf{X}\boldsymbol{\beta})'(\mathbf{y} - \mathbf{X}\boldsymbol{\beta})$$
+
+"잔차 벡터의 길이의 제곱을 최소화하라." 이것이 OLS의 행렬 표현이다.
+
+---
+
+### Step 2: 행렬 미분으로 정규방정식 도출
+
+목적 함수를 전개하면:
+
+$$S(\boldsymbol{\beta}) = \mathbf{y}'\mathbf{y} - 2\boldsymbol{\beta}'\mathbf{X}'\mathbf{y} + \boldsymbol{\beta}'\mathbf{X}'\mathbf{X}\boldsymbol{\beta}$$
+
+이것을 $\boldsymbol{\beta}$에 대해 미분하고 0으로 놓으면 (행렬 미분의 자세한 규칙은 지금 몰라도 된다—결과만 보자):
+
+$$\frac{\partial S}{\partial \boldsymbol{\beta}} = -2\mathbf{X}'\mathbf{y} + 2\mathbf{X}'\mathbf{X}\boldsymbol{\beta} = \mathbf{0}$$
+
+정리하면:
+
+$$\boxed{\mathbf{X}'\mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}'\mathbf{y}} \quad \text{— 정규방정식 (Normal Equation)}$$
+
+$\mathbf{X}'\mathbf{X}$의 역행렬이 존재하면 (= 완전 다중공선성이 없으면, 섹션 2 참고):
+
+$$\boxed{\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}}$$
+
+<strong>이것이 OLS 공식이다.</strong> 독립변수가 1개든 100개든, 이 한 줄이 전부다.
+
+---
+
+### Step 3: 정규방정식의 놀라운 의미 — "잔차는 X에 수직이다"
+
+정규방정식 $\mathbf{X}'\mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}'\mathbf{y}$를 다시 쓰면:
+
+$$\mathbf{X}'\mathbf{y} = \mathbf{X}'\mathbf{X}\hat{\boldsymbol{\beta}}$$
+
+$$\mathbf{X}'\mathbf{y} - \mathbf{X}'\mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{0}$$
+
+$$\mathbf{X}'(\mathbf{y} - \mathbf{X}\hat{\boldsymbol{\beta}}) = \mathbf{0}$$
+
+$\mathbf{y} - \mathbf{X}\hat{\boldsymbol{\beta}} = \hat{\mathbf{e}}$ (잔차 벡터)이므로:
+
+$$\boxed{\mathbf{X}'\hat{\mathbf{e}} = \mathbf{0}}$$
+
+이 식이 말하는 것: <strong>$\mathbf{X}$의 모든 열 벡터와 잔차 벡터의 내적이 0이다.</strong>
+
+내적이 0이라는 것은? 수직(직교, orthogonal)이라는 뜻이다!
+
+$\mathbf{X}$에 열이 $k+1$개 있으므로, 이것을 열별로 풀어 쓰면:
+
+$$\mathbf{x}_0'\hat{\mathbf{e}} = 0 \quad \text{(절편 열과 잔차가 수직 → 잔차의 합 = 0)}$$
+$$\mathbf{x}_1'\hat{\mathbf{e}} = 0 \quad \text{(첫 번째 독립변수와 잔차가 수직)}$$
+$$\vdots$$
+$$\mathbf{x}_k'\hat{\mathbf{e}} = 0 \quad \text{($k$번째 독립변수와 잔차가 수직)}$$
+
+<strong>OLS 잔차는 모든 독립변수에 대해 수직이다.</strong> 이것은 단순한 수학적 성질이 아니라, OLS가 <strong>기하학적으로 무엇을 하고 있는지</strong>를 드러낸다.
+
+---
+
+### Step 4: "정사영"이란 무엇인가 — 그림자 비유
+
+"수직"이라는 개념이 나왔으니, 이제 <strong>정사영(orthogonal projection)</strong>을 설명할 수 있다.
+
+태양이 바로 위에서 비추면, 3차원 물체의 그림자가 바닥(2차원 평면)에 생긴다. 이 그림자가 바로 "정사영"이다.
+
+![그림자 비유와 OLS의 정사영](images/projection_shadow.svg)
+
+정사영의 핵심 성질:
+
+- 그림자는 바닥(부분공간) <strong>위에</strong> 있다
+- 물체에서 그림자까지의 거리(= 빛줄기)는 바닥에 <strong>수직</strong>이다
+- 그림자는 바닥 위에서 물체에 <strong>가장 가까운 점</strong>이다
+
+2차원에서 더 명확하게 보자. 벡터 $\mathbf{y}$를 직선(1차원 부분공간) 위에 정사영하면:
+
+![2차원에서의 정사영](images/projection_2d.svg)
+
+- <strong>$\mathbf{y}$</strong> (빨간색): 원래 벡터
+- <strong>$\hat{\mathbf{y}}$</strong> (파란색): 직선 위에 내려찍힌 점 = 정사영
+- <strong>$\mathbf{e}$</strong> (초록색): $\mathbf{y}$에서 $\hat{\mathbf{y}}$까지의 차이 = 잔차
+
+핵심: <strong>$\hat{\mathbf{y}}$는 직선 위에서 $\mathbf{y}$에 가장 가까운 점이다. 왜? 잔차 $\mathbf{e}$가 직선에 수직이기 때문이다.</strong>
+
+왜 수직일 때 가장 가까운가? 피타고라스 정리 때문이다. 직선 위의 아무 다른 점 $\mathbf{z}$를 잡으면:
+
+$$\|\mathbf{y} - \mathbf{z}\|^2 = \|\mathbf{y} - \hat{\mathbf{y}}\|^2 + \|\hat{\mathbf{y}} - \mathbf{z}\|^2 \geq \|\mathbf{y} - \hat{\mathbf{y}}\|^2$$
+
+직각삼각형의 빗변은 항상 다른 변보다 길다. 따라서 수직으로 내려찍은 점이 언제나 가장 가깝다.
+
+---
+
+### Step 5: OLS는 y를 X의 열공간에 정사영하는 것이다
+
+이제 모든 조각을 맞출 수 있다.
+
+#### 열공간(Column Space)이란
+
+$\mathbf{X}$의 열공간 $\text{Col}(\mathbf{X})$란, $\mathbf{X}$의 열 벡터들을 <strong>임의의 비율로 섞어서</strong> 만들 수 있는 모든 벡터의 집합이다.
+
+$$\text{Col}(\mathbf{X}) = \{\mathbf{X}\boldsymbol{\beta} : \boldsymbol{\beta} \in \mathbb{R}^{k+1}\}$$
+
+풀어서 쓰면:
+
+$$\mathbf{X}\boldsymbol{\beta} = \beta_0 \mathbf{x}_0 + \beta_1 \mathbf{x}_1 + \cdots + \beta_k \mathbf{x}_k$$
+
+열 벡터들을 $\beta_0, \beta_1, \ldots, \beta_k$라는 가중치로 섞은 것이다. 이 "섞는 비율"을 바꾸면 열공간 안에서 다른 점이 된다. 열공간은 $n$차원 공간 안에 있는 $(k+1)$차원의 "평면"이라고 생각하면 된다.
+
+<strong>중요한 관찰</strong>: 회귀분석의 예측값 $\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}$는 $\mathbf{X}$의 열공간 안에 있다. $\hat{\boldsymbol{\beta}}$라는 특정 가중치로 열 벡터들을 섞은 결과니까.
+
+#### 모든 것이 연결된다
+
+| OLS의 대수적 표현 | 기하학적 의미 |
+|---|---|
+| $\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}}$ | $\mathbf{y}$를 $\text{Col}(\mathbf{X})$에 정사영한 점 |
+| $\hat{\mathbf{e}} = \mathbf{y} - \hat{\mathbf{y}}$ | $\mathbf{y}$에서 정사영까지의 수직 거리 |
+| $\mathbf{X}'\hat{\mathbf{e}} = \mathbf{0}$ | 잔차가 열공간에 <strong>수직</strong>이다 |
+| $\min \|\mathbf{e}\|^2$ | 수직 거리가 <strong>가장 짧다</strong> |
+
+![OLS = y를 X의 열공간에 정사영](images/ols_column_space.svg)
+
+<strong>OLS가 하는 일을 한 문장으로</strong>: $n$차원 공간에 있는 관측값 벡터 $\mathbf{y}$를, $\mathbf{X}$의 열공간이라는 "평면"에 수직으로 내려찍는다. 내려찍힌 점이 $\hat{\mathbf{y}}$이고, 수직 거리가 잔차 $\hat{\mathbf{e}}$이다. 수직으로 내려찍었기 때문에, 이 점은 열공간 위에서 $\mathbf{y}$에 가장 가까운 점이다—즉, 잔차 제곱합이 최소다.
+
+<strong>정규방정식 $\mathbf{X}'\hat{\mathbf{e}} = \mathbf{0}$은 "잔차가 열공간에 수직"이라는 기하학적 조건을 대수적으로 표현한 것에 불과하다.</strong>
+
+---
+
+### Step 6: 구체적 예시 — 3명, 변수 1개
+
+숫자로 직접 확인해보자. 학생 3명의 데이터:
+
+| 학생 | $X$ (공부 시간) | $Y$ (시험 점수) |
+|------|--------|--------|
+| A | 1 | 2 |
+| B | 2 | 3 |
+| C | 3 | 7 |
+
+행렬로:
+
+$$\mathbf{X} = \begin{pmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \end{pmatrix}, \quad \mathbf{y} = \begin{pmatrix} 2 \\ 3 \\ 7 \end{pmatrix}$$
+
+<strong>(1) $\mathbf{X}'\mathbf{X}$ 계산</strong>:
+
+$$\mathbf{X}'\mathbf{X} = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \end{pmatrix} = \begin{pmatrix} 3 & 6 \\ 6 & 14 \end{pmatrix}$$
+
+<strong>(2) $\mathbf{X}'\mathbf{y}$ 계산</strong>:
+
+$$\mathbf{X}'\mathbf{y} = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \end{pmatrix} \begin{pmatrix} 2 \\ 3 \\ 7 \end{pmatrix} = \begin{pmatrix} 12 \\ 29 \end{pmatrix}$$
+
+<strong>(3) $(\mathbf{X}'\mathbf{X})^{-1}$ 계산</strong>:
+
+$2 \times 2$ 행렬의 역행렬 공식:
+
+$$\begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} = \frac{1}{ad-bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$$
+
+$$(\mathbf{X}'\mathbf{X})^{-1} = \frac{1}{3 \times 14 - 6 \times 6}\begin{pmatrix} 14 & -6 \\ -6 & 3 \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 14 & -6 \\ -6 & 3 \end{pmatrix}$$
+
+<strong>(4) $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$</strong>:
+
+$$\hat{\boldsymbol{\beta}} = \frac{1}{6}\begin{pmatrix} 14 & -6 \\ -6 & 3 \end{pmatrix}\begin{pmatrix} 12 \\ 29 \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 168 - 174 \\ -72 + 87 \end{pmatrix} = \frac{1}{6}\begin{pmatrix} -6 \\ 15 \end{pmatrix} = \begin{pmatrix} -1 \\ 2.5 \end{pmatrix}$$
+
+따라서 $\hat{\beta}_0 = -1$, $\hat{\beta}_1 = 2.5$. 회귀식: $\hat{Y} = -1 + 2.5X$.
+
+<strong>(5) 정사영 확인</strong>:
+
+$$\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}} = \begin{pmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \end{pmatrix}\begin{pmatrix} -1 \\ 2.5 \end{pmatrix} = \begin{pmatrix} 1.5 \\ 4.0 \\ 6.5 \end{pmatrix}$$
+
+$$\hat{\mathbf{e}} = \mathbf{y} - \hat{\mathbf{y}} = \begin{pmatrix} 2 \\ 3 \\ 7 \end{pmatrix} - \begin{pmatrix} 1.5 \\ 4.0 \\ 6.5 \end{pmatrix} = \begin{pmatrix} 0.5 \\ -1.0 \\ 0.5 \end{pmatrix}$$
+
+<strong>(6) 수직 조건 검증 — $\mathbf{X}'\hat{\mathbf{e}} = \mathbf{0}$인가?</strong>
+
+$$\mathbf{X}'\hat{\mathbf{e}} = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \end{pmatrix}\begin{pmatrix} 0.5 \\ -1.0 \\ 0.5 \end{pmatrix} = \begin{pmatrix} 0.5 - 1.0 + 0.5 \\ 0.5 - 2.0 + 1.5 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}\ ✓$$
+
+<strong>잔차가 $\mathbf{X}$의 두 열 벡터 모두에 대해 정확히 수직이다.</strong>
+
+첫 번째 행 $\mathbf{x}_0'\hat{\mathbf{e}} = 0$은 "잔차의 합이 0"이라는 뜻이고 (OLS의 잘 알려진 성질), 두 번째 행 $\mathbf{x}_1'\hat{\mathbf{e}} = 0$은 "독립변수와 잔차의 공분산이 0"이라는 뜻이다. 이 두 성질이 정사영의 수직 조건에서 자동으로 나온다.
+
+---
+
+### Step 7: Hat Matrix — "예측값을 만드는 기계"
+
+OLS 공식을 한 번 더 보자:
+
+$$\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}(\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$$
+
+여기서 $\mathbf{y}$ 앞에 붙은 부분을 따로 떼면:
+
+$$\mathbf{H} = \mathbf{X}(\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'$$
+
+$$\hat{\mathbf{y}} = \mathbf{H}\mathbf{y}$$
+
+$\mathbf{H}$는 <strong>$\mathbf{y}$에 "hat(^)"을 씌워서 $\hat{\mathbf{y}}$로 만드는 행렬</strong>이라서 <strong>hat matrix</strong>라 부른다.
+
+$\mathbf{H}$의 성질:
+
+| 성질 | 의미 |
+|------|------|
+| $\mathbf{H}\mathbf{y} = \hat{\mathbf{y}}$ | $\mathbf{y}$를 열공간에 정사영한다 |
+| $\mathbf{H}^2 = \mathbf{H}$ (멱등, idempotent) | 이미 열공간 위에 있는 벡터를 다시 정사영하면 제자리다 (그림자의 그림자 = 그림자) |
+| $\mathbf{H}' = \mathbf{H}$ (대칭) | 정사영 행렬은 항상 대칭이다 |
+
+$\mathbf{H}^2 = \mathbf{H}$가 직관적으로 말하는 것: <strong>바닥에 떨어진 그림자를 다시 정사영하면 이미 바닥에 있으니까 그대로다.</strong> $\hat{\mathbf{y}}$는 이미 열공간 위에 있으므로 다시 정사영해도 움직이지 않는다.
+
+마찬가지로 잔차를 만드는 행렬도 정의할 수 있다:
+
+$$\mathbf{M} = \mathbf{I} - \mathbf{H}$$
+
+$$\hat{\mathbf{e}} = \mathbf{M}\mathbf{y} = (\mathbf{I} - \mathbf{H})\mathbf{y} = \mathbf{y} - \hat{\mathbf{y}}$$
+
+$\mathbf{M}$도 멱등이고 대칭이다. $\mathbf{H}$가 "열공간 위로 내려찍기"라면, $\mathbf{M}$은 "열공간에 수직인 방향 성분만 남기기"다.
+
+```mermaid
+flowchart LR
+    Y["<b>y</b><br/>관측값 벡터<br/>(n차원)"] -->|"H = X(X'X)⁻¹X'"| YHAT["<b>ŷ = Hy</b><br/>예측값<br/>(열공간 위)"]
+    Y -->|"M = I - H"| E["<b>e = My</b><br/>잔차<br/>(열공간에 수직)"]
+    YHAT -.->|"ŷ + e = y"| Y
+```
+
+---
+
+### 미분 도출 vs. 정사영: 같은 것을 두 가지 언어로
+
+| | 미분으로 도출 (섹션 1) | 선형대수로 도출 (이 챕터) |
+|--|--|--|
+| <strong>출발점</strong> | $\min \sum e_i^2$를 편미분 | $\min \|\mathbf{e}\|^2$를 행렬 미분 |
+| <strong>핵심 조건</strong> | $\frac{\partial S}{\partial \beta_j} = 0$ (각 계수에 대해) | $\mathbf{X}'\hat{\mathbf{e}} = \mathbf{0}$ (한 번에) |
+| <strong>해</strong> | $\hat{\beta}_1 = \frac{\text{Cov}(X,Y)}{\text{Var}(X)}$ (변수 1개일 때) | $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$ (변수 $k$개에도 동일) |
+| <strong>기하학적 해석</strong> | 명시적이지 않음 | $\mathbf{y}$를 열공간에 수직으로 내려찍기 |
+| <strong>스케일링</strong> | 변수 늘어나면 식이 폭발 | 변수 수에 무관하게 동일한 형태 |
+
+<strong>두 접근은 정확히 같은 답을 준다.</strong> 미분 접근에서 나오는 $k+1$개의 1차 조건은 정규방정식 $\mathbf{X}'\hat{\mathbf{e}} = \mathbf{0}$의 각 행이다. 단지 표현 언어가 다를 뿐, 같은 최적화 문제를 풀고 있다.
+
+---
+
+### 왜 이 관점이 중요한가: 세 가지 통찰
+
+<strong>통찰 1 — 완전 다중공선성의 기하학적 이해</strong>
+
+섹션 2에서 더미 변수를 전부 넣으면 "$(X'X)$가 singular가 되어 역행렬이 존재하지 않는다"고 했다. 기하학적으로 이것은: <strong>열 벡터들이 서로 겹쳐서 열공간이 "납작해진" 것</strong>이다. 열 벡터 하나가 나머지의 선형결합이면, 그 벡터를 추가해도 열공간의 차원이 늘어나지 않는다. 납작한 평면 위에서는 정사영이 유일하지 않다—같은 방향으로 내려찍는 점이 무한히 많아진다.
+
+```mermaid
+flowchart LR
+    A["열 벡터들이<br/>독립적"] -->|"열공간 = 온전한 평면"| B["정사영<br/>유일하게 존재"]
+    C["열 벡터 하나가<br/>다른 열의 결합"] -->|"열공간이 납작해짐<br/>(차원 축소)"| D["정사영<br/>유일하지 않음<br/>→ (X'X)⁻¹ 존재 안 함"]
+```
+
+<strong>통찰 2 — $R^2$의 기하학적 의미</strong>
+
+결정계수 $R^2$은 "설명된 분산의 비율"이라고 배웠다. 기하학적으로:
+
+$$R^2 = \frac{\|\hat{\mathbf{y}} - \bar{y}\mathbf{1}\|^2}{\|\mathbf{y} - \bar{y}\mathbf{1}\|^2} = \cos^2\theta$$
+
+여기서 $\theta$는 $\mathbf{y} - \bar{y}\mathbf{1}$과 $\hat{\mathbf{y}} - \bar{y}\mathbf{1}$ 사이의 각도다.
+
+- $R^2 = 1$: $\theta = 0°$. $\mathbf{y}$가 열공간 안에 완전히 들어와 있다. 정사영해도 움직이지 않는다 (= 잔차 없음)
+- $R^2 = 0$: $\theta = 90°$. $\mathbf{y}$가 열공간에 완전히 수직이다. 정사영하면 $\bar{y}\mathbf{1}$만 남는다 (= 평균만 설명)
+- $0 < R^2 < 1$: 중간 각도. $\mathbf{y}$의 일부만 열공간이 설명한다
+
+<strong>통찰 3 — 통제변수의 기하학</strong>
+
+섹션 3에서 통제변수를 넣으면 "같은 조건의 사람들끼리 비교한다"고 했다. 기하학적으로: 통제변수를 넣는다는 것은 <strong>열공간을 더 넓히는 것</strong>이다. 열공간이 넓어지면 $\mathbf{y}$에 더 가까이 정사영할 수 있으므로, 잔차가 줄어들고 $R^2$가 올라간다. 하지만 핵심은 $R^2$가 아니라, 관심 변수의 계수 $\hat{\beta}_1$이 편향 없이 추정되는지 여부다—열공간의 "방향"이 바뀌면 정사영의 결과도 달라지기 때문이다.
+
+---
+
+### 정리: 5줄로 요약하는 OLS의 기하학
+
+| 줄 | 사실 |
+|----|------|
+| 1 | 데이터 $\mathbf{y}$는 $n$차원 공간의 벡터다 |
+| 2 | $\mathbf{X}$의 열 벡터들이 만드는 부분공간이 <strong>열공간</strong>이다 |
+| 3 | OLS는 $\mathbf{y}$를 이 열공간에 <strong>수직으로 내려찍는다</strong> (정사영) |
+| 4 | 내려찍힌 점이 $\hat{\mathbf{y}}$, 수직 거리가 잔차 $\hat{\mathbf{e}}$다 |
+| 5 | 수직이므로 최단 거리 → <strong>잔차 제곱합이 최소</strong> → 이것이 OLS다 |
+
+결국, <strong>"잔차 제곱합을 최소화하라"는 최적화 문제</strong>와 <strong>"$\mathbf{y}$를 열공간에 수직으로 내려찍어라"는 기하학적 연산</strong>은 정확히 같은 것이다. 미분으로 풀면 전자가 보이고, 선형대수로 풀면 후자가 보인다. 두 관점 모두 OLS를 이해하는 데 필수적이다.
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
@@ -2271,7 +2707,48 @@ flowchart LR
     }
   }, { passive: true });
 
-  // ===== 7. INIT =====
+  // ===== 7. PAGE JUMP =====
+  const pageJumpEl = document.getElementById('page-jump');
+  const pageJumpInput = document.getElementById('page-jump-input');
+  const pageJumpTotal = document.getElementById('page-jump-total');
+  const pageJumpBtn = document.getElementById('page-jump-btn');
+
+  pageJumpTotal.textContent = '/ ' + total;
+
+  counterEl.addEventListener('click', (e) => {
+    e.stopPropagation();
+    counterEl.style.display = 'none';
+    pageJumpEl.style.display = 'flex';
+    pageJumpInput.value = '';
+    pageJumpInput.focus();
+  });
+
+  function doJump() {
+    const n = parseInt(pageJumpInput.value, 10);
+    if (!isNaN(n) && n >= 1 && n <= total) {
+      goTo(n - 1);
+    }
+    pageJumpEl.style.display = 'none';
+    counterEl.style.display = '';
+  }
+
+  pageJumpBtn.addEventListener('click', doJump);
+  pageJumpInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); doJump(); }
+    if (e.key === 'Escape') { pageJumpEl.style.display = 'none'; counterEl.style.display = ''; }
+    e.stopPropagation(); // prevent slide navigation while typing
+  });
+  pageJumpInput.addEventListener('keyup', (e) => e.stopPropagation());
+
+  // Close jump box when clicking outside
+  document.addEventListener('click', (e) => {
+    if (pageJumpEl.style.display === 'flex' && !pageJumpEl.contains(e.target)) {
+      pageJumpEl.style.display = 'none';
+      counterEl.style.display = '';
+    }
+  });
+
+  // ===== 8. INIT =====
   updateUI();
   renderSpecial();
 
