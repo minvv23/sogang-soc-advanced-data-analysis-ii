@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="500" viewBox="0 0 700 500" font-family="'Noto Sans KR', sans-serif">
+  <defs>
+    <style>
+      text { font-family: 'Noto Sans KR', sans-serif; }
+    </style>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="350" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">2차원에서의 정사영 (Orthogonal Projection)</text>
+
+  <!-- Origin point -->
+  <!-- Origin at (120, 380) -->
+
+  <!-- The line (subspace) - extended -->
+  <line x1="40" y1="420" x2="620" y2="190" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- Subspace label -->
+  <text x="600" y="180" text-anchor="start" font-size="14" fill="#64748b" font-weight="500">직선 (부분공간)</text>
+
+  <!-- Vector y (from origin to point) -->
+  <line x1="120" y1="380" x2="480" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+  <text x="310" y="210" text-anchor="middle" font-size="18" font-weight="700" fill="#dc2626">y</text>
+
+  <!-- Projected vector y-hat (from origin to projection point on line) -->
+  <!-- Projection of (360, -280) onto direction (580, -230): -->
+  <!-- dot = 360*580 + (-280)*(-230) = 208800 + 64400 = 273200 -->
+  <!-- norm2 = 580^2 + 230^2 = 336400 + 52900 = 389300 -->
+  <!-- scale = 273200/389300 ≈ 0.7018 -->
+  <!-- proj = (0.7018*580, 0.7018*(-230)) = (407, -161.4) -->
+  <!-- proj point = origin + proj = (120+407, 380-161.4) = (527, 218.6) -->
+  <line x1="120" y1="380" x2="520" y2="222" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <text x="340" y="320" text-anchor="middle" font-size="18" font-weight="700" fill="#2563eb">&#x177; = X&#x3B2;&#x302;</text>
+
+  <!-- Residual vector (from projection to y) - perpendicular -->
+  <line x1="520" y1="222" x2="480" y2="100" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrowGreen)"/>
+  <text x="525" y="155" text-anchor="start" font-size="18" font-weight="700" fill="#16a34a">e = y - &#x177;</text>
+
+  <!-- Right angle marker -->
+  <path d="M 505,215 L 498,200 L 513,193" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- Origin label -->
+  <circle cx="120" cy="380" r="4" fill="#1e293b"/>
+  <text x="108" y="405" text-anchor="middle" font-size="14" fill="#1e293b" font-weight="500">O</text>
+
+  <!-- Point y -->
+  <circle cx="480" cy="100" r="5" fill="#dc2626"/>
+
+  <!-- Point y-hat -->
+  <circle cx="520" cy="222" r="5" fill="#2563eb"/>
+
+  <!-- Explanation box -->
+  <rect x="30" y="435" width="640" height="50" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="350" y="458" text-anchor="middle" font-size="14" fill="#334155">
+    <tspan font-weight="700">핵심:</tspan> 정사영 &#x177;은 직선 위에서 y에 가장 가까운 점이다.</text>
+  <text x="350" y="476" text-anchor="middle" font-size="14" fill="#334155">잔차 e는 직선에 수직(&#x22A5;)이므로, 이보다 더 가까운 점은 존재하지 않는다.</text>
+</svg>

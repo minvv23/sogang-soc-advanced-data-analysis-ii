@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="750" height="580" viewBox="0 0 750 580" font-family="'Noto Sans KR', sans-serif">
+  <defs>
+    <style>
+      text { font-family: 'Noto Sans KR', sans-serif; }
+    </style>
+    <marker id="arrBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+    <marker id="arrRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="750" height="580" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="375" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">OLS = y를 X의 열공간(Column Space)에 정사영</text>
+
+  <!-- The column space plane (parallelogram) -->
+  <!-- Origin at (180, 400) -->
+  <!-- Two basis vectors define the plane -->
+  <polygon points="80,430  350,310  530,200  260,320" fill="#dbeafe" fill-opacity="0.5" stroke="#93c5fd" stroke-width="1.5"/>
+
+  <!-- Column space label -->
+  <text x="290" y="395" text-anchor="middle" font-size="15" fill="#2563eb" font-weight="600">Col(X) : X의 열공간</text>
+  <text x="290" y="415" text-anchor="middle" font-size="13" fill="#60a5fa">(X&#x3B2;가 존재할 수 있는 모든 공간)</text>
+
+  <!-- Origin -->
+  <circle cx="180" cy="380" r="4" fill="#1e293b"/>
+  <text x="168" y="398" text-anchor="end" font-size="13" fill="#1e293b" font-weight="500">O</text>
+
+  <!-- Basis vector x1 (column 1 of X) -->
+  <line x1="180" y1="380" x2="370" y2="310" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrPurple)"/>
+  <text x="385" y="308" text-anchor="start" font-size="15" font-weight="600" fill="#7c3aed">x₁</text>
+
+  <!-- Basis vector x2 (column 2 of X) -->
+  <line x1="180" y1="380" x2="310" y2="270" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrPurple)"/>
+  <text x="320" y="262" text-anchor="start" font-size="15" font-weight="600" fill="#7c3aed">x₂</text>
+
+  <!-- y vector (going up out of the plane) -->
+  <line x1="180" y1="380" x2="430" y2="90" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrRed)"/>
+  <text x="320" y="200" text-anchor="end" font-size="20" font-weight="700" fill="#dc2626">y</text>
+  <text x="442" y="85" text-anchor="start" font-size="13" fill="#dc2626">(n차원 공간의 벡터)</text>
+
+  <!-- y-hat vector (projection onto plane) -->
+  <line x1="180" y1="380" x2="430" y2="245" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrBlue)"/>
+  <text x="340" y="335" text-anchor="end" font-size="18" font-weight="700" fill="#2563eb">&#x177; = X&#x3B2;&#x302;</text>
+  <circle cx="430" cy="245" r="5" fill="#2563eb"/>
+  <text x="442" y="260" text-anchor="start" font-size="13" fill="#2563eb">(열공간 위의 점)</text>
+
+  <!-- Residual vector e (from y-hat to y, perpendicular to plane) -->
+  <line x1="430" y1="245" x2="430" y2="90" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrGreen)"/>
+  <text x="448" y="170" text-anchor="start" font-size="18" font-weight="700" fill="#16a34a">e = y - &#x177;</text>
+
+  <!-- Right angle marker -->
+  <polyline points="418,245 418,260 430,260" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- y point -->
+  <circle cx="430" cy="90" r="5" fill="#dc2626"/>
+
+  <!-- Explanation boxes -->
+  <rect x="30" y="450" width="690" height="120" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <text x="50" y="478" font-size="14" fill="#1e293b" font-weight="700">OLS가 하는 일을 한 문장으로:</text>
+  <text x="50" y="500" font-size="14" fill="#334155">n차원 공간에 있는 y를, X의 열공간(평면)에 수직으로 내려찍는다.</text>
+  <text x="50" y="522" font-size="14" fill="#334155">그 내려찍힌 점이 &#x177; = X&#x3B2;&#x302;이고, 수직 거리가 잔차 e이다.</text>
+  <text x="50" y="544" font-size="14" fill="#334155">
+    <tspan font-weight="700" fill="#16a34a">X&#x2019;e = 0</tspan> ← 잔차가 열공간에 수직이라는 조건 = 정규방정식(Normal Equation)
+  </text>
+  <text x="50" y="562" font-size="14" fill="#334155">이 수직 조건이 성립할 때, &#x177;은 y에 <tspan font-weight="700">가장 가까운</tspan> 열공간 위의 점이다 (= 잔차 제곱합 최소).</text>
+</svg>
