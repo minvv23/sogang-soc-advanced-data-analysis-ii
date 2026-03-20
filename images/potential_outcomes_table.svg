@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <defs>
+    <filter id="cellShadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#00000010"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="320" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="300" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">인과추론의 근본 문제: 반사실은 관측할 수 없다</text>
+
+  <!-- Table header row -->
+  <rect x="30" y="50" width="100" height="36" fill="#e8eaf6" rx="4" stroke="#9fa8da" stroke-width="1"/>
+  <text x="80" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">도로</text>
+
+  <rect x="140" y="50" width="120" height="36" fill="#e3f2fd" rx="4" stroke="#90caf9" stroke-width="1"/>
+  <text x="200" y="67" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">Y(1)</text>
+  <text x="200" y="81" text-anchor="middle" font-size="10" fill="#1565c0">이전 O</text>
+
+  <rect x="270" y="50" width="120" height="36" fill="#e3f2fd" rx="4" stroke="#90caf9" stroke-width="1"/>
+  <text x="330" y="67" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">Y(0)</text>
+  <text x="330" y="81" text-anchor="middle" font-size="10" fill="#1565c0">이전 X</text>
+
+  <rect x="400" y="50" width="170" height="36" fill="#e8eaf6" rx="4" stroke="#9fa8da" stroke-width="1"/>
+  <text x="485" y="67" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">개인효과</text>
+  <text x="485" y="81" text-anchor="middle" font-size="10" fill="#333">τᵢ = Y(1) - Y(0)</text>
+
+  <!-- Row 1: 한강대교 (처치군) -->
+  <rect x="30" y="96" width="100" height="44" fill="#fff" rx="4" stroke="#ddd" stroke-width="1"/>
+  <text x="80" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#333">한강대교</text>
+  <text x="80" y="131" text-anchor="middle" font-size="9" fill="#999">(처치군)</text>
+
+  <!-- Y(1) observed -->
+  <rect x="140" y="96" width="120" height="44" fill="#e3f2fd" rx="4" stroke="#90caf9" stroke-width="1" filter="url(#cellShadow)"/>
+  <text x="200" y="123" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">98,000</text>
+
+  <!-- Y(0) counterfactual -->
+  <rect x="270" y="96" width="120" height="44" fill="#f5f5f5" rx="4" stroke="#bbb" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="330" y="123" text-anchor="middle" font-size="20" font-weight="bold" fill="#bbb">?</text>
+
+  <!-- tau unknown -->
+  <rect x="400" y="96" width="170" height="44" fill="#f5f5f5" rx="4" stroke="#bbb" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="485" y="123" text-anchor="middle" font-size="20" font-weight="bold" fill="#bbb">?</text>
+
+  <!-- Row 2: 동작대교 (처치군) -->
+  <rect x="30" y="150" width="100" height="44" fill="#fff" rx="4" stroke="#ddd" stroke-width="1"/>
+  <text x="80" y="170" text-anchor="middle" font-size="12" font-weight="600" fill="#333">동작대교</text>
+  <text x="80" y="185" text-anchor="middle" font-size="9" fill="#999">(처치군)</text>
+
+  <!-- Y(1) observed -->
+  <rect x="140" y="150" width="120" height="44" fill="#e3f2fd" rx="4" stroke="#90caf9" stroke-width="1" filter="url(#cellShadow)"/>
+  <text x="200" y="177" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">91,000</text>
+
+  <!-- Y(0) counterfactual -->
+  <rect x="270" y="150" width="120" height="44" fill="#f5f5f5" rx="4" stroke="#bbb" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="330" y="177" text-anchor="middle" font-size="20" font-weight="bold" fill="#bbb">?</text>
+
+  <!-- tau unknown -->
+  <rect x="400" y="150" width="170" height="44" fill="#f5f5f5" rx="4" stroke="#bbb" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="485" y="177" text-anchor="middle" font-size="20" font-weight="bold" fill="#bbb">?</text>
+
+  <!-- Row 3: 강변북로 (대조군) -->
+  <rect x="30" y="204" width="100" height="44" fill="#fff" rx="4" stroke="#ddd" stroke-width="1"/>
+  <text x="80" y="224" text-anchor="middle" font-size="12" font-weight="600" fill="#333">강변북로</text>
+  <text x="80" y="239" text-anchor="middle" font-size="9" fill="#999">(대조군)</text>
+
+  <!-- Y(1) counterfactual -->
+  <rect x="140" y="204" width="120" height="44" fill="#f5f5f5" rx="4" stroke="#bbb" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="200" y="231" text-anchor="middle" font-size="20" font-weight="bold" fill="#bbb">?</text>
+
+  <!-- Y(0) observed -->
+  <rect x="270" y="204" width="120" height="44" fill="#e3f2fd" rx="4" stroke="#90caf9" stroke-width="1" filter="url(#cellShadow)"/>
+  <text x="330" y="231" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">52,000</text>
+
+  <!-- tau unknown -->
+  <rect x="400" y="204" width="170" height="44" fill="#f5f5f5" rx="4" stroke="#bbb" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="485" y="231" text-anchor="middle" font-size="20" font-weight="bold" fill="#bbb">?</text>
+
+  <!-- Bottom annotation -->
+  <rect x="60" y="268" width="480" height="36" fill="#fff3e0" rx="6" stroke="#ffcc80" stroke-width="1"/>
+  <text x="300" y="291" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">한 도로에 대해 Y(1)과 Y(0)을 동시에 관측할 수 없다</text>
+
+  <!-- Legend indicators -->
+  <rect x="65" y="260" width="8" height="8" fill="#e3f2fd" stroke="#90caf9" stroke-width="1" rx="1"/>
+  <text x="78" y="268" font-size="9" fill="#666">= 관측값</text>
+  <rect x="130" y="260" width="8" height="8" fill="#f5f5f5" stroke="#bbb" stroke-width="1" stroke-dasharray="2,1" rx="1"/>
+  <text x="143" y="268" font-size="9" fill="#666">= 반사실 (관측 불가)</text>
+</svg>

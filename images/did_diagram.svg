@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 400" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <defs>
+    <marker id="arrowDID" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#c62828"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="400" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="350" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">이중차분법(DID): 용산 이전의 인과효과 추정</text>
+
+  <!-- Axes -->
+  <!-- Y-axis -->
+  <line x1="90" y1="50" x2="90" y2="310" stroke="#999" stroke-width="1.5"/>
+  <text x="30" y="180" text-anchor="middle" font-size="11" fill="#555" transform="rotate(-90, 30, 180)">평균 교통량 (대)</text>
+
+  <!-- X-axis -->
+  <line x1="90" y1="310" x2="620" y2="310" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Y-axis ticks: range 40,000 to 100,000. Map: 100k->60, 40k->300 => y = 300 - (val-40000)/60000*240 -->
+  <!-- 100,000 -> y=60 -->
+  <line x1="85" y1="60" x2="90" y2="60" stroke="#999"/>
+  <text x="80" y="64" text-anchor="end" font-size="10" fill="#666">100,000</text>
+  <!-- 90,000 -> y=100 -->
+  <line x1="85" y1="100" x2="90" y2="100" stroke="#999"/>
+  <text x="80" y="104" text-anchor="end" font-size="10" fill="#666">90,000</text>
+  <!-- 80,000 -> y=140 -->
+  <line x1="85" y1="140" x2="90" y2="140" stroke="#999"/>
+  <text x="80" y="144" text-anchor="end" font-size="10" fill="#666">80,000</text>
+  <!-- 70,000 -> y=180 -->
+  <line x1="85" y1="180" x2="90" y2="180" stroke="#999"/>
+  <text x="80" y="184" text-anchor="end" font-size="10" fill="#666">70,000</text>
+  <!-- 60,000 -> y=220 -->
+  <line x1="85" y1="220" x2="90" y2="220" stroke="#999"/>
+  <text x="80" y="224" text-anchor="end" font-size="10" fill="#666">60,000</text>
+  <!-- 50,000 -> y=260 -->
+  <line x1="85" y1="260" x2="90" y2="260" stroke="#999"/>
+  <text x="80" y="264" text-anchor="end" font-size="10" fill="#666">50,000</text>
+
+  <!-- X-axis labels -->
+  <text x="220" y="335" text-anchor="middle" font-size="12" fill="#555">이전 전</text>
+  <text x="500" y="335" text-anchor="middle" font-size="12" fill="#555">이전 후</text>
+  <text x="355" y="375" text-anchor="middle" font-size="11" fill="#555">시간</text>
+
+  <!-- Treatment vertical line -->
+  <line x1="355" y1="55" x2="355" y2="310" stroke="#999" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="355" y="355" text-anchor="middle" font-size="10" fill="#e65100" font-weight="bold">2022.5.10</text>
+  <text x="355" y="368" text-anchor="middle" font-size="10" fill="#e65100">취임</text>
+
+  <!-- Grid lines (light) -->
+  <line x1="90" y1="100" x2="620" y2="100" stroke="#eee" stroke-width="0.5"/>
+  <line x1="90" y1="140" x2="620" y2="140" stroke="#eee" stroke-width="0.5"/>
+  <line x1="90" y1="180" x2="620" y2="180" stroke="#eee" stroke-width="0.5"/>
+  <line x1="90" y1="220" x2="620" y2="220" stroke="#eee" stroke-width="0.5"/>
+  <line x1="90" y1="260" x2="620" y2="260" stroke="#eee" stroke-width="0.5"/>
+
+  <!-- Treatment group line (solid blue) -->
+  <!-- 85,000 pre -> y = 300-(85000-40000)/60000*240 = 300-180=120 at x=220 -->
+  <!-- 98,000 post -> y = 300-(98000-40000)/60000*240 = 300-232=68 at x=500 -->
+  <line x1="220" y1="120" x2="500" y2="68" stroke="#1565c0" stroke-width="2.5"/>
+  <circle cx="220" cy="120" r="5" fill="#1565c0"/>
+  <circle cx="500" cy="68" r="5" fill="#1565c0"/>
+  <text x="208" y="112" text-anchor="end" font-size="10" font-weight="bold" fill="#1565c0">85,000</text>
+  <text x="515" y="62" font-size="10" font-weight="bold" fill="#1565c0">98,000</text>
+
+  <!-- Control group line (solid gray) -->
+  <!-- 52,000 pre -> y = 300-(52000-40000)/60000*240 = 300-48=252 at x=220 -->
+  <!-- 57,000 post -> y = 300-(57000-40000)/60000*240 = 300-68=232 at x=500 -->
+  <line x1="220" y1="252" x2="500" y2="232" stroke="#888" stroke-width="2.5"/>
+  <circle cx="220" cy="252" r="5" fill="#888"/>
+  <circle cx="500" cy="232" r="5" fill="#888"/>
+  <text x="208" y="258" text-anchor="end" font-size="10" font-weight="bold" fill="#888">52,000</text>
+  <text x="515" y="238" font-size="10" font-weight="bold" fill="#888">57,000</text>
+
+  <!-- Counterfactual dashed line (parallel to control, from treatment pre) -->
+  <!-- Control slope: (232-252)/(500-220) = -20/280. From treatment pre (220,120): -->
+  <!-- At x=500: y = 120 + (-20/280)*280 = 120-20 = 100 => 90,000 -->
+  <line x1="355" y1="110.36" x2="500" y2="100" stroke="#1565c0" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="500" cy="100" r="4" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <text x="515" y="106" font-size="10" fill="#1565c0">90,000</text>
+  <text x="540" y="118" font-size="9" fill="#999">(반사실)</text>
+
+  <!-- DID effect arrow: from 90,000 (y=100) to 98,000 (y=68) at x=565 -->
+  <line x1="575" y1="100" x2="575" y2="70" stroke="#c62828" stroke-width="2" marker-end="url(#arrowDID)"/>
+  <line x1="575" y1="100" x2="575" y2="100" stroke="#c62828" stroke-width="2"/>
+  <!-- Double arrow -->
+  <line x1="570" y1="100" x2="580" y2="100" stroke="#c62828" stroke-width="1.5"/>
+  <line x1="570" y1="68" x2="580" y2="68" stroke="#c62828" stroke-width="1.5"/>
+  <line x1="575" y1="68" x2="575" y2="100" stroke="#c62828" stroke-width="2"/>
+  <!-- Arrow heads -->
+  <polygon points="575,66 571,74 579,74" fill="#c62828"/>
+  <polygon points="575,102 571,94 579,94" fill="#c62828"/>
+
+  <text x="600" y="82" font-size="11" font-weight="bold" fill="#c62828">DID</text>
+  <text x="600" y="96" font-size="11" font-weight="bold" fill="#c62828">= +8,000대</text>
+
+  <!-- Legend -->
+  <rect x="110" y="345" width="260" height="44" fill="#fff" rx="5" stroke="#ddd" stroke-width="1"/>
+  <line x1="120" y1="360" x2="150" y2="360" stroke="#1565c0" stroke-width="2.5"/>
+  <circle cx="135" cy="360" r="3" fill="#1565c0"/>
+  <text x="155" y="364" font-size="10" fill="#333">처치군 (용산구 인접 도로)</text>
+
+  <line x1="120" y1="378" x2="150" y2="378" stroke="#888" stroke-width="2.5"/>
+  <circle cx="135" cy="378" r="3" fill="#888"/>
+  <text x="155" y="382" font-size="10" fill="#333">대조군 (비교 도로)</text>
+
+  <line x1="280" y1="378" x2="310" y2="378" stroke="#1565c0" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="315" y="382" font-size="10" fill="#333">반사실 (처치 없었을 경우)</text>
+</svg>

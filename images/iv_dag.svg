@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <defs>
+    <marker id="ivArrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+    <marker id="ivArrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+    <marker id="ivArrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+  </defs>
+
+  <rect width="600" height="300" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="300" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">도구변수(IV)의 인과 구조</text>
+
+  <!-- U node (top center, unobserved) -->
+  <circle cx="350" cy="75" r="30" fill="#f5f5f5" stroke="#888" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="350" y="72" text-anchor="middle" font-size="14" font-weight="bold" fill="#888">U</text>
+  <text x="350" y="87" text-anchor="middle" font-size="8" fill="#999">관측 불가</text>
+
+  <!-- Z node (far left, instrument) -->
+  <circle cx="100" cy="170" r="30" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.5"/>
+  <text x="100" y="167" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Z</text>
+  <text x="100" y="182" text-anchor="middle" font-size="8" fill="#2e7d32">도구변수</text>
+
+  <!-- X node (center) -->
+  <circle cx="300" cy="170" r="30" fill="#e3f2fd" stroke="#1565c0" stroke-width="2.5"/>
+  <text x="300" y="167" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">X</text>
+  <text x="300" y="182" text-anchor="middle" font-size="8" fill="#1565c0">내생변수</text>
+
+  <!-- Y node (right) -->
+  <circle cx="500" cy="170" r="30" fill="#fce4ec" stroke="#c62828" stroke-width="2.5"/>
+  <text x="500" y="167" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">Y</text>
+  <text x="500" y="182" text-anchor="middle" font-size="8" fill="#c62828">결과변수</text>
+
+  <!-- Z -> X arrow (green) -->
+  <line x1="132" y1="170" x2="268" y2="170" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#ivArrowGreen)"/>
+  <text x="200" y="163" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">관련성</text>
+  <text x="200" y="195" text-anchor="middle" font-size="9" fill="#2e7d32">(1단계)</text>
+
+  <!-- X -> Y arrow (blue) -->
+  <line x1="332" y1="170" x2="468" y2="170" stroke="#1565c0" stroke-width="2.5" marker-end="url(#ivArrowBlue)"/>
+  <text x="400" y="163" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">인과효과 β₁</text>
+
+  <!-- U -> X arrow (gray) -->
+  <line x1="328" y1="95" x2="310" y2="140" stroke="#888" stroke-width="2" marker-end="url(#ivArrowGray)"/>
+
+  <!-- U -> Y arrow (gray) -->
+  <line x1="372" y1="95" x2="490" y2="142" stroke="#888" stroke-width="2" marker-end="url(#ivArrowGray)"/>
+
+  <!-- U arrows label -->
+  <text x="415" y="105" text-anchor="middle" font-size="9" fill="#888">내생성</text>
+
+  <!-- Z -> Y exclusion restriction (dashed, crossed out) -->
+  <line x1="125" y1="150" x2="475" y2="150" stroke="#ccc" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <!-- Big red X to cross this out -->
+  <line x1="280" y1="120" x2="310" y2="145" stroke="#c62828" stroke-width="3"/>
+  <line x1="310" y1="120" x2="280" y2="145" stroke="#c62828" stroke-width="3"/>
+  <text x="295" y="115" text-anchor="middle" font-size="9" font-weight="bold" fill="#c62828">배제 제약</text>
+  <text x="295" y="148" text-anchor="middle" font-size="8" fill="#c62828">직접 영향 없음</text>
+
+  <!-- Bottom condition boxes -->
+  <rect x="60" y="230" width="220" height="50" fill="#e8f5e9" rx="6" stroke="#a5d6a7" stroke-width="1"/>
+  <text x="170" y="252" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">조건 1: 관련성</text>
+  <text x="170" y="270" text-anchor="middle" font-size="11" fill="#2e7d32">Cov(Z, X) ≠ 0</text>
+
+  <rect x="320" y="230" width="220" height="50" fill="#fce4ec" rx="6" stroke="#ef9a9a" stroke-width="1"/>
+  <text x="430" y="252" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">조건 2: 외생성</text>
+  <text x="430" y="270" text-anchor="middle" font-size="11" fill="#c62828">Cov(Z, ε) = 0</text>
+</svg>

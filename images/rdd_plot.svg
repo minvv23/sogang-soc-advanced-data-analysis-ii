@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 380" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <defs>
+    <marker id="rddArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#c62828"/>
+    </marker>
+  </defs>
+
+  <rect width="650" height="380" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="325" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">회귀불연속설계(RDD): 커트라인에서의 인과효과</text>
+
+  <!-- Bandwidth shaded region (around cutoff 50%, mapped to x=325) -->
+  <!-- Bandwidth: 45% to 55% => x=235 to x=415 -->
+  <rect x="253" y="50" width="145" height="265" fill="#f5f5f5" rx="0" opacity="0.7"/>
+  <text x="325" y="330" text-anchor="middle" font-size="9" fill="#999">대역폭 (bandwidth)</text>
+
+  <!-- Axes -->
+  <!-- Y-axis -->
+  <line x1="80" y1="45" x2="80" y2="310" stroke="#999" stroke-width="1.5"/>
+  <text x="28" y="178" text-anchor="middle" font-size="10" fill="#555" transform="rotate(-90, 28, 178)">결과 변수 (다음 선거 득표율)</text>
+
+  <!-- X-axis -->
+  <line x1="80" y1="310" x2="610" y2="310" stroke="#999" stroke-width="1.5"/>
+  <text x="345" y="365" text-anchor="middle" font-size="11" fill="#555">Running Variable (득표율 %)</text>
+
+  <!-- X-axis ticks: 40% to 60%, map: 40%->x=145, 60%->x=505, each 1% = 18px -->
+  <!-- Actually let me use: 40->x=100, 60->x=560, each 1%=23px, 50%->x=330 -->
+  <line x1="100" y1="310" x2="100" y2="315" stroke="#999"/>
+  <text x="100" y="328" text-anchor="middle" font-size="10" fill="#666">40</text>
+  <line x1="215" y1="310" x2="215" y2="315" stroke="#999"/>
+  <text x="215" y="328" text-anchor="middle" font-size="10" fill="#666">45</text>
+  <line x1="330" y1="310" x2="330" y2="315" stroke="#999"/>
+  <text x="330" y="328" text-anchor="middle" font-size="10" fill="#666">50</text>
+  <line x1="445" y1="310" x2="445" y2="315" stroke="#999"/>
+  <text x="445" y="328" text-anchor="middle" font-size="10" fill="#666">55</text>
+  <line x1="560" y1="310" x2="560" y2="315" stroke="#999"/>
+  <text x="560" y="328" text-anchor="middle" font-size="10" fill="#666">60</text>
+
+  <!-- Y-axis ticks -->
+  <line x1="75" y1="280" x2="80" y2="280" stroke="#999"/>
+  <text x="70" y="284" text-anchor="end" font-size="9" fill="#666">30</text>
+  <line x1="75" y1="230" x2="80" y2="230" stroke="#999"/>
+  <text x="70" y="234" text-anchor="end" font-size="9" fill="#666">40</text>
+  <line x1="75" y1="180" x2="80" y2="180" stroke="#999"/>
+  <text x="70" y="184" text-anchor="end" font-size="9" fill="#666">50</text>
+  <line x1="75" y1="130" x2="80" y2="130" stroke="#999"/>
+  <text x="70" y="134" text-anchor="end" font-size="9" fill="#666">60</text>
+  <line x1="75" y1="80" x2="80" y2="80" stroke="#999"/>
+  <text x="70" y="84" text-anchor="end" font-size="9" fill="#666">70</text>
+
+  <!-- Cutoff vertical dashed line at x=330 -->
+  <line x1="330" y1="45" x2="330" y2="310" stroke="#e65100" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="330" y="345" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">커트라인 (c = 50%)</text>
+
+  <!-- Scatter dots: LEFT side (losers, gray-blue) -->
+  <!-- Y range roughly 30-48, increasing slightly. Map Y: 30->y=280, 70->y=80 => y=280-(val-30)*5 -->
+  <circle cx="110" cy="272" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="125" cy="265" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="138" cy="258" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="142" cy="270" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="155" cy="255" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="168" cy="248" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="175" cy="260" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="190" cy="245" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="200" cy="250" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="210" cy="238" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="218" cy="248" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="230" cy="235" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="240" cy="242" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="248" cy="230" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="260" cy="225" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="270" cy="235" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="280" cy="222" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="290" cy="228" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="300" cy="218" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="310" cy="222" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="318" cy="212" r="3.5" fill="#90a4ae" opacity="0.6"/>
+  <circle cx="322" cy="220" r="3.5" fill="#90a4ae" opacity="0.6"/>
+
+  <!-- Scatter dots: RIGHT side (winners, blue) -->
+  <circle cx="340" cy="165" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="348" cy="172" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="358" cy="158" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="368" cy="168" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="378" cy="155" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="388" cy="162" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="398" cy="148" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="410" cy="155" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="420" cy="142" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="430" cy="150" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="440" cy="138" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="450" cy="145" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="460" cy="132" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="472" cy="140" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="482" cy="128" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="495" cy="135" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="505" cy="122" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="518" cy="130" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="530" cy="118" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="542" cy="125" r="3.5" fill="#4A90D9" opacity="0.7"/>
+  <circle cx="552" cy="115" r="3.5" fill="#4A90D9" opacity="0.7"/>
+
+  <!-- Fitted line LEFT: local linear regression -->
+  <!-- From roughly (100, 275) to (325, 215) -->
+  <line x1="100" y1="275" x2="325" y2="215" stroke="#546e7a" stroke-width="2.5"/>
+
+  <!-- Fitted line RIGHT: local linear regression (higher) -->
+  <!-- From roughly (335, 170) to (555, 118) -->
+  <line x1="335" y1="170" x2="555" y2="118" stroke="#1565c0" stroke-width="2.5"/>
+
+  <!-- The discontinuity gap at x=330 -->
+  <!-- Left fitted at x=330: ~213 (extrapolated slightly) -->
+  <!-- Right fitted at x=335: ~170 -->
+  <!-- Use the cutoff point: left endpoint y=215, right endpoint y=170 -->
+
+  <!-- Double arrow for tau_RDD -->
+  <line x1="590" y1="215" x2="590" y2="170" stroke="#c62828" stroke-width="2"/>
+  <polygon points="590,168 586,176 594,176" fill="#c62828"/>
+  <polygon points="590,217 586,209 594,209" fill="#c62828"/>
+
+  <!-- Horizontal guide lines at the gap -->
+  <line x1="325" y1="215" x2="590" y2="215" stroke="#c62828" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <line x1="335" y1="170" x2="590" y2="170" stroke="#c62828" stroke-width="0.8" stroke-dasharray="3,3"/>
+
+  <text x="605" y="188" font-size="11" font-weight="bold" fill="#c62828">τ_RDD</text>
+  <text x="605" y="202" font-size="9" fill="#c62828">(인과효과)</text>
+
+  <!-- Side labels -->
+  <rect x="130" y="55" width="55" height="22" fill="#eceff1" rx="4"/>
+  <text x="157" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="#546e7a">낙선</text>
+
+  <rect x="420" y="55" width="55" height="22" fill="#e3f2fd" rx="4"/>
+  <text x="447" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">당선</text>
+</svg>
