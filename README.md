@@ -64,15 +64,15 @@
 |------|------|
 | 3월 20일 | 서베이 문항 설계, 실험 디자인, 회귀분석의 기본 개념 |
 | 3월 27일 | 회귀모형을 활용한 서베이 데이터 분석에서의 DO와 DO NOT 리스트 |
-| 4월 3일 | 실습 — 십대 청소년 정치성향 설문 데이터로 회귀분석 ([보고서](https://minvv23.notion.site/10-2203236d0cb1802e8ee0c4d10345e8fc?pvs=24) / [기사](https://www.hankookilbo.com/news/article/A2025082906560003629)) |
+| 4월 3일 | 부활절 휴가 — 수업 없음 |
 
 ### 행정 데이터 분석
 | 날짜 | 주제 |
 |------|------|
-| 4월 10일 | 정보공개청구의 중요성, 시계열·패널 데이터 분석, 인과추론의 DO와 DO NOT 리스트 |
+| 4월 10일 | 정보공개청구의 중요성, 시계열·패널 데이터 분석, 인과추론의 DO와 DO NOT 리스트 + 실습 — 십대 청소년 정치성향 설문 데이터로 회귀분석 ([보고서](https://minvv23.notion.site/10-2203236d0cb1802e8ee0c4d10345e8fc?pvs=24) / [기사](https://www.hankookilbo.com/news/article/A2025082906560003629)) |
 | 4월 17일 | 인과추론의 주요 기법들 — 왜 RCT와 DID를 제외한 나머지 방법들은 그리 믿음직스럽지 못한걸까? |
 | 4월 24일 | (중간고사 기간 — 수업 없음) |
-| 5월 1일 | 실습 — 교통사고·교통체증 데이터로 패널 데이터 분석 ([기사](https://news.sbs.co.kr/news/endPage.do?news_id=N1007167655&plink=ORI&cooper=NATE)) |
+| 5월 1일 | 노동절 — 수업 없음 |
 
 ### 중간 발표
 | 날짜 | 주제 |
@@ -82,8 +82,8 @@
 ### 텍스트 데이터 분석
 | 날짜 | 주제 |
 |------|------|
-| 5월 15일 | Before AI 텍스트 분석 — 임베딩(embedding), 분류(classification), 군집화(clustering) |
-| 5월 22일 | After AI 텍스트 분석 — 대규모 데이터에서 AI를 활용한 "딸깍" CAN / CAN NOT 리스트 |
+| 5월 15일 | 실습 — 교통사고·교통체증 데이터로 패널 데이터 분석 ([기사](https://news.sbs.co.kr/news/endPage.do?news_id=N1007167655&plink=ORI&cooper=NATE)) |
+| 5월 22일 | Before AI 텍스트 분석 — 임베딩(embedding), 분류(classification), 군집화(clustering) + After AI 텍스트 분석 — 대규모 데이터에서 AI를 활용한 "딸깍" CAN / CAN NOT 리스트 |
 | 5월 29일 | 실습 — 뉴스·커뮤니티 댓글 데이터로 텍스트 분석 ([보고서](https://minvv23.notion.site/2021-2025-2853236d0cb1804b8af1c6ef5af0bc5c?pvs=24) / [방송 영상](https://youtu.be/hjm7mfJd_fg)) |
 
 ### Conclusion
