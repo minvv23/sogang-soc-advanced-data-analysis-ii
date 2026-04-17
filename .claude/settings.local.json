@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cp:*)",
+      "WebFetch(domain:www.hankookilbo.com)",
+      "WebFetch(domain:news.sbs.co.kr)",
+      "WebFetch(domain:youtu.be)",
+      "Bash(python3:*)",
+      "WebSearch",
+      "Bash(gh api:*)",
+      "Bash(gh auth:*)",
+      "WebFetch(domain:minvv23.github.io)",
+      "Bash(OUTFILE=\"/mnt/c/Users/Hunnae/Dropbox/PC/Desktop/헌내의 활동/프로젝트 정리/2026 봄학기 고급데이터분석 II/20260320-presentation.html\")",
+      "Read(//mnt/c/Users/Hunnae/Dropbox/PC/Desktop/헌내의 활동/프로젝트 정리/2026 봄학기 고급데이터분석 II/**)",
+      "Bash(mv 20260327.md 20260410.md)",
+      "Bash(mv 20260327-presentation.html 20260410-presentation.html)",
+      "Bash(curl:*)",
+      "Bash(wc:*)",
+      "mcp__claude_ai_Notion__notion-search",
+      "mcp__claude_ai_Notion__notion-fetch",
+      "mcp__claude_ai_Notion__notion-create-pages"
+    ]
+  }
+}
