@@ -19,7 +19,10 @@
       "Bash(wc:*)",
       "mcp__claude_ai_Notion__notion-search",
       "mcp__claude_ai_Notion__notion-fetch",
-      "mcp__claude_ai_Notion__notion-create-pages"
+      "mcp__claude_ai_Notion__notion-create-pages",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
