@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" font-family="'Noto Sans KR', -apple-system, 'Segoe UI', sans-serif" font-size="13">
+  <!-- Background -->
+  <rect width="720" height="460" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="360" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1a2e">Event Study Plot 예시 — 처치 시점 전후 DID 계수 추정</text>
+  <text x="360" y="48" text-anchor="middle" font-size="12" fill="#6c757d">가상 데이터. 점선 막대 = 95% 신뢰구간</text>
+
+  <!-- Plot area -->
+  <!-- x-axis from k=-5 to k=+5, mapped 90..650 -->
+  <!-- y-axis from -2 to +6, mapped 410..90 -->
+  <!-- y=0 line at y = 410 - (0-(-2))/(6-(-2)) * (410-90) = 410 - 0.25*320 = 410-80 = 330 -->
+
+  <!-- Horizontal grid lines -->
+  <g stroke="#e9ecef" stroke-width="1">
+    <line x1="90" y1="90" x2="650" y2="90"/>
+    <line x1="90" y1="170" x2="650" y2="170"/>
+    <line x1="90" y1="250" x2="650" y2="250"/>
+    <line x1="90" y1="330" x2="650" y2="330"/>
+    <line x1="90" y1="410" x2="650" y2="410"/>
+  </g>
+
+  <!-- Treatment timing vertical line (k=0) between k=-1 and k=0 -->
+  <!-- k positions: each unit = (650-90)/10 = 56 -->
+  <!-- k=-5 -> x=90, k=0 -> x=90+5*56=370, k=5 -> x=650 -->
+  <!-- treatment line at boundary k=-0.5 -> x = 90 + 4.5*56 = 90+252 = 342 -->
+  <line x1="342" y1="80" x2="342" y2="420" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="346" y="78" font-size="11" fill="#c0392b" font-weight="600">처치 시점 t*</text>
+
+  <!-- Zero line (emphasized) -->
+  <line x1="90" y1="330" x2="650" y2="330" stroke="#1a1a2e" stroke-width="1.4"/>
+
+  <!-- Y-axis -->
+  <line x1="90" y1="90" x2="90" y2="410" stroke="#1a1a2e" stroke-width="1.4"/>
+  <!-- X-axis bottom (drawn at y=410) -->
+  <line x1="90" y1="410" x2="650" y2="410" stroke="#1a1a2e" stroke-width="1.4"/>
+
+  <!-- Y-axis ticks and labels (γ̂_k) -->
+  <g text-anchor="end" fill="#1a1a2e">
+    <text x="83" y="94">6</text>
+    <text x="83" y="174">4</text>
+    <text x="83" y="254">2</text>
+    <text x="83" y="334">0</text>
+    <text x="83" y="414">-2</text>
+  </g>
+  <g stroke="#1a1a2e" stroke-width="1.2">
+    <line x1="86" y1="90" x2="90" y2="90"/>
+    <line x1="86" y1="170" x2="90" y2="170"/>
+    <line x1="86" y1="250" x2="90" y2="250"/>
+    <line x1="86" y1="330" x2="90" y2="330"/>
+    <line x1="86" y1="410" x2="90" y2="410"/>
+  </g>
+
+  <!-- X-axis ticks and labels (k) -->
+  <!-- positions k=-5..5 at x = 90 + (k+5)*56 -->
+  <g text-anchor="middle" fill="#1a1a2e">
+    <text x="90" y="430">-5</text>
+    <text x="146" y="430">-4</text>
+    <text x="202" y="430">-3</text>
+    <text x="258" y="430">-2</text>
+    <text x="314" y="430" font-weight="700" fill="#0055aa">-1</text>
+    <text x="370" y="430">0</text>
+    <text x="426" y="430">1</text>
+    <text x="482" y="430">2</text>
+    <text x="538" y="430">3</text>
+    <text x="594" y="430">4</text>
+    <text x="650" y="430">5</text>
+  </g>
+  <g stroke="#1a1a2e" stroke-width="1.2">
+    <line x1="90" y1="410" x2="90" y2="414"/>
+    <line x1="146" y1="410" x2="146" y2="414"/>
+    <line x1="202" y1="410" x2="202" y2="414"/>
+    <line x1="258" y1="410" x2="258" y2="414"/>
+    <line x1="314" y1="410" x2="314" y2="414"/>
+    <line x1="370" y1="410" x2="370" y2="414"/>
+    <line x1="426" y1="410" x2="426" y2="414"/>
+    <line x1="482" y1="410" x2="482" y2="414"/>
+    <line x1="538" y1="410" x2="538" y2="414"/>
+    <line x1="594" y1="410" x2="594" y2="414"/>
+    <line x1="650" y1="410" x2="650" y2="414"/>
+  </g>
+
+  <!-- Axis labels -->
+  <text x="370" y="452" text-anchor="middle" font-size="13" fill="#1a1a2e" font-weight="600">처치 시점으로부터의 상대 기간 k (= t - t*)</text>
+  <text x="30" y="250" text-anchor="middle" font-size="13" fill="#1a1a2e" font-weight="600" transform="rotate(-90 30 250)">추정 계수 γ̂_k</text>
+
+  <!-- Y values: γ̂_k for k=-5..5 -->
+  <!-- pre-treatment (k=-5..-2): near zero with noise -->
+  <!-- k=-1: reference (= 0 by construction) -->
+  <!-- post-treatment (k=0..5): positive and growing -->
+  <!-- y = 330 - γ * 40 (since 2 units = 80 px) -->
+  <!-- γ̂ values: -0.3, 0.2, -0.1, 0.4, 0 (ref), 1.5, 2.2, 2.8, 3.2, 3.4, 3.5 -->
+  <!-- CIs (half-width): 0.6, 0.6, 0.6, 0.6, 0, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2 -->
+
+  <!-- Confidence interval bars (vertical) -->
+  <g stroke="#6c757d" stroke-width="1.5">
+    <!-- k=-5: γ=-0.3, ci=0.6 -> top=γ+ci=0.3 (y=318), bottom=-0.9 (y=366) -->
+    <line x1="90" y1="318" x2="90" y2="366"/>
+    <line x1="85" y1="318" x2="95" y2="318"/>
+    <line x1="85" y1="366" x2="95" y2="366"/>
+    <!-- k=-4: γ=0.2, ci=0.6 -> top=0.8(y=298), bot=-0.4(y=346) -->
+    <line x1="146" y1="298" x2="146" y2="346"/>
+    <line x1="141" y1="298" x2="151" y2="298"/>
+    <line x1="141" y1="346" x2="151" y2="346"/>
+    <!-- k=-3: γ=-0.1, ci=0.6 -> top=0.5(y=310), bot=-0.7(y=358) -->
+    <line x1="202" y1="310" x2="202" y2="358"/>
+    <line x1="197" y1="310" x2="207" y2="310"/>
+    <line x1="197" y1="358" x2="207" y2="358"/>
+    <!-- k=-2: γ=0.4, ci=0.6 -> top=1.0(y=290), bot=-0.2(y=338) -->
+    <line x1="258" y1="290" x2="258" y2="338"/>
+    <line x1="253" y1="290" x2="263" y2="290"/>
+    <line x1="253" y1="338" x2="263" y2="338"/>
+    <!-- k=-1: ref, no CI -->
+  </g>
+  <g stroke="#0055aa" stroke-width="1.6">
+    <!-- k=0: γ=1.5, ci=0.7 -> top=2.2(y=242), bot=0.8(y=298) -->
+    <line x1="370" y1="242" x2="370" y2="298"/>
+    <line x1="365" y1="242" x2="375" y2="242"/>
+    <line x1="365" y1="298" x2="375" y2="298"/>
+    <!-- k=1: γ=2.2, ci=0.8 -> top=3.0(y=210), bot=1.4(y=274) -->
+    <line x1="426" y1="210" x2="426" y2="274"/>
+    <line x1="421" y1="210" x2="431" y2="210"/>
+    <line x1="421" y1="274" x2="431" y2="274"/>
+    <!-- k=2: γ=2.8, ci=0.9 -> top=3.7(y=182), bot=1.9(y=254) -->
+    <line x1="482" y1="182" x2="482" y2="254"/>
+    <line x1="477" y1="182" x2="487" y2="182"/>
+    <line x1="477" y1="254" x2="487" y2="254"/>
+    <!-- k=3: γ=3.2, ci=1.0 -> top=4.2(y=162), bot=2.2(y=242) -->
+    <line x1="538" y1="162" x2="538" y2="242"/>
+    <line x1="533" y1="162" x2="543" y2="162"/>
+    <line x1="533" y1="242" x2="543" y2="242"/>
+    <!-- k=4: γ=3.4, ci=1.1 -> top=4.5(y=150), bot=2.3(y=238) -->
+    <line x1="594" y1="150" x2="594" y2="238"/>
+    <line x1="589" y1="150" x2="599" y2="150"/>
+    <line x1="589" y1="238" x2="599" y2="238"/>
+    <!-- k=5: γ=3.5, ci=1.2 -> top=4.7(y=142), bot=2.3(y=238) -->
+    <line x1="650" y1="142" x2="650" y2="238"/>
+    <line x1="645" y1="142" x2="655" y2="142"/>
+    <line x1="645" y1="238" x2="655" y2="238"/>
+  </g>
+
+  <!-- Point estimates (circles) -->
+  <!-- Pre-treatment: gray -->
+  <g fill="#6c757d" stroke="#1a1a2e" stroke-width="1">
+    <circle cx="90" cy="342" r="4.5"/>   <!-- γ=-0.3 -->
+    <circle cx="146" cy="322" r="4.5"/>  <!-- γ=0.2 -->
+    <circle cx="202" cy="334" r="4.5"/>  <!-- γ=-0.1 -->
+    <circle cx="258" cy="314" r="4.5"/>  <!-- γ=0.4 -->
+  </g>
+  <!-- k=-1 reference point: hollow with cross marker -->
+  <circle cx="314" cy="330" r="6" fill="#ffffff" stroke="#0055aa" stroke-width="2"/>
+  <text x="314" y="334" text-anchor="middle" font-size="11" font-weight="700" fill="#0055aa">×</text>
+  <!-- Post-treatment: accent -->
+  <g fill="#0055aa" stroke="#1a1a2e" stroke-width="1">
+    <circle cx="370" cy="270" r="4.5"/>  <!-- γ=1.5 -->
+    <circle cx="426" cy="242" r="4.5"/>  <!-- γ=2.2 -->
+    <circle cx="482" cy="218" r="4.5"/>  <!-- γ=2.8 -->
+    <circle cx="538" cy="202" r="4.5"/>  <!-- γ=3.2 -->
+    <circle cx="594" cy="194" r="4.5"/>  <!-- γ=3.4 -->
+    <circle cx="650" cy="190" r="4.5"/>  <!-- γ=3.5 -->
+  </g>
+
+  <!-- Annotations -->
+  <!-- Pre-treatment annotation -->
+  <rect x="100" y="100" width="225" height="50" fill="#f7f8fa" stroke="#adb5bd" stroke-width="1" rx="4"/>
+  <text x="212" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a2e">처치 전 (k &lt; 0)</text>
+  <text x="212" y="134" text-anchor="middle" font-size="11" fill="#1a1a2e">γ̂_k ≈ 0, 신뢰구간이 0 포함</text>
+  <text x="212" y="148" text-anchor="middle" font-size="11" fill="#1a1a2e">→ 사전 추세 평행 ✓</text>
+
+  <!-- Post-treatment annotation -->
+  <rect x="430" y="100" width="215" height="50" fill="#e8f0fe" stroke="#0055aa" stroke-width="1" rx="4"/>
+  <text x="537" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#0055aa">처치 후 (k ≥ 0)</text>
+  <text x="537" y="134" text-anchor="middle" font-size="11" fill="#1a1a2e">γ̂_k &gt; 0, 0에서 유의하게 이탈</text>
+  <text x="537" y="148" text-anchor="middle" font-size="11" fill="#1a1a2e">→ 처치 효과 발생 + 증가 패턴</text>
+
+  <!-- Reference annotation -->
+  <text x="314" y="362" text-anchor="middle" font-size="10" fill="#0055aa" font-weight="600">기준 기간</text>
+  <text x="314" y="376" text-anchor="middle" font-size="10" fill="#0055aa">(γ_-1 ≡ 0)</text>
+</svg>
