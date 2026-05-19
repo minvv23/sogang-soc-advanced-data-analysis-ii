@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="880" height="500" fill="#fafafa" rx="8"/>
+
+  <text x="440" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a2e">텍스트 네트워크 분석: 공출현 그래프의 함정</text>
+
+  <!-- Left: Network mockup -->
+  <rect x="30" y="60" width="420" height="420" fill="#ffffff" stroke="#e9ecef" rx="8"/>
+  <text x="240" y="84" text-anchor="middle" font-size="13" fill="#6c757d">예: 단어 공출현(co-occurrence) 그래프</text>
+
+  <!-- Edges -->
+  <g stroke="#adb5bd" stroke-width="1.5" fill="none">
+    <line x1="240" y1="180" x2="130" y2="240"/>
+    <line x1="240" y1="180" x2="340" y2="230"/>
+    <line x1="240" y1="180" x2="180" y2="320"/>
+    <line x1="240" y1="180" x2="300" y2="340"/>
+    <line x1="130" y1="240" x2="180" y2="320"/>
+    <line x1="340" y1="230" x2="300" y2="340"/>
+    <line x1="240" y1="180" x2="380" y2="380"/>
+    <line x1="130" y1="240" x2="100" y2="370"/>
+    <line x1="300" y1="340" x2="380" y2="380"/>
+    <line x1="180" y1="320" x2="100" y2="370"/>
+    <line x1="180" y1="320" x2="300" y2="340"/>
+  </g>
+
+  <!-- Nodes -->
+  <circle cx="240" cy="180" r="36" fill="#0055aa"/>
+  <text x="240" y="186" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">대통령</text>
+
+  <circle cx="130" cy="240" r="28" fill="#1565c0"/>
+  <text x="130" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">정부</text>
+
+  <circle cx="340" cy="230" r="28" fill="#1565c0"/>
+  <text x="340" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">국회</text>
+
+  <circle cx="180" cy="320" r="24" fill="#4A90D9"/>
+  <text x="180" y="324" text-anchor="middle" font-size="11" fill="#ffffff">정책</text>
+
+  <circle cx="300" cy="340" r="24" fill="#4A90D9"/>
+  <text x="300" y="344" text-anchor="middle" font-size="11" fill="#ffffff">국민</text>
+
+  <circle cx="100" cy="370" r="20" fill="#90caf9"/>
+  <text x="100" y="374" text-anchor="middle" font-size="10" fill="#1a1a2e">진짜</text>
+
+  <circle cx="380" cy="380" r="20" fill="#90caf9"/>
+  <text x="380" y="384" text-anchor="middle" font-size="10" fill="#1a1a2e">사람</text>
+
+  <text x="240" y="460" text-anchor="middle" font-size="11" fill="#6c757d">노드 크기 = 빈도, 엣지 = 같은 문서에 함께 등장</text>
+
+  <!-- Right: Critique -->
+  <rect x="475" y="60" width="375" height="420" fill="#ffffff" stroke="#e9ecef" rx="8"/>
+  <text x="662" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#c62828">왜 워드클라우드 + α 에 불과한가</text>
+
+  <rect x="490" y="100" width="345" height="64" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="500" y="120" font-size="13" font-weight="600" fill="#c62828">1. "공출현" 그 자체는 의미가 아니다</text>
+  <text x="500" y="140" font-size="11" fill="#1a1a2e">A, B가 같은 댓글에 등장 = 정말 의미적 연결?</text>
+  <text x="500" y="156" font-size="11" fill="#1a1a2e">맥락·인과·관계 방향성 모두 사라짐</text>
+
+  <rect x="490" y="176" width="345" height="64" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="500" y="196" font-size="13" font-weight="600" fill="#c62828">2. 결국 빈도의 시각화 변형</text>
+  <text x="500" y="216" font-size="11" fill="#1a1a2e">노드 크기 = 단어 빈도 (= 워드클라우드)</text>
+  <text x="500" y="232" font-size="11" fill="#1a1a2e">엣지 = 공출현 빈도 (= 빈도의 2차 함수)</text>
+
+  <rect x="490" y="252" width="345" height="64" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="500" y="272" font-size="13" font-weight="600" fill="#c62828">3. 임의적 컷오프에 결과가 휘둘림</text>
+  <text x="500" y="292" font-size="11" fill="#1a1a2e">상위 100개? 200개? 컷오프 바꾸면 그림이 변함</text>
+  <text x="500" y="308" font-size="11" fill="#1a1a2e">"중심성(centrality)" 측정도 컷오프 함수</text>
+
+  <rect x="490" y="328" width="345" height="64" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="500" y="348" font-size="13" font-weight="600" fill="#c62828">4. 단어를 노드로 잡는 발상 자체의 한계</text>
+  <text x="500" y="368" font-size="11" fill="#1a1a2e">"사과(과일)"와 "사과(사죄)"가 한 노드</text>
+  <text x="500" y="384" font-size="11" fill="#1a1a2e">→ 임베딩이 해결한 문제를 그대로 안고 있음</text>
+
+  <rect x="490" y="404" width="345" height="58" fill="#fff3e0" stroke="#e65100" rx="6"/>
+  <text x="662" y="424" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">결론: "예쁜 그림"이지 분석이 아니다</text>
+  <text x="662" y="444" text-anchor="middle" font-size="11" fill="#1a1a2e">사회연결망분석(SNA)의 단어 버전 흉내</text>
+  <text x="662" y="458" text-anchor="middle" font-size="11" fill="#1a1a2e">SNA가 사람-사람 관계에서 갖는 의미를 단어는 갖지 않음</text>
+</svg>

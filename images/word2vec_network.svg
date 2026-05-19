@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="880" height="520" fill="#fafafa" rx="8"/>
+
+  <text x="440" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a2e">Word2Vec (Skip-gram): 신경망을 표현 학습에 써먹기</text>
+  <text x="440" y="54" text-anchor="middle" font-size="12" fill="#6c757d">"진짜 목표는 출력 예측이 아니라 가운데 은닉층 가중치 행렬"</text>
+
+  <defs>
+    <marker id="arrow-w2v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6c757d"/>
+    </marker>
+  </defs>
+
+  <!-- Layer labels -->
+  <text x="120" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">입력층</text>
+  <text x="120" y="118" text-anchor="middle" font-size="11" fill="#6c757d">중심 단어 (one-hot)</text>
+
+  <text x="370" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">은닉층</text>
+  <text x="370" y="118" text-anchor="middle" font-size="11" fill="#6c757d">300차원 dense 벡터</text>
+  <text x="370" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#c62828">= 임베딩 벡터</text>
+
+  <text x="620" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">출력층</text>
+  <text x="620" y="118" text-anchor="middle" font-size="11" fill="#6c757d">주변 단어 확률</text>
+
+  <!-- Input layer (one-hot) -->
+  <g>
+    <rect x="100" y="150" width="40" height="20" fill="#e9ecef" stroke="#adb5bd"/><text x="120" y="165" text-anchor="middle" font-size="11">0</text>
+    <rect x="100" y="170" width="40" height="20" fill="#e9ecef" stroke="#adb5bd"/><text x="120" y="185" text-anchor="middle" font-size="11">0</text>
+    <rect x="100" y="190" width="40" height="20" fill="#0055aa" stroke="#0055aa"/><text x="120" y="205" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="700">1</text>
+    <rect x="100" y="210" width="40" height="20" fill="#e9ecef" stroke="#adb5bd"/><text x="120" y="225" text-anchor="middle" font-size="11">0</text>
+    <rect x="100" y="230" width="40" height="20" fill="#e9ecef" stroke="#adb5bd"/><text x="120" y="245" text-anchor="middle" font-size="11">0</text>
+    <text x="120" y="270" text-anchor="middle" font-size="10" fill="#6c757d">···</text>
+    <rect x="100" y="280" width="40" height="20" fill="#e9ecef" stroke="#adb5bd"/><text x="120" y="295" text-anchor="middle" font-size="11">0</text>
+    <text x="120" y="320" text-anchor="middle" font-size="11" fill="#1a1a2e" font-weight="700">"민주주의"</text>
+    <text x="120" y="338" text-anchor="middle" font-size="10" fill="#6c757d">어휘 5만개 중 한 자리</text>
+  </g>
+
+  <!-- W1 matrix annotation -->
+  <text x="245" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#c62828">W₁</text>
+  <text x="245" y="186" text-anchor="middle" font-size="10" fill="#6c757d">5만 × 300</text>
+
+  <!-- Hidden layer (dense vector) -->
+  <g>
+    <rect x="335" y="160" width="70" height="22" fill="#fff3e0" stroke="#e65100"/>
+    <text x="370" y="176" text-anchor="middle" font-size="11" fill="#1a1a2e">0.42</text>
+    <rect x="335" y="182" width="70" height="22" fill="#fff3e0" stroke="#e65100"/>
+    <text x="370" y="198" text-anchor="middle" font-size="11" fill="#1a1a2e">-0.18</text>
+    <rect x="335" y="204" width="70" height="22" fill="#fff3e0" stroke="#e65100"/>
+    <text x="370" y="220" text-anchor="middle" font-size="11" fill="#1a1a2e">0.73</text>
+    <rect x="335" y="226" width="70" height="22" fill="#fff3e0" stroke="#e65100"/>
+    <text x="370" y="242" text-anchor="middle" font-size="11" fill="#1a1a2e">0.05</text>
+    <text x="370" y="266" text-anchor="middle" font-size="10" fill="#6c757d">···</text>
+    <rect x="335" y="278" width="70" height="22" fill="#fff3e0" stroke="#e65100"/>
+    <text x="370" y="294" text-anchor="middle" font-size="11" fill="#1a1a2e">-0.31</text>
+    <text x="370" y="320" text-anchor="middle" font-size="11" font-weight="700" fill="#e65100">"민주주의"의 임베딩</text>
+    <text x="370" y="338" text-anchor="middle" font-size="10" fill="#6c757d">300차원 dense</text>
+  </g>
+
+  <!-- W2 matrix annotation -->
+  <text x="495" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#c62828">W₂</text>
+  <text x="495" y="186" text-anchor="middle" font-size="10" fill="#6c757d">300 × 5만</text>
+
+  <!-- Output layer -->
+  <g>
+    <rect x="585" y="150" width="80" height="20" fill="#e8f5e9" stroke="#2e7d32"/><text x="625" y="165" text-anchor="middle" font-size="10">선거: 0.08</text>
+    <rect x="585" y="170" width="80" height="20" fill="#e8f5e9" stroke="#2e7d32"/><text x="625" y="185" text-anchor="middle" font-size="10">정치: 0.06</text>
+    <rect x="585" y="190" width="80" height="20" fill="#e8f5e9" stroke="#2e7d32"/><text x="625" y="205" text-anchor="middle" font-size="10">시민: 0.05</text>
+    <rect x="585" y="210" width="80" height="20" fill="#e8f5e9" stroke="#2e7d32"/><text x="625" y="225" text-anchor="middle" font-size="10">참여: 0.04</text>
+    <rect x="585" y="230" width="80" height="20" fill="#fafafa" stroke="#adb5bd"/><text x="625" y="245" text-anchor="middle" font-size="10">사과: 0.0001</text>
+    <text x="625" y="270" text-anchor="middle" font-size="10" fill="#6c757d">···</text>
+    <rect x="585" y="280" width="80" height="20" fill="#fafafa" stroke="#adb5bd"/><text x="625" y="295" text-anchor="middle" font-size="10">비행기: 0.00003</text>
+    <text x="625" y="320" text-anchor="middle" font-size="11" fill="#1a1a2e">주변 단어 예측 확률</text>
+    <text x="625" y="338" text-anchor="middle" font-size="10" fill="#6c757d">softmax</text>
+  </g>
+
+  <!-- Arrows -->
+  <line x1="142" y1="220" x2="330" y2="220" stroke="#6c757d" stroke-width="1" marker-end="url(#arrow-w2v)"/>
+  <line x1="408" y1="220" x2="582" y2="220" stroke="#6c757d" stroke-width="1" marker-end="url(#arrow-w2v)"/>
+
+  <!-- Bottom: key insight -->
+  <rect x="30" y="370" width="820" height="135" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5" rx="8"/>
+  <text x="440" y="394" text-anchor="middle" font-size="14" font-weight="700" fill="#0055aa">신경망을 "표현 학습(representation learning)"에 써먹는 트릭</text>
+
+  <text x="50" y="420" font-size="12" fill="#1a1a2e">• <tspan font-weight="700">표면적 학습 목표</tspan>: 중심 단어가 주어졌을 때 주변 단어를 예측</text>
+  <text x="50" y="442" font-size="12" fill="#1a1a2e">• <tspan font-weight="700">진짜 우리가 원하는 것</tspan>: 학습이 끝난 뒤 <tspan fill="#c62828" font-weight="700">은닉층 가중치 행렬 W₁의 각 행</tspan> = 단어 임베딩</text>
+  <text x="50" y="464" font-size="12" fill="#1a1a2e">• 출력층은 <tspan font-weight="700">학습이 끝나면 버린다</tspan>. 부산물(by-product)로 의미 있는 단어 표현이 떨어진다</text>
+  <text x="50" y="486" font-size="12" fill="#1a1a2e">• 단순한 신경망(은닉층 1개, 비선형 활성함수 없음)으로도 의미 기하가 떨어지는 것이 word2vec의 충격</text>
+</svg>

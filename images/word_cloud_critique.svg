@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="880" height="480" fill="#fafafa" rx="8"/>
+
+  <text x="440" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a2e">워드클라우드: 왜 분석이 아닌 장식인가</text>
+
+  <!-- Left: Word cloud mockup -->
+  <rect x="30" y="60" width="400" height="380" fill="#ffffff" stroke="#e9ecef" rx="8"/>
+  <text x="230" y="84" text-anchor="middle" font-size="13" fill="#6c757d">예: 정치 뉴스 댓글 10만건</text>
+
+  <text x="230" y="170" text-anchor="middle" font-size="52" font-weight="700" fill="#0055aa">대통령</text>
+  <text x="120" y="220" font-size="36" font-weight="600" fill="#1565c0">정부</text>
+  <text x="290" y="225" font-size="32" font-weight="600" fill="#4A90D9">국회</text>
+  <text x="80" y="270" font-size="22" fill="#6c757d">정책</text>
+  <text x="180" y="285" font-size="26" font-weight="500" fill="#1565c0">사람</text>
+  <text x="305" y="280" font-size="20" fill="#6c757d">진짜</text>
+  <text x="90" y="320" font-size="18" fill="#adb5bd">너무</text>
+  <text x="170" y="335" font-size="20" fill="#6c757d">정말</text>
+  <text x="260" y="325" font-size="16" fill="#adb5bd">그냥</text>
+  <text x="330" y="345" font-size="14" fill="#adb5bd">좀</text>
+  <text x="120" y="380" font-size="16" fill="#adb5bd">우리</text>
+  <text x="210" y="395" font-size="18" fill="#6c757d">국민</text>
+  <text x="290" y="395" font-size="14" fill="#adb5bd">그것</text>
+
+  <!-- Right: Critique annotations -->
+  <rect x="460" y="60" width="390" height="380" fill="#ffffff" stroke="#e9ecef" rx="8"/>
+  <text x="655" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#c62828">이 그림에서 알 수 있는 것?</text>
+
+  <rect x="475" y="100" width="360" height="58" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="485" y="120" font-size="13" font-weight="600" fill="#c62828">1. 빈도 1위 단어 = 자명한 단어</text>
+  <text x="485" y="140" font-size="12" fill="#1a1a2e">"정치 뉴스 댓글에 '대통령'이 많다"</text>
+  <text x="485" y="154" font-size="12" fill="#1a1a2e">→ 데이터 안 봐도 알 수 있는 사실</text>
+
+  <rect x="475" y="170" width="360" height="58" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="485" y="190" font-size="13" font-weight="600" fill="#c62828">2. 단어 사이 관계 표현 불가</text>
+  <text x="485" y="210" font-size="12" fill="#1a1a2e">"대통령"+"잘한다" vs "대통령"+"개판"</text>
+  <text x="485" y="224" font-size="12" fill="#1a1a2e">→ 둘 다 똑같이 "대통령" 빈도로만 잡힘</text>
+
+  <rect x="475" y="240" width="360" height="58" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="485" y="260" font-size="13" font-weight="600" fill="#c62828">3. 시간/집단 변화 표현 불가</text>
+  <text x="485" y="280" font-size="12" fill="#1a1a2e">사건 전후 담론 변화, 플랫폼별 차이</text>
+  <text x="485" y="294" font-size="12" fill="#1a1a2e">→ 한 장으로 압축되며 사라짐</text>
+
+  <rect x="475" y="310" width="360" height="58" fill="#ffebee" stroke="#c62828" rx="6"/>
+  <text x="485" y="330" font-size="13" font-weight="600" fill="#c62828">4. 부정어·반어·맥락 무시</text>
+  <text x="485" y="350" font-size="12" fill="#1a1a2e">"안 좋다"의 "좋다"가 긍정 단어로 잡힘</text>
+  <text x="485" y="364" font-size="12" fill="#1a1a2e">→ 빈도 = 의미가 아님</text>
+
+  <rect x="475" y="380" width="360" height="46" fill="#fff3e0" stroke="#e65100" rx="6"/>
+  <text x="655" y="400" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">결론: 빈도 시각화는 "분석"이 아니다</text>
+  <text x="655" y="418" text-anchor="middle" font-size="11" fill="#1a1a2e">시간 추이 + 교차표 + 통계 검정과 함께가 아니면 의미 없음</text>
+</svg>

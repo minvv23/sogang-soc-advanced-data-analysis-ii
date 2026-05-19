@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="880" height="520" fill="#fafafa" rx="8"/>
+
+  <text x="440" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a2e">LDA의 생성 과정 (Generative Process)</text>
+  <text x="440" y="54" text-anchor="middle" font-size="12" fill="#6c757d">각 문서는 토픽의 혼합, 각 토픽은 단어의 분포</text>
+
+  <defs>
+    <marker id="arrow-lda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1565c0"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Document with topic mixture -->
+  <rect x="30" y="80" width="240" height="200" fill="#ffffff" stroke="#1565c0" stroke-width="2" rx="8"/>
+  <text x="150" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#0055aa">① 문서의 토픽 혼합 θ_d</text>
+  <text x="150" y="124" text-anchor="middle" font-size="11" fill="#6c757d">θ_d ~ Dirichlet(α)</text>
+
+  <text x="50" y="156" font-size="11" fill="#1a1a2e">댓글 d:</text>
+  <rect x="50" y="166" width="200" height="20" fill="#e3f2fd" rx="3"/>
+  <rect x="50" y="166" width="120" height="20" fill="#0055aa" rx="3"/>
+  <rect x="170" y="166" width="60" height="20" fill="#4A90D9" rx="3"/>
+  <rect x="230" y="166" width="20" height="20" fill="#90caf9" rx="3"/>
+
+  <text x="55" y="200" font-size="10" fill="#0055aa" font-weight="600">정치 60%</text>
+  <text x="150" y="200" font-size="10" fill="#1565c0" font-weight="600">경제 30%</text>
+  <text x="215" y="200" font-size="10" fill="#1565c0" font-weight="600">연예 10%</text>
+
+  <text x="50" y="230" font-size="11" fill="#1a1a2e">단어 하나하나마다:</text>
+  <text x="50" y="248" font-size="11" fill="#1a1a2e">- 토픽 z_{d,n} ~ Categorical(θ_d)</text>
+  <text x="50" y="264" font-size="11" fill="#1a1a2e">- 단어 w_{d,n} ~ Categorical(φ_z)</text>
+
+  <!-- Arrow -->
+  <line x1="280" y1="180" x2="320" y2="180" stroke="#1565c0" stroke-width="2" marker-end="url(#arrow-lda)"/>
+
+  <!-- Step 2: Topic-word distribution -->
+  <rect x="330" y="80" width="240" height="200" fill="#ffffff" stroke="#e65100" stroke-width="2" rx="8"/>
+  <text x="450" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#e65100">② 토픽별 단어 분포 φ_k</text>
+  <text x="450" y="124" text-anchor="middle" font-size="11" fill="#6c757d">φ_k ~ Dirichlet(β)</text>
+
+  <text x="340" y="150" font-size="11" fill="#1a1a2e" font-weight="600">토픽 1 (정치):</text>
+  <text x="350" y="166" font-size="10" fill="#6c757d">대통령(0.05) 국회(0.04) 정책(0.03)…</text>
+
+  <text x="340" y="194" font-size="11" fill="#1a1a2e" font-weight="600">토픽 2 (경제):</text>
+  <text x="350" y="210" font-size="10" fill="#6c757d">금리(0.06) 환율(0.04) 주식(0.03)…</text>
+
+  <text x="340" y="238" font-size="11" fill="#1a1a2e" font-weight="600">토픽 3 (연예):</text>
+  <text x="350" y="254" font-size="10" fill="#6c757d">배우(0.05) 영화(0.04) 드라마(0.03)…</text>
+
+  <!-- Arrow -->
+  <line x1="580" y1="180" x2="620" y2="180" stroke="#1565c0" stroke-width="2" marker-end="url(#arrow-lda)"/>
+
+  <!-- Step 3: Observed words -->
+  <rect x="630" y="80" width="220" height="200" fill="#ffffff" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <text x="740" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">③ 관측된 단어들 w</text>
+  <text x="740" y="124" text-anchor="middle" font-size="11" fill="#6c757d">우리가 데이터에서 보는 것</text>
+
+  <text x="645" y="156" font-size="11" fill="#1a1a2e">댓글 d:</text>
+  <text x="645" y="178" font-size="12" fill="#0055aa" font-weight="600">"대통령 정책 진짜 짜증나는데</text>
+  <text x="645" y="196" font-size="12" fill="#0055aa" font-weight="600">금리는 또 왜 올림?"</text>
+
+  <text x="645" y="226" font-size="10" fill="#6c757d">→ LDA가 거꾸로 추론:</text>
+  <text x="645" y="244" font-size="10" fill="#1a1a2e">"이 댓글은 어떤 토픽 혼합에서</text>
+  <text x="645" y="260" font-size="10" fill="#1a1a2e">생성됐을 가능성이 높은가?"</text>
+
+  <!-- Bottom: Limitations -->
+  <rect x="30" y="310" width="820" height="190" fill="#fff8e1" stroke="#f57f17" stroke-width="1.5" rx="8"/>
+  <text x="440" y="334" text-anchor="middle" font-size="14" font-weight="700" fill="#c62828">LDA의 다섯 가지 한계</text>
+
+  <text x="50" y="362" font-size="12" fill="#1a1a2e"><tspan font-weight="700" fill="#c62828">1.</tspan> 토픽 수 K를 사전 지정해야 한다 (객관적 기준 없음)</text>
+  <text x="50" y="386" font-size="12" fill="#1a1a2e"><tspan font-weight="700" fill="#c62828">2.</tspan> Bag-of-Words: "개가 사람을 물었다" = "사람이 개를 물었다" (어순 무시)</text>
+  <text x="50" y="410" font-size="12" fill="#1a1a2e"><tspan font-weight="700" fill="#c62828">3.</tspan> 결과 토픽이 사람이 해석 가능하다는 보장이 없음 → cherry-picking 관행</text>
+  <text x="50" y="434" font-size="12" fill="#1a1a2e"><tspan font-weight="700" fill="#c62828">4.</tspan> 시드/하이퍼파라미터 민감 → 재현 불가</text>
+  <text x="50" y="458" font-size="12" fill="#1a1a2e"><tspan font-weight="700" fill="#c62828">5.</tspan> 의미 표현 불가: 단어 = 확률 분포, 단어 사이 의미 관계 없음 (BoW 가정의 한계)</text>
+  <text x="50" y="486" font-size="12" font-weight="700" fill="#e65100">→ 임베딩 기반 BERTopic이 이 다섯 문제를 모두 우회한다</text>
+</svg>
