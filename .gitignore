@@ -1,3 +1,6 @@
 겸임교수 등록용 서류/
 presentation/
 WRITING_GUIDE.md
+
+# LLM-CSS 문헌 PDF 원문은 용량이 커서 제외 (요약 README는 커밋)
+llm_based_css_literatures/**/*.pdf

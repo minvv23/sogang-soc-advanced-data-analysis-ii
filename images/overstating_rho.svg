@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="800" height="470" fill="#ffffff" rx="8"/>
+  <text x="400" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#222">LLM은 '신념-공유' 상관을 과장한다</text>
+  <text x="400" y="56" text-anchor="middle" font-size="14" fill="#666">실제 사람 vs LLM 시뮬레이션, 순위상관 ρ (Overstating Attitudes, Table 2)</text>
+
+  <line x1="80" y1="80" x2="80" y2="380" stroke="#adb5bd" stroke-width="2"/>
+  <line x1="80" y1="380" x2="760" y2="380" stroke="#adb5bd" stroke-width="2"/>
+  <g font-size="13" fill="#999">
+    <line x1="80" y1="380" x2="760" y2="380" stroke="#e9ecef"/><text x="70" y="385" text-anchor="end">0</text>
+    <line x1="80" y1="305" x2="760" y2="305" stroke="#e9ecef"/><text x="70" y="310" text-anchor="end">0.25</text>
+    <line x1="80" y1="230" x2="760" y2="230" stroke="#e9ecef"/><text x="70" y="235" text-anchor="end">0.50</text>
+    <line x1="80" y1="155" x2="760" y2="155" stroke="#e9ecef"/><text x="70" y="160" text-anchor="end">0.75</text>
+    <line x1="80" y1="80" x2="760" y2="80" stroke="#e9ecef"/><text x="70" y="85" text-anchor="end">1.00</text>
+  </g>
+
+  <!-- y(v)=380-v*300 ; human green / LLM red -->
+  <!-- 보건 -->
+  <rect x="160" y="198.2" width="70" height="181.8" fill="#2e7d32" rx="3"/>
+  <rect x="240" y="102.5" width="70" height="277.5" fill="#c62828" rx="3"/>
+  <text x="195" y="190" text-anchor="middle" font-size="15" font-weight="700" fill="#2e7d32">.606</text>
+  <text x="275" y="94" text-anchor="middle" font-size="15" font-weight="700" fill="#c62828">.925</text>
+  <text x="235" y="404" text-anchor="middle" font-size="15" font-weight="700" fill="#333">보건 (코로나)</text>
+  <!-- 기후 -->
+  <rect x="370" y="254.6" width="70" height="125.4" fill="#2e7d32" rx="3"/>
+  <rect x="450" y="93.2" width="70" height="286.8" fill="#c62828" rx="3"/>
+  <text x="405" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#2e7d32">.418</text>
+  <text x="485" y="85" text-anchor="middle" font-size="15" font-weight="700" fill="#c62828">.956</text>
+  <text x="445" y="404" text-anchor="middle" font-size="15" font-weight="700" fill="#333">기후</text>
+  <!-- 정치 -->
+  <rect x="580" y="277.4" width="70" height="102.6" fill="#2e7d32" rx="3"/>
+  <rect x="660" y="155.3" width="70" height="224.7" fill="#c62828" rx="3"/>
+  <text x="615" y="269" text-anchor="middle" font-size="15" font-weight="700" fill="#2e7d32">.342</text>
+  <text x="695" y="147" text-anchor="middle" font-size="15" font-weight="700" fill="#c62828">.749</text>
+  <text x="655" y="404" text-anchor="middle" font-size="15" font-weight="700" fill="#333">정치</text>
+
+  <rect x="250" y="432" width="18" height="18" fill="#2e7d32" rx="3"/><text x="274" y="446" font-size="15" fill="#333">실제 사람</text>
+  <rect x="430" y="432" width="18" height="18" fill="#c62828" rx="3"/><text x="454" y="446" font-size="15" fill="#333">LLM 시뮬레이션</text>
+</svg>

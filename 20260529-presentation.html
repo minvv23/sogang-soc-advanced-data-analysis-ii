@@ -1,0 +1,3125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM을 활용한 Computational Social Science의 최신 지형</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --text: #1a1a2e;
+  --accent: #0055aa;
+  --accent-light: #e8f0fe;
+  --gray-100: #f7f8fa;
+  --gray-200: #e9ecef;
+  --gray-400: #adb5bd;
+  --gray-600: #6c757d;
+  --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== SLIDE LAYOUT ===== */
+#presentation {
+  width: 100vw; height: 100vh;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: none;
+  overflow-y: auto;
+  padding: 6vh 8vw 10vh;
+}
+
+.slide.active { display: flex; flex-direction: column; }
+
+.slide-inner {
+  max-width: 920px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Scrollbar */
+.slide::-webkit-scrollbar { width: 6px; }
+.slide::-webkit-scrollbar-track { background: transparent; }
+.slide::-webkit-scrollbar-thumb { background: var(--gray-400); border-radius: 3px; }
+
+/* ===== TITLE SLIDE ===== */
+.slide.slide-title {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef1f8 100%);
+}
+.slide.slide-title .slide-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.slide-title h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+.slide-title h2 {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 400;
+  color: var(--gray-600);
+  margin-bottom: 1.5em;
+  line-height: 1.5;
+}
+.slide-title .meta {
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  color: var(--gray-600);
+  border-top: 1px solid var(--gray-200);
+  padding-top: 1em;
+}
+
+/* ===== SECTION DIVIDER SLIDE ===== */
+.slide.slide-divider {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--accent);
+  color: white;
+}
+.slide.slide-divider .slide-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.slide-divider .section-number {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700;
+  opacity: 0.3;
+  margin-bottom: 0.2em;
+}
+.slide-divider .section-title {
+  font-size: clamp(1.3rem, 2.8vw, 2.2rem);
+  font-weight: 500;
+  max-width: 700px;
+  line-height: 1.5;
+}
+
+/* ===== CONTENT SLIDE ===== */
+.slide-content h3 {
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.8em;
+  line-height: 1.4;
+  border-bottom: 2px solid var(--accent-light);
+  padding-bottom: 0.3em;
+}
+
+.slide-content p {
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.85;
+  margin-bottom: 0.9em;
+}
+
+.slide-content strong { color: var(--accent); font-weight: 700; }
+
+.slide-content ul, .slide-content ol {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.8;
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+.slide-content li { margin-bottom: 0.4em; }
+.slide-content li > ul, .slide-content li > ol { margin-top: 0.3em; margin-bottom: 0.3em; }
+
+/* ===== TABLES ===== */
+.slide-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  margin: 1.2em 0;
+  line-height: 1.6;
+}
+.slide-content th {
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+  padding: 0.6em 0.8em;
+  text-align: left;
+}
+.slide-content td {
+  padding: 0.55em 0.8em;
+  border-bottom: 1px solid var(--gray-200);
+}
+.slide-content tr:nth-child(even) td { background: var(--gray-100); }
+.slide-content tr:hover td { background: var(--accent-light); }
+
+/* ===== MATH ===== */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.8em 0;
+  margin: 0.6em 0;
+}
+.katex { font-size: 1.15em; }
+.katex-display > .katex { font-size: 1.25em; }
+
+/* ===== BLOCKQUOTE ===== */
+.slide-content blockquote {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-light);
+  padding: 1em 1.5em;
+  margin: 1em 0;
+  border-radius: 0 8px 8px 0;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.7;
+}
+
+/* ===== IMAGES ===== */
+.slide-content img {
+  display: block;
+  max-width: 85%;
+  margin: 1.5em auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* ===== MERMAID ===== */
+.slide-content .mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.5em 0;
+  overflow-x: auto;
+}
+.slide-content .mermaid svg { max-width: 100%; }
+
+/* ===== CODE ===== */
+.slide-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--gray-100);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+.slide-content pre {
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 1.2em 1.5em;
+  overflow-x: auto;
+  margin: 1.2em 0;
+  line-height: 1.5;
+}
+.slide-content pre code {
+  background: none;
+  padding: 0;
+  font-size: clamp(0.65rem, 0.95vw, 0.85rem);
+  white-space: pre;
+}
+
+/* ===== NAVIGATION ===== */
+#controls {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  z-index: 100;
+  pointer-events: none;
+}
+
+#progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--gray-200);
+}
+#progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+#slide-counter {
+  position: fixed;
+  bottom: 12px; right: 20px;
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  font-variant-numeric: tabular-nums;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+#slide-counter:hover { background: var(--gray-200); }
+
+#page-jump {
+  position: fixed;
+  bottom: 8px; right: 16px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  z-index: 200;
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+#page-jump input {
+  width: 48px;
+  font-size: 0.85rem;
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 3px 6px;
+  text-align: center;
+  outline: none;
+}
+#page-jump input:focus { border-color: var(--accent); }
+#page-jump .jump-total {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+}
+#page-jump button {
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+#page-jump button:hover { opacity: 0.85; }
+
+#section-indicator {
+  position: fixed;
+  top: 12px; left: 20px;
+  font-size: 0.8rem;
+  color: var(--gray-400);
+  max-width: 50vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+/* Nav buttons */
+#nav-buttons {
+  position: fixed;
+  bottom: 10px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+body:hover #nav-buttons { opacity: 1; }
+
+#nav-buttons button {
+  background: var(--gray-200);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+#nav-buttons button:hover { background: var(--accent-light); }
+
+/* Overflow hint */
+.overflow-hint {
+  position: absolute;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  color: var(--gray-400);
+  font-size: 0.8rem;
+  animation: bounce 2s infinite;
+  pointer-events: none;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+}
+
+/* Section divider overrides for nav */
+.slide-divider ~ #slide-counter { color: rgba(255,255,255,0.6); }
+
+/* ===== PRINT ===== */
+@media print {
+  .slide { page-break-after: always; position: relative; height: auto; display: block !important; }
+  #controls, #nav-buttons, #slide-counter, #section-indicator { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="presentation"></div>
+
+<div id="controls">
+  <div id="progress-bar"><div id="progress-fill"></div></div>
+</div>
+<div id="slide-counter"></div>
+<div id="page-jump">
+  <input type="text" id="page-jump-input" inputmode="numeric" pattern="[0-9]*" placeholder="#">
+  <span class="jump-total" id="page-jump-total"></span>
+  <button id="page-jump-btn">이동</button>
+</div>
+<div id="section-indicator"></div>
+<div id="nav-buttons">
+  <button onclick="prevSlide()">← 이전</button>
+  <button onclick="nextSlide()">다음 →</button>
+</div>
+
+<script id="markdown-source" type="text/markdown">
+# LLM을 활용한 Computational Social Science의 최신 지형
+## - 유행의 trend와 noise를 잘 구분하기 -
+
+> <strong>SOC4013-01 고급데이터분석 Ⅱ(캡스톤디자인)</strong> | 2026년 봄학기 13주차
+>
+> 인터랙티브 프레젠테이션: https://minvv23.github.io/sogang-soc-advanced-data-analysis-ii/20260529-presentation.html
+
+---
+
+## 1. LLM의 네 가지 역할
+
+### 지난주에서 이번 주로
+
+지난주에는 세 시대에 걸쳐 어떻게 텍스트 분석이 변화했는지 살펴봤다. 이번 주는 범위를 넓혀, LLM이 구체적으로 사회과학 연구라는 활동 자체를 어떻게 바꾸고 있는지 살펴본다. 2025년부터 2026년 상반기까지 나온 Computational Social Science 논문 100여 편을 보면서 "LLM으로 사회과학을 한다"는 말이 정확히 어떻게 서로 다른 방식으로 구현되는 중인지 살펴보자.
+
+### 네 가지 역할
+
+Computational Social Science 논문에서 LLM이 맡는 역할은 네 가지로 환원된다. 기준은 LLM이 무엇을 대신하는가이다.
+
+![LLM의 네 가지 역할 - 수단/표적 x 인간모사/세계측정 사분면](images/css_role_quadrant.svg)
+
+### 무엇이 trend이고 무엇이 noise인가
+
+흔히 이 분야를 대체(replacement)와 보정(correction)의 구도로 설명한다.
+
+- <strong>대체론</strong>: LLM이 인간 코더·응답자·연구자를 대신할 수 있다. 싸고 빠르니까.
+- <strong>보정론</strong>: LLM은 매끄럽지만 체계적으로 틀리니, 그대로 쓰면 안 되고 교정이 필요하다.
+
+보정이 필요하다는 데까지는 맞다. 그런데 학계는 그 교정에 "사람이 루프 안에 들어가야 한다"를 정답처럼 말한다. 여기엔 의심할 지점이 있다. 보정은 결국 <strong>데이터로 하거나 모델로 하는 것</strong>이다 - 뒤에 볼 DSL처럼 소량의 정답 라벨(데이터)을 더하거나, 추정 단계를 모델로 교정하거나. "사람이 상시 판단으로 개입한다"는 그림은 본질이라기보다, 논문을 논문답게 만들기 위한 장치(publication bias)인 경우가 많다.
+
+그래서 이 수업의 질문은 "대체냐 보정이냐"라는 교과서적 구호가 아니다. <strong>무엇이 진짜 trend(신호)이고 무엇이 noise(유행·논문용 장식)인가</strong>를 가리는 것이다. 아래에서 네 역할을 ① 측정 → ② 시뮬레이션 → ③ 연구 대상 → ④ 연구자 보조 순으로, 실제 2025-2026 논문을 뜯어보며 그 구분을 해본다.
+
+---
+
+## 2. ① 측정 도구로서의 LLM
+
+### 분류는 끝났고, 문제는 그다음이다
+
+zero-shot 분류는 지난주에 봤듯 사실상 끝난 게임이다. 댓글 10만 건에 감성 라벨을 붙이는 데 사전도, 라벨링 인력도, BERT fine-tuning도 필요 없다. 문제는 학부 수준의 분석이 "LLM으로 라벨 붙였습니다"에서 멈춘다는 데 있다. 라벨을 붙인 다음 우리가 하는 일은 그 라벨을 변수로 써서 통계적 추론을 하는 것이다 - 플랫폼별 부정 정서 비율이 다른가, 사건 전후로 혐오 표현이 늘었는가.
+
+### LLM 라벨을 회귀에 그냥 넣으면 추론이 틀어진다
+
+LLM 분류 정확도가 90%여도, 그 라벨을 변수로 회귀에 그대로 넣으면 계수는 편향되고 신뢰구간은 신뢰할 수 없다. 텍스트 분석 시간에 본 <strong>측정 오차</strong>로 설명된다. LLM의 10% 오분류는 무작위가 아니다. 빈정거림을 계통적으로 놓치거나 특정 성향의 댓글을 한쪽으로 쏠리게 분류한다. 이 <strong>비무작위 측정 오차</strong>가 추정량에 그대로 들어간다.
+
+```mermaid
+flowchart LR
+    A["문서 10만 건"] --> B["<b>LLM 분류</b><br/>정확도 90%"]
+    B --> C["라벨을 그대로<br/>회귀에 투입"]
+    C --> D["<b>편향된 계수</b><br/><b>틀린 신뢰구간</b>"]
+    B --> E["+ 소량 정답 라벨<br/>예: 500건"]
+    E --> F["<b>보정 추정량</b><br/>DSL / PPI / SRI"]
+    F --> G["불편 추정<br/>+ 올바른 신뢰구간"]
+
+    classDef bad fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef good fill:#c8e6c9,stroke:#2e7d32,color:#000
+    class D bad
+    class G good
+```
+
+### 디바이어싱이란 - DSL과 PPI 먼저 정리하기
+
+앞 슬라이드의 문제(LLM 라벨을 그냥 회귀에 넣으면 편향이 생기고 신뢰구간이 무너진다)를 푸는 방법을 통틀어 <strong>디바이어싱(debiasing)</strong>이라 한다. 이 절에 계속 나올 용어이니, 두 대표 방법을 먼저 짚어두자.
+
+<strong>공통 아이디어</strong>
+- 값싼 LLM 라벨을 잔뜩 쓰되, 소수의 사람 정답 라벨(gold label)로 그 편향을 통계적으로 걷어낸다.
+- 목적은 둘이다 - 추정값의 편향을 없애고, 신뢰구간이 거짓말하지 않게(정직한 추론) 만든다.
+- 전부를 사람이 라벨하면 너무 비싸고, LLM만 쓰면 편향된다. 그 사이에서 '소수의 정답 + 다수의 LLM 라벨'을 결합하는 절충이다.
+
+<strong>DSL (설계기반 지도학습, Design-based Supervised Learning)</strong>
+- 어떤 문서를 사람에게 라벨시킬지 연구자가 직접 정한다. 그래서 그 문서가 정답 표본에 뽑힐 확률(π)을 이미 안다. 그래서 이름이 '설계기반'이다.
+- 그 π를 이용해, 'LLM 예측 + 예측이 빗나간 양 보정'으로 편향이 미리 걷힌 가짜 종속변수를 만들어 회귀한다.
+- 사람 라벨을 알뜰하게 써서 효율이 좋다. 다만 가중이 들쭉날쭉하면 결과가 흔들릴 수 있다.
+
+<strong>PPI (예측기반 추론, Prediction-Powered Inference)</strong>
+- 일단 LLM 라벨을 참값인 양 써서 답을 한 번 구한다. 그다음 사람 정답이 있는 일부 문서에서 'LLM으로 구한 답'과 '정답으로 구한 답'의 차이를 재서, 그 차이만큼 처음 답을 보정한다.
+- 한 번의 차이 보정이라 안정적이다. 대신 효율 이득은 DSL보다 작은 편이다.
+
+| 구분 | DSL | PPI |
+|------|-----|-----|
+| 핵심 | 표본추출 확률 π로 가짜 종속변수를 구성 | LLM 답을 정답과의 차이로 한 번 보정 |
+| 강점 | 사람 라벨을 효율적으로 씀(평균적으로 더 정확) | 안정적(데이터를 덜 탐) |
+| 약점 | 변동이 크고 다중공선성에 민감 | 효율 이득이 작음 |
+
+- 둘 다 '추정값을 회귀로 얻는' 상황이면 어디든 붙일 수 있다.
+- 뒤에 볼 <strong>SRI</strong>는 이 둘의 약점(주석 정확도가 중간일 때 신뢰구간이 너무 넓어지는 문제)을, 설계로 보장되는 가정 하나를 더 부과해 개선한 후속이다.
+- 자세한 수식은 이 절 뒤(SRI)와 맨 끝(DSL)에서 본다. 지금은 '무엇을, 왜 하는지'만 잡으면 된다.
+
+### 이 절에서 볼 것
+
+측정 도구로서의 LLM은 'LLM으로 라벨 붙였다'에서 끝나지 않는다. 핵심 쟁점은 세 가지다 - (1) 무엇을 측정할지 정의하는 개념화·타당도, (2) 불완전한 LLM 라벨로도 타당한 추론을 하는 디바이어싱, (3) 한 발 더 나아가 텍스트 자체를 처치로 보는 인과추론.
+
+아래에서는 먼저 실제 사례 하나(대법원 판례 이념 측정)로 LLM 측정이 무엇인지 감을 잡고, 실무에서 부딪히는 문제(프롬프트 설계, 모델 선택)를 다룬 practical한 연구 두 편을 본다. 그다음 토대가 되는 연구(Can LLMs)와 개념화 문제(What is a protest), 그리고 편향 보정의 통계 방법론을 차례로 본다 - 가장 수식이 무거운 DSL은 맨 끝에서 정면으로 다룬다.
+
+일관된 입장은 하나다 - <strong>"몇 % 정확도"가 아니라, 그 측정값으로 한 추론이 타당한가로 판단한다.</strong> 인과 쪽 원칙도 같다, <strong>Identification > Estimation</strong>.
+
+### 실제 사례 (1) - 대법원 전원합의체 판례의 이념 측정
+
+언더스코어가 MBC PD수첩 의뢰로 진행한 분석이다. '사법의 정치화', 즉 대법관의 이념 성향이 정치 환경에 영향받는지를 데이터로 본다.
+
+<strong>데이터</strong>
+- 민주적으로 선출된 정부가 임명한 대법관이 참여하기 시작한 1988년 이후의 전원합의체 판결·결정 546건.
+- 여기에 참여한 대법관·대법원장은 모두 97명.
+
+<strong>LLM으로 무엇을 추출했나 (feature extraction)</strong>
+- 한국어 이해가 좋은 Claude Sonnet 4에게 판결 전문(판시사항·판결요지·판례내용)을 통째로 주고, 판사별로 세 변수를 뽑게 했다.
+- <strong>의견 유형</strong>: 다수/보충/별개/반대. 본문에 명시돼 있어 '정답이 있는' 추출이다.
+- <strong>의견 특이성</strong>: 그 의견이 다수의견에서 얼마나 멀리 떨어졌는지를 0~10 정수로.
+- <strong>정치 성향</strong>: 진보(-2)에서 보수(+2)까지 5점 척도. 이건 정답이 없는 주관적 판단이다.
+- 이게 섹션 ①이 말한 LLM feature extraction 그 자체다. 비정형 판례 텍스트를 '판사 x 판결' 단위의 정량 변수로 바꾼다.
+
+동성 동반자 건강보험 판결(2023두36800)에 적용한 결과 일부:
+
+| 성명 | 임명 대통령 | 의견유형 | 특이성 | 정치성향 |
+|------|-----------|---------|--------|---------|
+| 조희대 | 윤석열 | 다수의견 | 0 | -1 (다소 진보) |
+| 김상환 | 문재인 | 보충의견 | 2 | -2 (매우 진보) |
+| 권영준 | 윤석열 | 별개의견 | 8 | +1 (다소 보수) |
+| 노태악 | 문재인 | 별개의견 | 8 | +1 (다소 보수) |
+
+```mermaid
+flowchart LR
+    A["전원합의체 판결 546건<br/>판시사항·판결요지·판례내용"]:::blue --> B["<b>Claude Sonnet 4</b><br/>zero-shot 추출"]:::yellow
+    B --> C["의견 유형<br/>다수·보충·별개·반대"]:::green
+    B --> D["의견 특이성<br/>0~10"]:::green
+    B --> E["정치 성향<br/>-2 진보 ~ +2 보수"]:::green
+    C --> F["판사 x 판결<br/>패널 데이터"]:::blue
+    D --> F
+    E --> F
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+### 실제 사례 (2) - 측정오차를 '데이터 단'이 아니라 '모델 단'에서 잡기
+
+LLM이 매긴 점수에는 측정오차가 있다. 이걸 다루는 자리는 둘이다.
+
+- <strong>데이터 단</strong>: 같은 입력을 여러 번 돌려 평균·다수결을 내거나, 소수의 사람 정답 라벨로 보정한다(앞서 소개한 DSL/PPI/SRI). 측정값 자체를 다듬는 방식이다.
+- <strong>모델 단</strong>: LLM 점수를 '참 이념의 노이즈 섞인 관측치'로 보고, 그 관측오차를 통계 모델에 명시적으로 집어넣어 참값을 역추론한다.
+
+이 연구는 <strong>모델 단</strong>을 택했다. 계층적 베이지언 잠재변수 모델이다.
+
+<strong>측정 모델</strong>
+
+$$X_{ijt} \sim \text{StudentT}(\nu,\ \mu=\theta_{it},\ \sigma=\sigma_{obs})$$
+
+$$\theta_{it} = \alpha_i + \delta_i \cdot T_{it}$$
+
+- $X_{ijt}$: Claude가 매긴 점수, 즉 우리가 보는 관측값. $i$는 판사, $j$는 판결, $t$는 시점.
+- $\theta_{it}$: 판사 $i$의 시점 $t$에서의 '참' 잠재 이념. 우리가 진짜 알고 싶은 값이고, 직접 보이지 않는다.
+- $\sigma_{obs}$: 관측오차의 표준편차. LLM 점수가 참값 주변에서 흔들리는 정도를 모델이 명시적으로 떠안는다.
+- <strong>StudentT를 쓴 이유</strong>: 정규분포보다 꼬리가 두꺼워, 가끔 크게 튀는 오측정에 둔감하다. 한두 판결에서 LLM이 헛짚어도 전체 추정이 휘둘리지 않는다.
+- $\alpha_i$는 임명 초기 이념, $\delta_i$는 시간에 따른 이동, $T_{it}$는 임명 후 경과 연수다.
+- <strong>부분 풀링(partial pooling)</strong>: $\alpha_i, \delta_i$가 집단 평균을 중심으로 한 정규분포에서 나온다고 본다. 판결 수가 적은 판사도 집단 평균 쪽으로 적당히 끌어당겨 안정적으로 추정한다.
+
+```mermaid
+flowchart LR
+    T["<b>참 잠재 이념 θ_it</b><br/>보이지 않음 · 추정 대상"]:::green -->|"관측오차 σ_obs<br/>StudentT 노이즈"| X1["LLM 점수 X · 판결 1"]:::yellow
+    T --> X2["LLM 점수 X · 판결 2"]:::yellow
+    T --> X3["LLM 점수 X · 판결 …"]:::yellow
+    X1 --> INF["<b>베이지언 역추론</b><br/>여러 점수로 θ 복원"]:::blue
+    X2 --> INF
+    X3 --> INF
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+### 실제 사례 (3) - 모델 단이 잡는 것과 못 잡는 것
+
+<strong>모델 단이 잡는 것</strong>
+- 무작위 측정 노이즈: $\sigma_{obs}$로 흡수한다. 여러 판결의 점수를 모아 참 이념 $\theta$를 복원하므로, 개별 오측정은 평균적으로 상쇄된다.
+- 가끔 튀는 오측정: StudentT의 두꺼운 꼬리가 받아낸다.
+- 판사별 데이터 불균형: 부분 풀링으로 표본이 적은 판사도 안정화한다.
+
+<strong>모델 단이 못 잡는 것</strong>
+- 계통적(비무작위) 편향은 못 잡는다. 이 모델은 측정오차가 평균 0이라고 가정한다.
+- 만약 Claude가 특정 사건유형(형사 대 사회권)이나 특정 문체·시대의 판결을 일관되게 한쪽으로 기울여 채점한다면, 그 편향은 $\theta, \alpha, \delta$ 추정에 그대로 새어 든다.
+- 그땐 데이터 단이 필요하다 - 법학 전문가의 소수 정답 라벨을 표본으로 달아 앞서 소개한 DSL/SRI로 결합하는 식이다. <strong>두 접근은 경쟁이 아니라 보완이다.</strong>
+
+<strong>측정 위에 올린 분석과 타당도</strong>
+- 이 잠재 이념 $\theta$ 위에 정치 환경 변수(임명 대통령·현직 대통령·대법원장 성향)를 얹어 효과를 추정했다.
+- 결과: 세 요인 모두 유의했고, 현직 대통령 효과(약 11.5%)가 임명자 효과(약 8.9%)보다 컸으며, 임명자 효과는 시간이 갈수록 강해졌다.
+- 타당도 점검은 '독수리 5형제'(진보 소수의견으로 유명한 5인)가 모두 진보로 나온 직관 부합 수준이다. 이건 face validity(겉보기 타당도)일 뿐, 통계적 측정오차 보정과는 다른 층위임을 분명히 하자.
+
+![대법관 이념 점추정 모식도 - 좌(진보) 우(보수) 축](images/supreme_court_ideal_points.svg)
+
+<strong>그리고 trend 대 noise</strong>
+- 조희대 대법원장기 소수의견 비율이 36.6%에서 20.0%로 유의하게 줄었다. 이게 사법부 폐쇄성의 '신호(signal)'인지 일시적 '소음(noise)'인지는 더 봐야 한다 - 이 수업의 부제 그대로다.
+
+### 프롬프트를 어떻게 짜야 분류가 잘 되나 (arXiv:2603.25422)
+
+저자: Erkan Gunes, Christoffer Florczak, Tevfik Murat Yildirim (Constructor Univ. 외).
+연구질문: 같은 LLM이라도 프롬프트(지시문) 설계를 바꾸면 텍스트 분류 정확도가 얼마나, 어떤 방향으로 달라지는가.
+
+<strong>무엇을 체계적으로 바꿔봤나</strong>
+- 프롬프트를 세 부분으로 쪼개 각각 넣고 빼봤다: 라벨 설명(각 범주가 무엇인지 풀어 쓴 것), 지시 메모(특정 사례를 어떻게 처리하라는 힌트), 예시 제공(few-shot, 범주별 정답 예를 몇 개 보여주기).
+- 입력을 한 번에 몇 건씩 넣는지(배치 크기 1, 10, 100, 500, 1000)도 같이 바꿔봤다.
+- 과제 두 개로 검증했다: 미국 의회 법안 제목을 21개 정책 범주로 나누기, 그리고 설문 자유응답을 감정 있음/없음으로 나누기.
+- 모델은 GPT-4o와 Gemini 2.0 Flash 두 개를 썼다.
+
+<strong>핵심 발견</strong>
+- 아무 맥락도 없는 가장 단순한 프롬프트가 거의 항상 최악이었다. 세 요소 중 하나만 넣어도 정확도(가중 F1)가 크게 뛰었다.
+- 하지만 맥락을 더 욱여넣는다고 정확도가 계속 오르지는 않았다. 초반에 거의 다 오르고 그 뒤로는 평평해지거나, 오히려 떨어지는 경우도 있었다.
+- 입력 한 건씩 넣는 방식(배치 1)이 절반 넘는 설정에서 최선이 아니었다. 여러 건을 묶어 넣는 편이 더 싸고 더 정확할 때가 많았다.
+- 온도를 0으로 둬도 같은 프롬프트가 호출마다 다른 답을 내놓았다. 즉 완전한 재현은 보장되지 않았고, 그 변동 폭은 모델과 프롬프트 복잡도에 따라 달랐다.
+
+<strong>실무 교훈</strong>
+- 프롬프트 설계는 측정 도구의 일부다. 예시 수, 라벨 정의 방식, 출력 형식 같은 선택이 그대로 정확도로 이어진다.
+- 패턴이 과제와 모델마다 제각각이라 일반 규칙에 기대면 안 된다. 자기 과제에서 직접 검증하고, 어떤 프롬프트를 썼는지 부록에 남겨야 한다.
+
+```mermaid
+flowchart LR
+  classDef start fill:#bbdefb,stroke:#0d47a1,color:#000
+  classDef vary fill:#fff9c4,stroke:#f57f17,color:#000
+  classDef result fill:#c8e6c9,stroke:#2e7d32,color:#000
+  classDef warn fill:#ffcdd2,stroke:#c62828,color:#000
+
+  A["<b>같은 LLM</b><br/>GPT-4o, Gemini"]:::start --> B["프롬프트 3요소를<br/>넣고 빼기<br/>라벨설명 지시메모 예시"]:::vary
+  A --> C["배치 크기 바꾸기<br/>1 부터 1000"]:::vary
+  B --> D["최소 프롬프트는 최악<br/>한 요소만 넣어도<br/>F1 크게 상승"]:::result
+  C --> E["여러 건 묶기가<br/>더 싸고 정확할 때 많음"]:::result
+  D --> F["더 넣어도 계속<br/>오르지는 않음<br/>때론 하락"]:::warn
+  D --> G["온도 0에서도<br/>답이 매번 달라짐"]:::warn
+  F --> H["<b>프롬프트 설계가<br/>측정의 일부</b><br/>과제별 검증 필수"]:::start
+  G --> H
+  E --> H
+```
+
+### 같은 헤드라인도 어떤 모델이 보느냐에 따라 감성이 갈린다 (arXiv:2604.08566)
+
+저자: Amr Eleraqi, Hager H. Mustafa, Abdul Hadi N. Ahmed (Cairo University).
+연구질문: 같은 가자 전쟁 뉴스 헤드라인을 두고 서로 다른 AI 모델들이 감성(긍정/부정/중립)을 일관되게 판정하는가, 아니면 체계적으로 다르게 읽는가.
+
+<strong>어떻게 봤나</strong>
+- 가자 전쟁 관련 아랍어 헤드라인 10,990건을 모았다. 대부분 6-11단어짜리 짧은 글이라, 모델 차이가 능력 한계가 아니라 해석 방식 차이를 드러내기 좋은 자료다.
+- 모델 두 부류를 비교했다: 아랍어로 미세조정한 BERT 계열 6종, 그리고 범용 LLM 3종(GPT-4.1, Qwen2.5-7B, LLaMA-3.1-8B).
+- 핵심 설계는 사람이 만든 단일 정답(gold standard)을 두지 않은 것이다. 분쟁 보도의 감성은 본래 다툼의 여지가 있다고 보고, 어느 모델이 맞았나가 아니라 모델들이 서로 얼마나 다른가를 봤다.
+- 분포 차이를 정보이론 지표로 쟀다: 섀넌 엔트로피(분류가 한쪽으로 쏠렸는지), 옌센-섀넌 거리(두 분포가 얼마나 먼지), 분산 점수(평균 행동에서 얼마나 벗어났는지).
+
+<strong>핵심 발견</strong>
+- 모델 부류에 따라 감성 분포가 뚜렷이 갈렸다. 미세조정 BERT는 중립으로 쏠렸고(MARBERT는 95.80%를 중립으로 분류, 엔트로피 0.2605), LLM은 부정으로 쏠렸다.
+- LLaMA-3.1-8B가 극단이었다. 헤드라인의 98.94%를 부정으로 찍어 엔트로피가 0.0859까지 떨어졌고, 합의(BERT 앙상블)에서 가장 멀었다(옌센-섀넌 거리 0.5457).
+- 이 차이는 무작위가 아니라 체계적이고 방향성이 있었다. BERT는 글자 그대로 읽는 독자라 명시적 단어가 없으면 중립으로 두고, LLM은 세계 지식을 끌어와 분쟁 자체를 부정으로 평가하는 독자다.
+- GPT-4.1은 프레임에 민감했다. 인도주의/안보/법적 책임 같은 서사 프레임에 따라 부정 비율이 6%에서 80% 넘게 출렁였다. 반면 LLaMA는 프레임이 바뀌어도 거의 다 부정으로 무너졌다.
+
+<strong>실무 교훈</strong>
+- 모델 선택 자체가 해석의 프레이밍이다. 어느 모델을 쓰느냐가 분쟁 서사를 감정적으로 어떻게 채색할지를 정한다.
+- 자동 감성 점수를 중립적이고 서로 바꿔 쓸 수 있는 측정값처럼 다루면 안 된다. 단일 정답에 기대는 대신, 정보이론 지표로 모델 간 분포 차이를 드러내는 편이 더 정직한 분석이다.
+
+```mermaid
+flowchart TD
+  classDef start fill:#bbdefb,stroke:#0d47a1,color:#000
+  classDef neutral fill:#fff9c4,stroke:#f57f17,color:#000
+  classDef neg fill:#ffcdd2,stroke:#c62828,color:#000
+  classDef result fill:#c8e6c9,stroke:#2e7d32,color:#000
+
+  A["<b>같은 헤드라인 10,990건</b><br/>가자 전쟁 아랍어"]:::start --> B["미세조정 BERT 6종"]:::start
+  A --> C["범용 LLM 3종<br/>GPT-4.1 Qwen LLaMA"]:::start
+  B --> D["중립으로 쏠림<br/>MARBERT 95.8% 중립<br/>글자 그대로 읽는 독자"]:::neutral
+  C --> E["부정으로 쏠림<br/>LLaMA 98.9% 부정<br/>세계 지식으로 평가"]:::neg
+  D --> F["단일 정답 없이<br/>정보이론으로 분포 비교<br/>엔트로피 JS거리 분산"]:::result
+  E --> F
+  F --> G["<b>차이는 무작위 아님<br/>체계적이고 방향성 있음</b><br/>모델 선택 = 해석 프레이밍"]:::start
+```
+
+### Can LLMs Transform Computational Social Science? (arXiv:2305.03514)
+
+Caleb Ziems, William Held, Diyi Yang 외 (Stanford, Georgia Tech).
+
+<strong>이 논문이 묻는 것</strong>
+- 먼저 용어 하나. 계산사회과학(Computational Social Science)은 텍스트나 대화 같은 디지털 자료를 대규모로 분류하고 분석해 사회현상을 연구하는 분야다. 예전엔 사람 코더가 문서를 일일이 읽고 라벨을 붙였다.
+- zero-shot(제로샷)은 예시를 따로 학습시키지 않고, 지시문만 주고 곧장 답하게 하는 방식이다. 미세조정(fine-tuning) 없이 모델이 가진 능력만으로 푸는 셈이다.
+- 첫째 질문은 이거다. 예시 학습 없이 지시만 준 LLM이 사회현상을 분류하고 설명하는 일을, 사람 코더만큼 믿을 만하게 해낼 수 있는가.
+- 둘째, 그래서 기존 Computational Social Science 작업 흐름(문서 수집부터 라벨링, 분석까지)을 LLM으로 보강할 수 있는가.
+- 이 그룹 논문들의 출발점이자 '표준 참고문헌'이다. 측정 도구로서 LLM이 어디까지 잘하고 어디서 막히는지를 실증으로 정리한 지도 같은 논문이다.
+
+<strong>무엇으로 실험했나 (데이터/표본)</strong>
+- 사회과학 6개 분야(역사, 문학, 언어학, 정치학, 심리학, 사회학)에서 골라낸 <strong>25개 대표 Computational Social Science 벤치마크</strong>를 모았다. 벤치마크란 정답이 이미 정해져 있어 성능을 객관적으로 잴 수 있는 표준 과제 묶음이다.
+- 과제는 두 종류다. 분류 과제 20개(발화 단위 10개, 대화 단위 6개, 문서 단위 4개)와, 텍스트를 직접 만들어내는 생성 과제 5개.
+- 각 과제의 테스트셋은 클래스별로 고르게 뽑은(층화표본) 최대 500건으로 구성했다(Table 2). 한 클래스가 너무 많거나 적어 점수가 왜곡되지 않게 한 것이다.
+- 평가한 모델은 13종이다. FLAN-T5 small(파라미터 8000만개)부터 XXL(110억개), FLAN-UL2(200억개), GPT-3 계열의 text-001/002/003, gpt-3.5-turbo, GPT-4.
+
+<strong>어떻게 시켰나 (방법)</strong>
+- 전부 <strong>zero-shot 프롬프트 엔지니어링</strong>이다. 즉 모델을 추가로 학습시키지 않고, 지시문을 잘 짜는 것만으로 성능을 끌어냈다. 그 지시문 설계 규칙을 Table 1로 정리했다.
+- (1) 답이 범주형이면 A/B 같은 알파벳 객관식으로 보기를 나열하고, 가장 확률 높은 토큰 하나만 뱉게 했다.
+- (2) 보기는 줄바꿈으로 하나씩 분리했다.
+- (3) 지시문은 본문 맥락 뒤에 놓았다.
+- (4) 모델이 헷갈려도 무조건 답 하나를 고르게 제약을 명시했다.
+- (5) 여러 정보를 한꺼번에 받아야 할 땐 JSON 형식으로 출력하게 했다.
+- temperature는 0으로 둬서 출력이 매번 똑같이 나오게 고정했고(무작위성 제거), 유효한 클래스 안에서만 답이 나오도록 디코딩을 제약했다(또는 logit bias로 그쪽 토큰에 가중).
+- 프롬프트 표현 하나에 운이 좌우되지 않게, gpt-3.5-turbo로 같은 지시를 동의어로 바꾼 변형 4개를 만들어 원본까지 5개 변형의 평균 성능을 봤다.
+- 평가지표. 분류는 macro F1을 썼다. F1은 정밀도와 재현율의 조화평균이고, macro는 클래스별 F1을 단순평균해 소수 클래스도 동등하게 반영한다. 생성 과제는 BLEU나 BERTScore 같은 자동지표가 사람 판단과 잘 안 맞아서, 도메인 전문가가 직접 1-5점 척도(faithfulness 사실충실성, coherence 일관성, relevance 적절성, fluency 유창성)로 매기고 순위도 비교했다.
+
+```mermaid
+flowchart LR
+    A["6개 분야<br/>사회과학 문헌 서베이"]:::blue --> B["25개 대표 Computational Social Science 과제<br/><b>분류 20 + 생성 5</b>"]:::blue
+    B --> C["zero-shot 프롬프트<br/><b>객관식+제약+JSON</b><br/>5개 변형 평균"]:::yellow
+    C --> D["13개 LLM<br/>FLAN-T5/UL2, GPT-3, GPT-4"]:::yellow
+    D --> E["분류: macro F1<br/>vs RoBERTa 미세조정 기준선"]:::green
+    D --> F["생성: 전문가 Likert<br/>+ 순위평가"]:::green
+    E --> G["연구질문 4개<br/>실현가능성/모델/분야/기능"]:::red
+    F --> G
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+<strong>무엇을 발견했나</strong>
+- (1) <strong>분류에서 zero-shot LLM은 잘 미세조정된 RoBERTa 기준선을 거의 못 넘는다.</strong> RoBERTa는 해당 과제 데이터로 따로 학습시킨 비교 기준 모델이다. 다만 17개 과제 중 8개(47%)에서 사람과 '중간 정도' 일치를 보였다. 여기서 일치도는 Cohen κ(카파)로 쟀는데, 카파는 우연히 맞을 확률을 빼고 계산한 일치도라 0.40-0.65면 중간 수준이다. 가장 잘된 사례는 허위정보 탐지(F1 77.4, κ=0.55로 사람 코더끼리의 일치도 0.51보다도 높음), 입장 분류(76.0), 감정 분류(70.8)다.
+- (2) 반대로 17개 중 5개(공감, 의미변화, 설득, 유해성 등)는 무작위로 찍은 것과 차이가 없었다. 이런 과제에 LLM 라벨을 쓰면 위험하다.
+- (3) 성능을 가르는 건 <strong>학문 분야가 아니라 입력의 복잡도와 라벨 공간의 복잡도</strong>였다. 즉 어느 학과 과제냐가 아니라, 읽어야 할 텍스트가 길고 답해야 할 보기가 많을수록 어려웠다(문서 단위 과제가 가장 점수가 낮았다).
+- (4) 모델 선택. FLAN 계열은 모델이 커질수록 성능이 로그선형으로 올라갔다(파라미터가 한 자릿수 커질 때마다 분야 평균 약 +5점). 반면 GPT-3 001 계열은 크기를 키워도 별로 안 올랐고, 오히려 지시따르기 학습(instruction-tuning)과 사람 선호로 다듬는 학습(RLHF, 인간 피드백 강화학습)이 더 결정적이었다. 사건의 구성요소를 뽑아내는(event argument) 구조적 파싱 과제는 코드로 학습된 모델이 잘했다.
+- (5) 생성 과제에서는 davinci-003과 gpt-3.5가 사실충실성과 일관성에서 사람이 쓴 정답 참조문과 같거나 더 나았다(사람 평가자가 모델 출력을 38-68% 선호). 다만 어느 모델도 사람을 완전히 대체할 만큼 압도하진 못했다.
+
+![zero-shot LLM 과제별 최고 F1 - 잘되는 과제와 안되는 과제](images/canllm_f1_by_task.svg)
+
+### What is a protest anyway? Codebook conceptualization (arXiv:2510.03541)
+
+Andrew Halterman (Michigan State), Katherine A. Keith (Williams).
+
+<strong>이 논문이 묻는 것</strong>
+- LLM 시대에 디바이어싱(DSL/PPI)으로 LLM 주석오차를 보정하면 그걸로 충분한가. 아니면 <strong>그보다 앞 단계인 개념화(conceptualization)</strong>가 여전히 일차적 문제인가.
+- 여기서 개념화란 '무엇을 측정할지', 즉 어떤 사례가 시위에 해당하는지를 정의로 못 박는 작업을 말한다.
+- 답은 명료하다. 개념화 단계의 오류는 어떤 사후 통계보정으로도 못 고친다.
+
+<strong>세 가지 주장</strong>
+- <strong>주장 1</strong>: 주석오차는 두 가지로 분해된다. conceptualization 오류(클래스 정의 자체가 불완전해서 생기는 오류)와 operationalization 오류(정의는 옳은데 그걸 잘못 적용해서 생기는 오류)다. 이는 Adcock & Collier의 측정타당도 틀이다. 정의상, 잘 훈련된 전문가 주석자는 operationalization 오류는 안 낸다(정의를 정확히 적용하므로).
+- <strong>주장 2</strong>: zero-shot LLM은 분석자가 개념화 단계를 건너뛰도록 유혹한다. LLM 이전엔 인간 코더가 모호한 사례에서 질문을 던져 정의를 강제했다("노동파업도 시위에 넣나요?"). 그런데 LLM은 정의가 불완전해도 그럴듯한 라벨을 군말 없이 내놓는다 - 이걸 '조용한 실패(silent failure)'라 부른다. 틀렸는데 티가 안 난다.
+- <strong>주장 3</strong>: PPI/DSL 같은 사후보정도, LLM 정확도를 더 높이는 것도, 개념화에서 비롯된 편향은 못 고친다.
+
+<strong>세 분석자 비유 (Section 2)</strong>
+- 목표는 시위의 비율(prevalence) θ*=E[Y*]를 추정하는 것이다.
+- (1) <strong>비관론자</strong>: 사람 주석만 쓴다. 코드북이 완전하면 비편향이지만 1년 넘는 비용이 든다.
+- (2) <strong>낙관론자</strong>: LLM에 "이게 시위인가: yes/no"만 묻는다. 싸지만 편향된다(정의를 잘못 적용하는 operationalization 오류 + 라벨 표면형만 던져준 데서 오는 conceptualization 오류).
+- (3) <strong>실용주의자</strong>: 2주간 개념화에 투자해 완전한 코드북을 쓰고, n건은 손으로 주석하고 N건은 LLM으로 주석한 뒤 둘을 <strong>PPI(Algorithm 1)</strong>로 결합 보정한다.
+- 논문의 권고는 완전한 코드북을 갖춘 실용주의자다.
+
+```mermaid
+flowchart LR
+    A["배경개념<br/>protest"]:::blue --> B["체계화된 개념<br/><b>코드북 C</b>"]:::yellow
+    B -->|"<b>개념화</b><br/>불완전한 정의"| C["측정/예측<br/>Ŷ=f(C,X)"]:::green
+    C -->|"<b>조작화</b><br/>정의 오적용"| D["downstream 추정<br/>θ̂"]:::green
+    E["PPI/DSL 사후보정"]:::red -.->|"조작화 오류만 보정<br/><b>개념화 오류는 못 고침</b>"| D
+    F["LLM 정확도 향상"]:::red -.->|"분산만 줄임<br/>편향은 그대로"| D
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+<strong>정의의 유형과 코드북의 다양성 (Section 3)</strong>
+- 코드북 정의는 세 유형으로 나뉜다. Type I(라벨 표면형만, "protest?"), Type II(사전적 정의), Type III(연구자가 목적에 맞게 규정한 정의, 사회과학의 표준).
+- <strong>같은 배경개념이 여러 체계화 개념으로 갈라진다.</strong> 실제 시위 코드북 4종(ACE, ACLED, CAMEO, CCC)을 보면 '시위자의 폭력을 포함하는가, 최소 참가 인원, 온라인 시위 포함 여부, 파업/단식/시민불복종 포함 여부'에서 전부 다르게 정의한다(Figure 2).
+- 그래서 같은 문장("분노한 청년들이 상점 창문을 부쉈다")이 어느 코드북을 쓰느냐에 따라 다른 정답 라벨을 받는다.
+- zero-shot LLM은 Type I이나 II 정도만 줘도 그럴듯한 라벨을 내놓는다. 바로 그 점이 개념화 단계를 건너뛰게 만든다.
+
+<strong>시뮬레이션 (Section 5, 주장 3 검증)</strong>
+- 완전한 코드북 조건과 불완전한 코드북 조건을 비교했다.
+- 진짜 데이터생성과정(DGP, Appendix D): 시위 특성 4개(Z¹~Bern(0.2) 등)와 폭력 여부 V~Bern(0.05)로 참 시위라벨 D를 정한다.
+- 결과회귀는 Y=β₀+τD+β₁V+β₂X+ε. 시위 효과 τ=1(양수), 폭력 효과 β₁=-5(음수)로 설정.
+- <strong>완전한 코드북</strong>: 비폭력 시위만 D=1로 정의. 사람 주석은 A=D(정확), LLM 주석은 D에 노이즈를 더한 것.
+- <strong>불완전한 코드북</strong>: '폭력은 제외하라'는 지침이 빠져서, 사람도 LLM도 A=D∨V(시위거나 폭력이면 1)로 라벨한다.
+- gold n=1천, LLM N=1만, DSL로 보정.
+- 결과(Figure 3): <strong>코드북이 완전하면 DSL이 비편향이고 LLM 오류율이 낮을수록 분산이 줄어든다. 그런데 코드북이 불완전하면 LLM 오류율이 0%여도 DSL 추정이 편향된다.</strong> 이유는 폭력특성이 코드북에서 빠졌는데도 종속변수 Y에는 영향을 주기 때문이다(β₁=-5). 그래서 LLM이든 전문가든 라벨이 체계적으로 같은 방향으로 틀려버려, 보정으로도 못 잡는다.
+
+<strong>한계와 함의</strong>
+- 정답 라벨이 존재하는 실증주의(positivist) 과제, 즉 분류 문제에만 한정된다. 주관적이고 해석적인 과제는 제외했고, 예시도 시위 하나뿐이다.
+- 수업 관점에서 이 논문은 그룹 전체의 <strong>경계조건</strong>이다. DSL/PPI/SRI/GPI는 모두 '코드북이 완전하고 gold가 진짜 참값이다'라는 실증주의 가정 위에서만 타당하다.
+- <strong>식별이 추정보다 먼저라는 원칙의 가장 앞단</strong>이다. 측정 도구를 정교화하기 전에, 무엇을 측정하는지(개념화)부터 명확히 적어야 한다. 그리고 이건 통계의 문제가 아니라 도메인 전문성과 학계 합의의 문제다.
+- 핵심을 한 줄로. 사후보정은 조작화(operationalization) 오류만 고치지, 개념화(conceptualization) 오류는 못 고친다.
+
+### LLM 라벨 편향 보정법 비교 - DSL과 PPI 중 무엇이 나은가 (arXiv:2506.09627)
+
+Nicolas Audinet de Pieuchon, Adel Daoud, Connor T. Jerzak, Moa Johansson, Richard Johansson (Chalmers, Linkoping, UT Austin).
+
+<strong>디바이어싱 복습</strong>
+- 앞서 소개한 대로, 디바이어싱은 값싼 LLM 라벨에 소수의 사람 정답을 결합해 편향을 걷어내는 방법이고, 대표가 DSL과 PPI다.
+- 이 논문은 그 둘을 실제 데이터 규모에서 정면으로 맞붙인 비교 연구다. DSL의 자세한 수식은 이 절 맨 끝에서 본다.
+
+<strong>이 논문이 묻는 것</strong>
+- 이론적으로는 둘 다 표본이 무한히 크면 옳은 답으로 수렴한다(점근적 일관성).
+- 그런데 현실의 표본은 유한하다. 그래서 묻는다 - 실제 데이터 규모에서 둘 중 무엇이 더 정확하고, 언제 도움이 되나. 여태 둘을 직접 맞붙인 비교가 없었다.
+
+<strong>두 방법을 직관으로</strong>
+- <strong>PPI</strong>: 일단 LLM 라벨을 참값인 양 써서 답을 한 번 구한다. 그다음 사람 정답이 있는 일부 문서에서 'LLM 라벨로 구한 답'과 '진짜 정답으로 구한 답'의 차이를 재고, 그 차이만큼 처음 답을 빼서 보정한다. 한 번의 차이 보정이라 안정적이다.
+- <strong>DSL</strong>: LLM 라벨로 예측하되, 사람 정답이 있는 문서에서 '예측이 빗나간 양'을 표본추출 확률로 키워 더해, 편향이 미리 걷힌 '가짜 종속변수'를 만든 뒤 회귀한다. 사람 라벨을 더 알뜰히 써서 평균적으로 더 정확하지만, 그 가중이 들쭉날쭉하면 흔들릴 수 있다.
+
+<strong>실험 설계</strong>
+- 문서마다 설명변수와 LLM 라벨이 달려 있고, 그중 일부에만 사람 정답이 있다. 추정 목표는 설명변수 4개를 넣은 로지스틱 회귀의 계수다.
+- 네 가지 추정을 맞댄다.
+- <strong>이상적 기준(reference)</strong>: 모든 문서에 사람 정답을 단 경우. 가장 정확하지만 가장 비싸다.
+- <strong>정답만(classical)</strong>: 사람 정답이 있는 소수 문서만 쓴 추정.
+- <strong>채워넣기(imputation)</strong>: 전체에 LLM 라벨을 그냥 채워 넣은 추정. 편향된다.
+- <strong>디바이어싱(PPI, DSL)</strong>: LLM 라벨 전체와 사람 정답 소수를 결합한 추정.
+- 핵심 질문은 '디바이어싱이 정답만 쓴 추정보다 이상적 기준에 얼마나 더 가까워지나'다.
+
+```mermaid
+flowchart LR
+    A["4개 데이터셋<br/>Sentiment/Misinfo/<br/>Bias-in-Bios/Germeval18"]:::blue --> B["4개 주석원<br/>BERT/DeepSeek/<br/>Phi-4/Claude3.7"]:::yellow
+    B --> C["실험1: N 고정<br/>gold 비율 n/N 변화"]:::green
+    B --> D["실험2: gold n 고정<br/>전체 N 변화"]:::green
+    C --> E["PPI vs DSL vs 정답만<br/>지표=sRMSE"]:::green
+    D --> E
+    E --> F["DSL 평균적으로 우위<br/>그러나 변동 큼"]:::red
+    E --> G["PPI 안정적<br/>그러나 이득 작음"]:::red
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+<strong>데이터와 지표</strong>
+- 데이터셋 4개: Multi-domain Sentiment(리뷰 11,914건), Misinfo-general(영국 신문 The Sun/Guardian 출처 분류, 1만건), Bias in Biographies(성별 분류, 1만건), Germeval18(독일어 트윗의 공격성, 5,676건).
+- LLM 주석원 4종: BERT 미세조정, Phi-4, DeepSeek v3, Claude 3.7 Sonnet.
+- 각 조건을 250번 반복했다. 지표는 표준화 RMSE(sRMSE)로, 추정값이 기준값에서 상대적으로 얼마나 벗어났는지를 잰다(작을수록 좋다).
+
+<strong>무엇을 발견했나</strong>
+- 두 방법 다 평균적으로, 사람 정답만 쓴 추정보다 이상적 기준에 더 가까웠다. 디바이어싱이 제 일을 한다는 뜻이다.
+- <strong>DSL이 PPI보다 평균 sRMSE가 유의하게 낮았다</strong>(데이터셋과 주석원 전반에서). 평균적으론 DSL이 이긴다.
+- 그러나 <strong>DSL은 변동이 가장 크고 데이터셋을 많이 탔다.</strong> Misinfo-general에서는 DSL이 PPI보다 모든 지점에서 더 나빴다.
+- 원인(Appendix G): DSL은 <strong>설명변수들이 서로 강하게 상관될 때(다중공선성)</strong> 더 민감하게 흔들렸다. 상관이 아주 높은(상관계수 제곱 0.9 초과) 변수를 빼니 불안정성이 크게 줄었다.
+- 비용: 문서 1만건일 때 Phi-4는 사람 정답 2개 값, Claude는 105개 값이면 본전이다(break-even). 둘 다 전체를 전문가가 주석하는 것보다 훨씬 싸다.
+
+<strong>한계와 함의</strong>
+- 범위가 두 방법, 단일 이진분류, 로지스틱 회귀로 한정된다.
+- 결론은 '디바이어싱을 고르는 단계에서도 편향-분산 트레이드오프가 있다'는 것이다. DSL은 사람 라벨을 더 효율적으로 쓰지만, 안정성은 PPI가 낫다.
+- 실무 권고는 둘 다 계산해 함께 보고하라는 것이다.
+
+### Surrogate Representation Inference (SRI) - (1) 설계·식별 (arXiv:2509.12416)
+
+Kentaro Nakamura (Harvard, Imai 그룹).
+
+<strong>이 논문이 묻는 것</strong>
+- 기존 디바이어싱(DSL/PPI)에는 약점이 있다. 머신러닝 주석의 품질이 중간 정도(정확도 약 85%)면, 보정 과정에서 표준오차가 지나치게 커진다. 즉 편향은 잡되 신뢰구간이 너무 넓어져 쓸모가 떨어진다.
+- 질문은 이거다. 어떤 구조적 가정을 설계로 보장해서 효율을 끌어올릴 수 없을까. 그 가정이 surrogacy(대리성)다 - <strong>비구조 데이터(텍스트/이미지)가 사람 주석과 구조변수 사이를 완전히 매개한다</strong>는 가정이다. 풀어 말하면, 코더는 텍스트만 보고 라벨을 달지 정당 같은 구조변수를 직접 보지 않으므로, 텍스트만 알면 구조변수는 라벨에 추가 정보를 안 준다는 것이다.
+
+<strong>동기 예시 (Card et al. 2022)</strong>
+- 미 의회의 이민 관련 연설 20만건 이상(1880-2021)의 어조(친이민/중립/반이민)를 정당에 회귀하는 문제다.
+- 사람 주석은 3,643건. 그런데 코더끼리 일치도가 낮다(Krippendorff α≈0.5). RoBERTa 분류 정확도는 65%.
+- RoBERTa 예측을 그냥 차이검정하면 표준오차(SE)가 0.003으로 작지만 편향돼 있다.
+- 기존 편향보정을 적용하면 SE가 0.020으로 폭증한다. 이 비효율이 바로 SRI가 풀려는 문제다.
+
+<strong>핵심 가정과 식별 (Section 3)</strong>
+- 데이터 (T_i, Y_i, Z_i). T = 관심 예측변수(예: 정당), Y = 텍스트, Z = 통제변수. 그리고 L = 관측 불가능한 진짜 개념(연설의 진짜 어조), L̃ = 사람 주석(S=1인 일부 문서에서만 관측).
+- 추정 목표는 공변량으로 조정한 결과평균 <strong>Ψ_t = E[E[L_i | T_i=t, Z_i]]</strong>다. 즉 통제변수 Z를 맞춘 상태에서 정당이 t일 때 평균 어조가 얼마인지.
+- <strong>가정 1 (참 코딩규칙, True Coding Rule)</strong>: L=g_L(Y), 즉 진짜 개념은 텍스트만으로 정해지는 함수다(같은 텍스트면 진짜 어조도 하나로 정해진다).
+- <strong>surrogacy 가정</strong>: 코더는 텍스트 Y만 보고 라벨을 달지 정당 T를 직접 안 본다. 그래서 설계상 T⊥L̃ | Y,Z가 성립한다(Figure 1: T→Y→L̃ 구조, 즉 정당이 라벨에 미치는 영향은 오직 텍스트를 거쳐서만 흐른다 - Y가 완전 매개).
+
+<strong>대리표현 (Definition 1, Surrogate Representation)</strong>
+- 문제는 Y와 Z가 고차원이라는 점이다(텍스트 전체, 통제변수 다발). 그래서 저차원 함수 W=f(Y,Z)로 압축하되 surrogacy는 유지한다: {Y,Z}⊥{L,T} | W. 즉 압축된 W만 알면 원본 Y,Z를 더 봐도 L과 T에 대해 새 정보가 없다.
+- 그러면 비모수적으로(분포 형태를 특정하지 않고) 식별된다(Proposition 1): Ψ_t = ∫∫ E[L̃ | W, S=1] dF(Y|Z,T=t) dF(Z).
+- 여기에 Z에 대한 무시가능성(처치 외 교란이 Z로 다 통제됨)과 overlap(각 처치값이 모든 Z에서 나타날 확률이 0/1이 아님)을 더 가정하면, Ψ_t를 인과량(잠재결과의 기댓값)으로 해석할 수 있다.
+
+```mermaid
+flowchart LR
+    T["T 예측변수<br/>정당"]:::blue --> Y["Y 텍스트<br/>연설"]:::yellow
+    Z["Z 통제변수"]:::blue --> Y
+    Y ==완전매개==> Lt["L̃ 인간주석<br/>S=1만 관측"]:::green
+    Y --> W["대리표현<br/><b>W=f(Y,Z) 저차원</b><br/>W를 알면 Y,Z는 L,T에 추가정보 없음"]:::green
+    Z --> W
+    W --> ID["Ψ_t 비모수 식별<br/>T⊥L̃|W가 설계로 보장"]:::green
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+### Surrogate Representation Inference (SRI) - (2) 추정·신경망·영향함수 (arXiv:2509.12416)
+
+<strong>신경망 구조 (DragonNet식, Figure 2)</strong>
+- DragonNet은 인과추론용 신경망으로, 입력을 공유 표현으로 압축한 뒤 여러 출력 헤드로 갈라 동시에 예측하는 구조다.
+- 여기선 입력 Y,Z를 공유 표현 W=f(Y,Z;ξ)로 사상하고(ξ는 그 층의 파라미터), 두 갈래(헤드)로 동시에 예측한다.
+- <strong>결과 모델 μ(W;λ)=E[L̃|W]</strong>: 표현 W로 사람 주석을 예측. <strong>surrogacy 점수 ρ_t(W;ζ)=P(T=t|W)</strong>: 표현 W로 정당이 t일 확률을 예측.
+
+$$\min_{\xi,\lambda,\zeta}\ \frac{1}{n}\sum_i S_i\left\{\bigl(\mu(f(Y,Z;\xi);\lambda) - \tilde{L}_i\bigr)^2 + \alpha\,\mathrm{CrossEntropy}\bigl(T_i,\ \rho(f(Y,Z;\zeta))\bigr)\right\} \quad \text{(식 4)}$$
+
+- 손실은 두 부분의 가중합이다. 앞쪽은 주석을 맞히는 손실(결과 손실), 뒤쪽은 예측변수 T를 맞히는 손실(예측 손실)이고 α가 둘의 비중을 정한다.
+- ρ_t는 성향점수(propensity score, 처치를 받을 확률)와 비슷하지만 다르다. 보통 성향점수는 처치 T가 공변량의 영향을 받는 구조인데, 여기선 거꾸로 텍스트 Y가 T의 영향을 받는다. 그래서 '대리성 점수(surrogacy score)'라는 다른 이름을 쓴다(Athey et al. 2019).
+
+<strong>효율적 영향함수 (Theorem 1, 준모수 효율)</strong>
+- 준모수(semiparametric)는 분포 전체의 모양은 자유롭게 두되 관심 모수만 콕 집어 추정하는 틀이다. 그 안에서 '효율적 영향함수'는 분산이 이론적 하한까지 작아지는 최적의 추정 방향을 준다.
+
+$$\psi_t = \frac{\mathbf{1}\{S=1\}}{P(S=1)}\cdot\frac{\rho_t(f)}{\pi_t(Z)}\bigl(\tilde{L}-\mu(f)\bigr) + \frac{\mathbf{1}\{T=t\}}{\pi_t(Z)}\bigl(\mu(f)-\bar{m}_t(Z)\bigr) + \bar{m}_t(Z) - \Psi_t$$
+
+- 기호 풀이. π_t(Z)=P(T=t|Z)는 통제변수 Z만 가지고 본 성향점수. m̄_t(Z)=∫μ(f)dF(Y|Z,T=t)는 정당이 t이고 Z가 주어졌을 때 예측 주석의 평균. 식 전체는 '예측에 보정항을 더해 편향을 상쇄하는' AIPW류 구조다(앞의 DSL 식과 같은 정신).
+- 이 식에 들어가는 보조량들(π_t, ρ_t, μ, m̄_t)을 nuisance(성가신 보조모수)라 부른다. 관심은 Ψ_t지만 추정엔 필요한 것들이다. 이걸 K-fold 교차적합으로 추정한 뒤 추정식을 풀어 Ψ̂_t를 얻는다.
+- 가정 4(정칙성, regularity): overlap(c₂≤π_t≤1-c₂, 성향점수가 0/1에 붙지 않음), nuisance가 속도 δ_n으로 수렴, 그리고 두 nuisance 오차의 곱의 수렴속도가 n^(-1/2)δ_n. 이 곱 조건 덕에 개별 nuisance가 느려도(예: 신경망) 최종 추정은 빠르게 수렴한다.
+- Theorem 2: √n(Ψ̂_t-Ψ_t)/σ →d N(0,1). 즉 표본이 커지면 표준정규분포로 수렴해 정직한 신뢰구간을 준다.
+
+```mermaid
+flowchart TD
+    A["입력 Y, Z"]:::blue --> B["공유표현<br/><b>W=f(Y,Z;ξ)</b>"]:::yellow
+    B --> C["결과 헤드<br/>μ(W;λ)=E(L̃ | W)"]:::green
+    B --> D["대리성 헤드<br/>ρ_t(W;ζ)=P(T=t|W)"]:::green
+    C --> E["효율 영향함수 ψ_t<br/>이중강건 + 교차적합"]:::green
+    D --> E
+    E --> F["Ψ̂_t 점근정규<br/><b>SE 50%+ 감소</b>"]:::green
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+### Surrogate Representation Inference (SRI) - (3) 측정오차 확장·결과 (arXiv:2509.12416)
+
+<strong>확장: 비차별적 측정오차 (Section 4)</strong>
+- 지금까진 사람 주석을 참값처럼 봤지만, 사람도 틀린다. 이제 코더가 J=2명이라 두 주석 L̃^(1), L̃^(2)가 있다고 하자.
+- <strong>가정 6 (잡음 섞인 주석, Noisy Annotations)</strong>: 각 코더는 텍스트 Y만 보고 판단한다(L̃^(j)⊥Z|Y, L̃^(j)⊥T|Y,Z).
+- <strong>가정 7</strong>: 코더의 오류가 비차별적(non-differential)이다. 풀어 말하면 오류가 진짜 답과만 관련되고 다른 변수와는 무관하다는 뜻이다. 구체적으로 두 코더의 오류가 서로 독립(L̃^(1)⊥L̃^(2)|L)이고, 배제제약(Y⊥L̃^(j)|L, 즉 진짜 라벨 L을 알면 텍스트 Y는 주석에 추가 정보를 안 줌)이 성립한다.
+- 이건 이중 음성대조(double negative control) 또는 근접 인과추론(proximal causal inference) 문헌을 끌어다 쓴 것이다 - 두 코더를 진짜 라벨 L의 '잡음 섞인 두 개의 대용물(proxy)'로 보고, 둘을 맞대 진짜를 역산한다.
+- <strong>가정 8</strong>: 코더가 적어도 절반보다는 잘 맞힌다(P(L̃=l|L=l)>0.5). 동전던지기보다는 나아야 식별이 된다.
+- Proposition 2: 두 코더의 분해 방정식 체계를 풀면 코더별 오류율과 P(L|T,Z)를 식별할 수 있다.
+- 그렇게 식별 가능한 대리 종속변수 M_c(L̃^(1),L̃^(2))를 만들어(식 13: E[M_c|L]=1{L=c}가 되도록 설계) 관측 못 하는 참라벨 L 대신 회귀에 쓴다(식 14, 영향함수는 Theorem 3).
+
+<strong>실증 (Card et al. 재분석)</strong>
+- 전체 248,616건(주석 3,643건). BERT 임베딩을 입력으로 받아 은닉층 100/100/50의 공유표현을 만들고, 예측 헤드는 50/1, 교차적합 2조각, α=1, Adam 최적화, 조기종료(early stopping).
+- 세 추정량을 비교했다: 순진한 방법(RoBERTa 예측 차이검정, 편향), 기존 보정(PPI/DSL), 그리고 SRI.
+- 결과(Figure 4): 순진한 방법은 정당 간 차이를 과대추정했다.
+- <strong>SRI와 기존 보정 모두 점추정값은 서로 일관됐지만, SRI가 표준오차를 크게 줄였다</strong>(두 코더 독립이라는 제약을 활용한 덕이다).
+- 시뮬레이션(Appendix S5): 머신러닝 정확도가 중간(약 85%)일 때 SRI의 효율 이득이 특히 컸다. 90% 이상으로 거의 완벽해지면 기존 방법과 비슷해졌다.
+- 사람 주석에 측정오차가 있을 때, 기존 방법(주석이 완벽하다고 가정)은 편향과 과소 coverage를 보인 반면 SRI는 정직했다.
+
+<strong>한계와 함의</strong>
+- surrogacy 가정은 '코더가 구조변수를 직접 안 본다'는 설계로 보장되지만, 코딩규칙이 모호하면 깨질 수 있다(배제제약 위반). 그래서 이를 점검하는 검정절차를 제공한다(Appendix S2).
+- 신경망으로 nuisance를 추정할 때 요구되는 수렴속도 조건이, 고차원 입력에서는 확인하기 어렵다(BERT 임베딩을 쓰면 추정오차 우려가 있고, 대안으로 Imai-Nakamura가 제안한 LLM 내부표현 사용이 거론된다).
+- 수업 관점: DSL/PPI가 'ML 예측오차에 아무 구조도 안 가정하는' 범용성을 택했다면, SRI는 <strong>surrogacy라는, 연구설계로 보장할 수 있는 구조를 하나 더 부과해 효율을 산다.</strong>
+- 다시 한번 식별(어떤 가정을 설계로 보장할 수 있는가)이 추정의 효율을 결정한다.
+
+![SRI 표준오차 비교 forest plot - SE 0.020 -> 0.002](images/sri_se_forest.svg)
+
+### Causal Representation Learning with GenAI - texts as treatments (GPI) - (1) 설계 (arXiv:2410.00903)
+
+Kosuke Imai, Kentaro Nakamura (Harvard).
+
+<strong>이 논문이 묻는 것</strong>
+- 지금까지 LLM은 '측정 도구'였다. 여기선 텍스트 자체가 처치(treatment)다. 즉 텍스트의 어떤 특성이 결과에 미치는 인과효과를 본다.
+- 질문: 텍스트의 특정 처치특성(예: 군경력 언급, 특정 감정이나 주제)이 결과(예: 후보 호감도)에 주는 <strong>인과효과</strong>를, 같은 텍스트 안에 섞여 있는 다른 교란특성과 분리해 어떻게 타당하게 추정하나.
+- 어려움의 핵심은 텍스트가 고차원이라는 점이다. 무엇이 교란인지(교란표현)를 학습으로 잡아내야 한다.
+
+<strong>실험설계 (Section 2)</strong>
+- 응용은 Fong & Grimmer(2016)의 후보 프로필 실험이다. 위키피디아 후보 전기 1,246개를 두고, 유권자 1,886명이 0-100점 호감도(feeling thermometer)로 평가했다.
+- 군경력이 호감도에 주는 인과효과를 알고 싶다. 그런데 군경력은 학력, 혼인상태, 전기 길이 같은 다른 특성과 상관돼 있어 교란이 생긴다.
+- <strong>GenAI 활용의 핵심 아이디어</strong>: 오픈소스 LLM(Llama3-8B)으로 처치/통제 프롬프트에서 텍스트를 생성하거나 기존 텍스트를 그대로 재생성하고, <strong>그 LLM의 내부표현(internal representation) R을 직접 꺼내</strong> 교란특성을 분리하는 데 쓴다.
+- 차이가 여기 있다. 기존 방법(토픽모델, BERT 임베딩)은 표현을 데이터에서 추정하니 오차가 끼지만, 오픈소스 LLM은 그 텍스트를 실제로 만들어낸 진짜 벡터표현 R을 오차 없이 그대로 제공한다.
+
+<strong>핵심 가정</strong>
+- P_i = 무작위로 배정한 프롬프트. X_i = 생성된 텍스트. R_i = LLM 내부표현(h_γ(R)이 X를 결정). T_i = 관심 이진 처치특성 = g_T(X). U_i = 교란특성 = g_U(X)(차원이 X보다 훨씬 작음).
+- <strong>가정 1 (일관성, Consistency)</strong>: 관측된 결과는 실제 받은 처치의 잠재결과와 같다.
+- <strong>가정 2 (프롬프트 무작위배정)</strong>: Y(x)⊥P. 프롬프트를 무작위로 배정했으니 잠재결과와 독립이다.
+- <strong>가정 5 (분리가능성, Separability)</strong>: 잠재결과가 Y(x)=Y(g_T(x), g_U(x))로, 처치특성 g_T와 교란특성 g_U로 나뉜다. 그리고 둘이 서로의 결정함수가 아니다 - T가 U를 정하지도, U가 T를 정하지도 않는다. 즉 교란을 고정한 채 처치만 바꾸는 개입이 개념적으로 가능하다는 뜻이다.
+- <strong>가정 6 (결정적 디코딩, Deterministic Decoding)</strong>: greedy나 beam search 같은 방식으로 출력을 결정화한다(같은 입력이면 같은 출력, 거의 모든 LLM이 지원).
+
+```mermaid
+flowchart LR
+    P["프롬프트 P<br/>무작위배정"]:::blue --> R["LLM 내부표현 R<br/><b>오차 없이 추출</b>"]:::yellow
+    R --> X["생성텍스트 X<br/>h_γ(R)"]:::yellow
+    X ==> T["처치특성 T=g_T(X)<br/>군경력"]:::green
+    X ==> U["교란특성 U=g_U(X)<br/>학력, 길이 등"]:::red
+    T --> Y["결과 Y<br/>호감도"]:::green
+    U --> Y
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+### GPI - texts as treatments - (2) 식별·추정량 (arXiv:2410.00903)
+
+<strong>비모수 식별 (Theorem 1)</strong>
+- 교란제거함수(deconfounder) f: R→Q가 존재한다. 이 f는 내부표현 R을 더 작은 Q로 줄이되, Y⊥R | T, f(R)을 만족하게 한다 - 즉 처치 T와 f(R)을 알고 나면, 결과 Y는 나머지 R 정보와 무관해진다(교란을 다 빨아들였다는 뜻).
+- 교란특성 U_i가 그런 deconfounder의 자명한 예지만, 유일하진 않다. 어떤 deconfounder로 조정하든 평균처치효과(ATE)가 식별된다: P(Y(t,U)=y) = ∫ P(Y=y | T=t, f(R)) dF(R).
+- 함정 하나. <strong>내부표현 R로 직접 조정하면 overlap이 깨진다.</strong> T=g_T(R)이라 R이 정해지면 T가 결정돼 버려서, P(T=t|R)이 0 아니면 1이 된다. 처치/통제가 겹치는 구간이 없어지니 비교가 불가능하다.
+- 그래서 R보다 저차원인 f(R)로 조정한다. 분리가능성(가정 5) 덕에 f(R)은 T를 완벽히 예측하지 못하고, 그래서 overlap이 살아난다(Lemma 1).
+
+<strong>추정량 (TarNet + DML, Section 3.3)</strong>
+- 신경망 구조(Figure 2): R을 입력받아 deconfounder f(R;λ)를 찾고, 두 처치팔 각각의 조건부 결과 μ_t(f(R);θ_t)=E[Y|T=t,f(R)]를 예측한다(TarNet은 처치/통제 두 갈래로 결과를 따로 예측하는 신경망이다).
+- 손실(식 3): $\min \sum_i (Y_i - \mu_{T_i}(f(R);\theta))^2$. 즉 받은 처치 쪽 예측이 실제 결과에 가깝도록 학습한다.
+- <strong>앞의 DragonNet과 달리 성향점수 헤드를 일부러 뺐다.</strong> deconfounder를 결과만으로 추정한다. 만약 성향점수용 cross-entropy를 넣으면 f(R)이 T를 너무 잘 예측하게 돼서(P(T|f(R))이 0/1로 쏠려) overlap이 다시 무너지기 때문이다.
+- f를 먼저 추정한 뒤, 성향점수 π(f(R))는 따로 추정한다.
+- 마무리는 <strong>이중머신러닝(DML)의 영향함수(식 5, AIPW형)</strong>로 교차적합한다.
+
+$$\psi = \frac{T\,(Y-\mu_1(f))}{\pi(f)} - \frac{(1-T)(Y-\mu_0(f))}{1-\pi(f)} + \mu_1(f) - \mu_0(f) - \tau$$
+
+- Theorem 2: √n(τ̂-τ)/σ →d N(0,1). nuisance의 수렴속도가 n^(-1/4)이기만 하면 충분하다(DML의 표준 조건이다 - 곱 구조 덕에 각 보조모수는 느려도 된다).
+
+```mermaid
+flowchart TD
+    A["LLM 내부표현 R<br/>Llama3 마지막토큰<br/>4096차원"]:::blue --> B["TarNet<br/>deconfounder f(R;λ)<br/>저차원, T 완벽예측 못함"]:::yellow
+    B --> C["μ_1(f) 처치팔"]:::green
+    B --> D["μ_0(f) 통제팔"]:::green
+    B --> E["성향점수 π(f)<br/>별도 추정"]:::green
+    C --> F["DML 영향함수 ψ<br/>AIPW + 교차적합"]:::green
+    D --> F
+    E --> F
+    F --> G["ATE τ̂ 점근정규"]:::green
+    H["분리가능성이<br/>overlap 보장<br/>(R 직접조정은 붕괴)"]:::red -.-> B
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+### GPI - texts as treatments - (3) 결과·진단·함의 (arXiv:2410.00903)
+
+<strong>진단도구 (Section 3.5)</strong>
+- 분리가능성은 이 방법의 심장이자 동시에 검증 대상이다. 그래서 점검 도구를 셋 제시한다.
+- (1) 추정한 성향점수 π̂(f(R))의 분포가 0과 1에서 떨어져 있는지 확인한다(극단으로 쏠리면 가정 위반 신호).
+- (2) <strong>IOSS(지지집합 독립성 점수, Independence of Support Score, Wang & Jordan 2024)</strong>로 deconfounder와 처치의 지지집합(나타나는 값의 범위)이 서로 얼마나 의존하는지 측정한다(0에 가까울수록 좋다).
+- (3) 텍스트에서 처치특성만 바꾼 반사실(counterfactual) 텍스트를 LLM으로 생성해, 효과 추정이 일관되는지 비교한다.
+
+<strong>시뮬레이션 (Section 4)</strong>
+- Llama3-8B로 후보 전기 4,000개를 생성하고, 마지막 토큰의 4096차원 표현을 뽑았다.
+- deconfounder는 선형층(2048차원), 결과모델은 2층(500/1).
+- 처치는 군경력 키워드("military/veteran/army"), 교란은 BERTopic으로 뽑은 정치/교육 주제 + TextBlob 감정점수.
+- 분리가능성이 성립하는 경우와 위반하는 경우를, 각각 약/중/강 교란과 교차해 봤다.
+- 결과(Figure 3): <strong>분리가능성이 성립하면 GPI(새로 생성하든 기존 텍스트 재생성하든)가 모든 경쟁 방법보다 편향과 RMSE가 낮고, 95% 신뢰구간 coverage가 명목값에 근접</strong>했다.
+- 교란이 강할 때 DML-with-BERT는 붕괴했고, outcome-model-with-BERT는 전반적으로 과소 coverage였다.
+- GPI는 BERT 기반보다 실행 시간이 10배 이상 빨랐다.
+- 분리가능성이 위반되면(Figure 3 하단) GPI를 포함한 모든 방법이 편향되고 coverage가 무너졌다 - 추정량의 문제가 아니라 식별 가정 자체가 깨진 탓이다.
+- 같은 텍스트의 처치만 바꿔 비교하는 재생성(text reuse)이, 새로 생성하는 것보다 RMSE가 더 낮았다.
+
+<strong>실증 (Section 5)</strong>
+- Fong-Grimmer의 실제 응답 5,291건, 군경력 처치 비율 7%. Llama3로 각 전기를 재생성한 뒤 GPI를 적용했다.
+- 결과(Table 1): <strong>GPI는 ATE를 4.852[95% CI 1.902, 8.580]로, 양수이고 유의하게 추정</strong>했다(원논문 결과와 부합).
+- 비교 방법은 빗나갔다. outcome-with-BERT는 -4.277(음수라 부호가 반대), DML-with-BERT는 45.708(0-100 척도에서 비현실적으로 큼).
+- IOSS도 GPI가 0.10인 반면 BERT는 0.41이었다(BERT는 5,291건 전부 성향점수가 [0.01, 0.99] 바깥으로 나와 분리가능성 위반 가능성이 크다).
+- 실행 시간은 100배 빨랐다.
+
+<strong>한계와 함의</strong>
+- 분리가능성이 위반되면 모든 방법이 실패한다(근본적인 식별 한계).
+- 내부표현의 차원축소나 pooling 전략(디코더는 마지막 토큰을 씀), TarNet 하이퍼파라미터 튜닝에 민감하다.
+- 이미지에는 적용 가능하지만, 비디오는 시공간 복잡도 때문에 안 맞는다.
+- 수업 관점: 이 그룹의 정점에 있는 <strong>'텍스트를 처치로 보는' 인과추론</strong>이다. LLM을 '측정 도구'가 아니라 '처치 생성기 + 진짜 표현 제공자'로 쓴다.
+- 핵심 메시지는 내내 같다. 좋은 추정량(DML)이 있어도 분리가능성이라는 <strong>식별 가정</strong>이 성립해야만 추정이 의미를 갖고, GenAI의 내부표현은 그 가정을 검증하고 활용하는 새로운 수단이다.
+
+![텍스트 처치 ATE 추정 forest plot - GPI vs BERT 기반](images/gpi_ate_forest.svg)
+
+### Design-based Supervised Learning (DSL) - (1) 문제 설정 (arXiv:2306.04746)
+
+Naoki Egami, Musashi Hinck, Brandon M. Stewart, Hanying Wei (Columbia, Princeton).
+
+이 절 내내 디바이어싱의 대표로 DSL을 여러 번 언급했다. 이제 그 DSL을 수식까지 정면으로 본다. 이 절에서 가장 수식이 무거운 부분이니 천천히 따라오자.
+
+<strong>이 논문이 묻는 것</strong>
+- LLM이 만든 라벨은 불완전하고 편향돼 있다. 이걸 '대리라벨(surrogate label)'이라 부른다. 진짜 정답 대신 임시로 갖다 쓰는 라벨이라는 뜻이다.
+- 질문은 이거다. 이 대리라벨을 회귀분석의 종속변수로 쓰면서도, 추정값이 표본이 커질수록 진짜 값으로 수렴하고(점근적 비편향성) 신뢰구간이 약속한 확률만큼 진짜 값을 덮는(올바른 coverage, 즉 95% 신뢰구간이 실제로 95% 확률로 참값을 포함) 성질을 어떻게 보장할까.
+- 전제 하나. 사회과학에서는 예측오차의 크기(RMSE, 평균제곱근오차)보다 편향(bias)과 신뢰구간의 정직함(coverage)이 더 중요하다. 결론이 맞느냐가 점수보다 우선이라는 뜻이다.
+
+<strong>문제의 구조</strong>
+- Computational Social Science의 전형적 패턴은 이렇다. 문서에 라벨 Y를 붙인 뒤, 그 Y를 설명변수 X에 회귀한다. 예를 들어 어떤 발화가 혐오발언인지(Y)를 발화자의 성별과 이념(X)으로 설명하는 식이다.
+- 모든 문서를 전문가가 정답(gold)으로 라벨링하면 너무 비싸다. 그래서 LLM 대리라벨 Q를 쓴다.
+- 그런데 <strong>대리라벨을 그냥 종속변수 자리에 넣으면(이걸 Surrogate Only, SO라 한다)</strong> 문제가 생긴다. 학부 회귀에서 배운 측정오차는 평균이 0(mean-zero)이고 설명변수와 무관할 때만 추정이 안전하다. LLM 오차는 그렇지 않아서 평균이 0이 아니고 X와 상관된다. 그 결과 추정값이 편향되고 신뢰구간이 무너진다.
+- 시뮬레이션을 보면 LLM 정확도가 90%여도 95% 신뢰구간이 진짜 값을 덮는 비율이 40%밖에 안 됐다(Figure 1a). 신뢰구간이 거짓말을 하는 셈이다.
+- 게다가 사회과학의 효과 크기는 원래 작다. 작은 측정오차도 결론의 부호를 뒤집을 수 있어서, 정직한 불확실성 보고(valid uncertainty)가 필수다.
+
+![DSL: 신뢰구간이 진짜 값을 덮는 비율 - SO 40% vs DSL 94%](images/dsl_coverage_failure.svg)
+
+<strong>기호와 세팅 (Table 2)</strong>
+- Y = 전문가 정답 결과(문서 일부에서만 관측)
+- X = 설명변수
+- Q = LLM 대리라벨
+- W = 보조 메타데이터(예: 임베딩)
+- R = 라벨링 표시자(R=1이면 그 문서는 사람이 gold로 라벨함)
+- π(Q,W,X) = 그 문서가 gold 표본에 뽑힐 확률
+- <strong>가정 1 (설계기반 표본추출, Design-based Sampling)</strong>: 확률 π를 연구자가 알고 있고(known), 0보다 크다.
+- 왜 이게 성립하나. 연구자가 어떤 문서를 사람에게 라벨시킬지 직접 정하기 때문이다. 전체 문서 묶음이 손에 이미 있고, 거기서 연구자가 표본을 설계해 뽑으므로 π를 안다. 그래서 '설계기반(design-based)'이다.
+- 이 가정이 보장하는 핵심은 Y⊥R | Q,W,X다. 즉 Q,W,X를 고정하면, 어떤 문서가 gold로 뽑혔는지(R)는 그 문서의 진짜 라벨 Y와 무관하다. 뽑기를 연구자가 통제했으니 당연하다.
+- 추정 목표는 오라클 로지스틱 회귀계수 β*다. '오라클'은 모든 문서의 진짜 Y를 다 안다고 가정했을 때의 이상적 계수라는 뜻이고, 모멘트 조건 E{(Y - expit(X'β))X} = 0을 푸는 β로 정의된다(expit은 로지스틱 함수, 즉 선형예측값을 0-1 확률로 바꾸는 함수).
+
+```mermaid
+flowchart TD
+    A["문서 코퍼스<br/>전체 사전 보유"]:::blue --> B["LLM 대리라벨 Q<br/>+ 보조변수 W"]:::yellow
+    A --> C["설계기반 표본추출<br/><b>π(Q,W,X) 연구자가 알고, &gt;0</b>"]:::green
+    C --> D["소수 gold 라벨 Y<br/>R=1 문서만"]:::green
+    B --> E["순진한 방법: SO<br/>Q를 Y처럼 회귀"]:::red
+    E --> F["편향 + coverage 붕괴<br/>정확도 90%여도 CI 40%"]:::red
+    D --> G["DSL 추정량<br/>(다음 슬라이드)"]:::green
+    B --> G
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+<strong>기존 방법은 왜 다 부족한가 (Section 3)</strong>
+- (1) SO(Surrogate Only): 모든 문서 n개를 쓰지만, 측정오차가 X에 대해 무작위이고 평균 0일 때만 일관된다. 현실에선 거의 거짓이라 편향된다.
+- (2) GSO(Gold-Standard Only, 정답만 사용): gold 표본만 1/π로 가중해 회귀한다. 여기서 1/π 가중이 IPW(역확률 가중, Inverse Probability Weighting)인데, 표본에 뽑힐 확률의 역수로 곱해 '뽑히기 어려웠던 문서일수록 크게 쳐주는' 방식으로 표본설계를 보정한다. 일관되고 신뢰구간도 정직하지만, 애써 만든 대리라벨을 통째로 버리니 비효율적이다.
+- (3) SL(Supervised Learning, 지도학습): gold로 머신러닝 모델 ĝ(Q,W,X)를 학습시켜 전체 문서의 예측 라벨을 종속변수로 쓴다. 그런데 이게 타당하려면 ĝ가 진짜 조건부기댓값 E(Y|Q,W,X)로 정확히 수렴해야 한다(매우 강한 가정). 게다가 머신러닝의 정규화에서 오는 편향 때문에 정직한 신뢰구간을 못 준다.
+- 어떤 기존 방법도 '최소 가정 + 점근 비편향 + 올바른 coverage + 대리라벨 효율적 활용'을 동시에 만족하지 못한다(Table 1).
+
+![SO/GSO/SL/DSL 비교표 - DSL만 비편향+정직한 CI+효율을 모두 만족](images/dsl_methods_matrix.svg)
+
+### Design-based Supervised Learning (DSL) - (2) 추정량·알고리즘 (arXiv:2306.04746)
+
+<strong>핵심 아이디어</strong>
+- LLM 라벨을 그냥 쓰지도, 버리지도 않는다. <strong>편향을 미리 걷어낸 가짜 종속변수(bias-corrected pseudo-outcome)</strong>를 새로 만들어 회귀에 넣는다.
+- 만드는 절차에 교차적합(cross-fitting)을 쓴다. 데이터를 K조각으로 나눠, 한 조각 바깥(나머지 데이터)으로 모델 ĝ_k를 학습하고 그걸 그 조각 안의 관측치에 적용한다. 같은 데이터로 학습하고 평가하면 과적합 편향이 끼는데, 이렇게 나눠 쓰면 그걸 막는다.
+
+$$\tilde{Y}_i^{k} = \hat{g}_k(Q,W,X) + \frac{R_i}{\pi(Q,W,X)}\,\bigl(Y_i - \hat{g}_k(Q,W,X)\bigr) \quad \text{(식 4)}$$
+
+- 이 식을 말로 풀면. 먼저 ĝ_k로 라벨을 예측한다(첫째 항). 거기에 보정항을 더한다(둘째 항) - gold로 뽑힌 문서(R=1)에 대해서만, 예측이 진짜 Y에서 얼마나 빗나갔는지(Y-ĝ)를 IPW 가중(R/π)으로 키워 더한다.
+- 이 형태가 doubly-robust(이중강건) 또는 AIPW(보정된 역확률 가중 추정)다. 이중강건이란 '두 보조 모델 중 하나만 맞아도 추정이 일관되게 유지되는' 성질을 말한다. 여기선 예측 모델 ĝ와 표본추출 모델 π 중 하나만 맞으면 된다.
+- 핵심 성질: <strong>가정 1(π를 안다)만으로 E_k(Ỹ^k | Q,W,X) = E(Y | Q,W,X)</strong>가 성립한다. 즉 ĝ가 틀려도(오설정돼도) 이 가짜 종속변수의 조건부 평균은 진짜 Y의 조건부 평균과 같아진다.
+- 왜 그런가. E(RY|Q,W,X)=E(R|Q,W,X)·E(Y|Q,W,X)이고 E(R|Q,W,X)=π이기 때문이다(R이 뽑힐 확률이 π니까). 그래서 보정항이 ĝ의 오차를 정확히 상쇄해 버린다.
+- DSL은 이 가짜 종속변수를 진짜 Y 자리에 넣고 모멘트 방정식을 푼다.
+
+$$\sum_k \sum_i \bigl(\tilde{Y}_i^{k} - \mathrm{expit}(X_i'\beta)\bigr)\,X_i = 0 \quad \text{(식 5)}$$
+
+```mermaid
+flowchart LR
+    A["K-fold 분할<br/>D_1..D_K"]:::blue --> B["fold k 밖에서<br/>ĝ_k 학습<br/>Y를 Q,W,X로 예측"]:::yellow
+    B --> C["fold k: 가짜 종속변수 구성<br/><b>Ỹ = ĝ + (R/π)(Y-ĝ)</b><br/>AIPW 이중강건"]:::green
+    C --> D["모멘트식<br/>Σ(Ỹ-expit(X'β))X=0<br/>로지스틱 β 추정"]:::green
+    D --> E["샌드위치 분산 V̂<br/><b>점근정규 + 정직한 CI</b>"]:::green
+    F["ĝ 틀려도<br/>편향 안 됨<br/>π를 아는 게 보장"]:::red -.-> C
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+```
+
+<strong>이론적 보장 (Proposition 1)</strong>
+- DSL 추정량은 일관되고 점근정규다. 즉 표본이 커지면 √n(β̂-β*)가 평균 0, 분산 V인 정규분포로 수렴하고, 분산도 샌드위치 추정량 V̂=M̂⁻¹Ω̂M̂⁻¹로 일관되게 추정된다(샌드위치 분산은 M̂⁻¹이 빵, Ω̂이 속재료처럼 끼인 모양이라 붙은 이름이고, 모델이 조금 틀려도 견고한 표준오차를 준다).
+- <strong>ĝ가 제멋대로 틀려도(발산만 안 하면) 추론은 여전히 정직하다.</strong> 바꿔 말해 LLM 라벨이 아무리 편향돼 있어도 최종 β 추정에는 편향을 안 옮긴다.
+- 대신 대리라벨이 정확할수록 점근분산 V가 줄어 효율이 올라간다. 그래서 라벨을 버리는 GSO보다 우월하다 - 편향은 똑같이 없으면서 신뢰구간이 더 좁다.
+- 이 강한 보장의 비결은 표준 이중머신러닝(DML, Double Machine Learning)과의 차이에 있다. DML은 보통 π를 데이터에서 추정해야 하고 그 추정의 수렴속도에 가정을 깔아야 한다. DSL은 <strong>연구설계 덕에 π를 처음부터 알고 있어서</strong> 그 부담을 통째로 없앤다.
+- 이 틀은 적률법(method-of-moments)으로 확장된다(Definition 2: 첫 단계 머신러닝 추정에 둔감하게 설계된 '설계기반 모멘트'). 그래서 로지스틱뿐 아니라 선형회귀, 측정, 일반적인 M-추정까지 다 커버한다.
+
+### Design-based Supervised Learning (DSL) - (3) 실험·함의 (arXiv:2306.04746)
+
+<strong>실험 (18개 실제 데이터셋)</strong>
+- 보조 모델 ĝ는 일반화 랜덤포레스트(grf, generalized random forests)로 학습했고, 교차적합은 5조각으로 나눴다.
+- (1) <strong>Congressional Bills Project</strong>: 미 의회 법안 40만건을 20개 입법주제로 사람이 코딩한 데이터다. 어떤 법안이 거시경제(Macroeconomy) 주제인지를, 발의 의원의 특성(상원의원 여부, 민주당 여부, DW-Nominate 이념점수)으로 로지스틱 회귀했다. 클래스 비율을 균형(5천/5천)과 불균형(1천/9천) 두 경우로 봤다. 대리라벨 Q는 GPT-3 zero-shot 예측(정확도 균형 68%, 불균형 90%)이고, 보조변수 W로는 MPnet 임베딩의 코사인 거리를 썼다. 결과(Figure 2): SO만 큰 편향과 과소 coverage(신뢰구간이 참값을 덜 덮음)를 보였고, GSO와 DSL만 약속한 명목 coverage를 지켰다. 효율 면에서 DSL은 GSO 대비 RMSE를 14%(균형 zero-shot)에서 31%(5-shot)까지 줄였다.
+- (2) <strong>Ziems et al. 17개 데이터셋의 클래스 비율(prevalence) 추정</strong>: 절편만 있는 회귀, 즉 '전체에서 양성 비율이 얼마냐'를 추정하는 문제다. 대리라벨은 flan-ul2, gold는 100건만 썼다. SO는 정확도가 70%대여도 큰 편향을 냈고, DSL은 낮은 편향과 명목 coverage를 유지하면서도 RMSE는 SL과 비슷했다(Table 3).
+
+<strong>한계</strong>
+- (1) '라벨을 종속변수로 쓰고, 전체 문서 묶음을 미리 다 갖고 있는' 특정 세팅에만 맞다. 텍스트를 예측변수(X)로 쓰거나, 학습 시점과 적용 시점의 분포가 달라지는 도메인 이동(domain shift)이 있으면 안 맞는다.
+- (2) gold를 만들 방법이 필요하고, 그 gold가 진짜로 정확해야 한다.
+- (3) 편향과 coverage를 RMSE보다 앞세운다는 가정 위에 서 있다. 만약 RMSE가 최우선인 응용이라면 SL이 나을 수도 있다.
+
+<strong>이 수업의 관점</strong>
+- 이 논문은 <strong>'추정(estimation)보다 식별(identification)이 먼저'</strong>의 전형이다.
+- 초점이 LLM 정확도를 더 끌어올리는 데 있지 않다. 측정오차가 있어도 추정 목표 β를 식별 가능하게(왜 그 값을 타당한 모수로 볼 수 있는지 논증 가능하게) 만드는 설계(π를 아는 것)와, 그 위에서 작동하는 추정량(이중강건 가짜 종속변수)이 핵심이다.
+- 앞서 본 PPI, SRI와 함께 이 그룹의 중심 도구다.
+
+## 3. ② 시뮬레이션 (1) - Silicon Sampling의 약속
+
+### 이름이 많다
+
+LLM에게 인구통계나 페르소나를 주입해 <strong>가짜 설문 응답자</strong>를 만드는 아이디어다. 분야마다 이름이 다르다.
+
+| 이름 | 쓰는 곳 |
+|------|---------|
+| <strong>Silicon Sampling</strong> | 정치학·사회학 |
+| <strong>Synthetic Respondents</strong> | 설문방법론 |
+| <strong>LLM-augmented Survey</strong> | 계산사회과학 |
+| <strong>Digital Twin</strong> | 마케팅·비즈니스 |
+
+- 이름이 네 개라는 건 아직 정체에 합의가 없다는 신호다.
+- 며칠 전 공개된 <strong>NVIDIA Nemotron-Personas-Korea-Extended</strong>(100만 명 규모 한국인 페르소나)가 화제다.
+- 이걸로 한국 사회조사를 대체하겠다는 기대가 따라붙는다.
+
+### 작동 방식과 판매 문구
+
+```mermaid
+flowchart LR
+    A["인구통계 / 페르소나<br/>나이·지역·성향·생애사"] --> B["<b>LLM에 조건으로 주입</b>"]
+    B --> C["설문 문항 제시"]
+    C --> D["LLM이 '응답' 생성"]
+    D --> E["가상 응답 분포<br/>= 합성 여론조사"]
+
+    classDef step fill:#e3f2fd,stroke:#1565c0,color:#000
+    class A,B,C,D,E step
+```
+
+<strong>판매 문구</strong>
+
+- 설문조사는 비싸고 느리다.
+- AI로 응답자를 시뮬레이션하면 싸게, 빠르게, 무한히 뽑을 수 있다.
+
+<strong>이 약속을 진지하게 구현한 두 편</strong>
+
+- 실리콘 표본의 통계적 성질을 따진다(2409.02601).
+- 페르소나를 실제 인구 분포에 정렬한다(Synthia).
+
+### ChatGPT vs Social Surveys (arXiv:2409.02601): 실리콘 인구의 분포를 해부한다
+
+Muzhi Zhou 외 (HKUST-Guangzhou).
+
+- 이 연구는 LLM에게 인구통계 정보를 주고 가짜 설문 응답자를 대량으로 만드는 silicon sampling(실리콘 표본추출)을 다룬다.
+- 보통은 "LLM 답이 정답에 가까운가"를 묻는다.
+- 이 논문은 발상을 바꾼다. 정확도 대신 <strong>LLM이 만들어내는 인구 자체가 통계적으로 어떤 모양인가</strong>를 추정한다.
+
+<strong>연구질문</strong>
+
+- RQ1: ChatGPT가 만드는 가상 인구의 인구통계(성별/나이/인종 등) 분포는 실제와 어떻게 다른가.
+- RQ2: 그 가상 인구의 태도(가치관) 분포는 어떤 모양인가.
+
+```mermaid
+flowchart TD
+    P["프롬프트<br/>역할없음 / 응답자 / 전문가<br/>t=1, top_p=1"] --> G["GPT-3.5-turbo<br/>200명 응답자 생성"]
+    G -->|"30회 반복"| B["30개 묶음<br/>각 200명"]
+    B --> S["표집분포<br/>묶음평균들의 분포 (중심극한정리)"]
+    S --> M["실리콘 인구 대표값<br/>= 분포 한가운데"]
+    M --> C{"센서스/WVS 값이<br/>95% 신뢰구간 안인가?"}
+    C -->|"성별/나이만 OK"| OK["정렬됨"]
+    C -->|"인종/교육/소득/지역/태도"| FAIL["편향 + 분산 붕괴"]
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+    class FAIL red;
+    class OK green;
+    class P,G,B,S,M blue;
+```
+
+<strong>데이터/표본</strong>
+
+- 비교 기준(벤치마크)을 두 묶음으로 잡는다.
+- Study 1: 미국 2020 인구센서스(성별/나이/인종)와 ACS 5년 추정치(교육/소득/지역)를 정답으로 쓴다.
+- Study 2: World Values Survey(WVS, 세계가치관조사)의 미국 2017년 웨이브 2,596명(분석에 쓴 표본은 2,437명)을 정답으로 쓴다.
+- Study 2 문항은 소득불평등 2개(1-10점 척도)와 성역할 4개(1-4점/1-5점 척도)다.
+
+<strong>방법: 무작위 실리콘 표본 만들고 표집분포로 평가하기</strong>
+
+- GPT-3.5-turbo를 온도(temperature) t=1, top_p=1로 둔다.
+- 온도는 답의 무작위성을 키우는 값이다. t=0이나 0.5로 두면 소수 인종 집단이 아예 빠져버리는(missing) 문제가 생겨 t=1을 골랐다.
+- 프롬프트 한 번에 가상 응답자 200명을 만들게 하고, 이를 30번 반복한다.
+- 30개 묶음(배치)이 서로 독립인지 ANOVA(분산분석)로 확인한다. 모든 변수에서 묶음 간 차이가 유의하지 않았다.
+- 각 묶음의 평균값 200개씩을 모아, 그 묶음 평균들의 분포를 만든다. 이것이 <strong>표집분포(sampling distribution)</strong>다. 즉 "평균값이 묶음마다 얼마나 흔들리는가"를 보여주는 분포다.
+- 중심극한정리(CLT, 표본 평균은 표본이 커질수록 정규분포에 가까워진다는 정리)에 따라 이 분포는 종 모양이 되고, 그 한가운데 값을 실리콘 인구의 대표값(모수)으로 본다.
+- 센서스나 WVS의 실제 값이 이 표집분포의 95% 신뢰구간(평균 ± 1.96 x 표준편차) 안에 들어오면 "정렬됐다(잘 맞는다)"고 판정한다.
+
+### ChatGPT vs Social Surveys: 결과와 이 수업 관점의 의의
+
+<strong>핵심 발견</strong>
+
+- 성별과 나이는 잘 맞는다. 여성 비율이 GPT 0.499로 센서스 0.509에 거의 같고, 평균 나이도 39.93세로 적절하다.
+- 그러나 인종은 크게 어긋난다. 백인을 실제보다 적게(40.5% vs 센서스 57.84%), 흑인(22.5% vs 12.05%)과 아시아인을 실제보다 많이 만든다.
+- 지역도 농촌 비율을 0.38로 부풀린다(실제 0.2).
+- 교육은 저학력자를 적게, 중간/고학력자를 많이 만든다. 예를 들어 학사 이상 여성 비율을 36%로 잡는데 실제는 31.37%다.
+- 즉 형편이 더 나은(advantaged) 집단을 실제보다 크게 그리는 쪽으로 치우친다.
+- 소득은 양 극단(최저/최고)을 적게, 중간 소득을 많이 만든다.
+- 태도(Study 2)에서 차이가 더 분명하다. GPT 응답의 표준편차(의견이 퍼진 정도)가 실제 WVS보다 훨씬 작다.
+- 실제 사람들은 중간뿐 아니라 양 끝으로도 의견이 흩어지는데, GPT는 중간 한 덩어리(종 모양)로 모인다.
+- 소득 문항 Q106은 t=-14.315, 성역할 문항 Q35는 t=-25.232로, 두 분포가 통계적으로 근본부터 다르다.
+- 한편 선행연구가 말한 "GPT의 진보/평등주의 성향"은 일관되게 나타나지 않았다.
+- <strong>아는 것과 하는 것의 분리(지식-수행 격차)</strong>: GPT에게 "미국 인구에서 여성과 흑인 비율이 얼마냐"고 직접 물으면 "여성 51%, 흑인 12.1-12.4%"라고 정확히 답한다. 그런데 막상 무작위로 응답자를 뽑게 시키면 그 정확한 지식을 분포로 구현하지 못한다. 정답을 알고 있는 것과 그 정답대로 표본을 뽑는 것이 따로 논다.
+
+<strong>한계/의의</strong>
+
+- 모델은 GPT-3.5-turbo 하나만 썼다. GPT-4는 빠지는 집단(missing)이 더 많아 분석에서 제외했다.
+- 이 수업 관점에서 핵심은 두 가지다.
+- <strong>분포 붕괴</strong>: LLM은 평균은 흉내 내도 분산(다양성)을 못 만든다. LLM은 "가장 그럴듯한 답"을 내도록 학습됐기(MLE, 최대우도추정) 때문에 응답이 가장 흔한 답으로 수렴하고, 그 결과 실제 사회의 이질성이 종 모양 한 덩어리로 뭉개진다.
+- <strong>지식과 시뮬레이션의 분리</strong>: 분포를 알면서도 표본 뽑는 행위로 재현하지 못한다는 것은, 실리콘 표본이 사회를 "이해"한 결과가 아니라 mode collapse(최빈값 붕괴, 즉 가장 흔한 답으로 응답이 쏠리는 현상)의 산물임을 보여준다.
+
+### Synthia (arXiv:2507.14922): 소셜미디어에 접지된 페르소나 생성
+
+Vahid Rahimzadeh 외 (Tehran Inst.).
+
+<strong>연구질문</strong>
+
+- 페르소나(가상 인물)를 <strong>실제 소셜미디어 게시물에 단단히 묶으면서(grounding, 접지)</strong>, 동시에 수백만 명 규모로 확장할 수 있는가.
+- 그렇게 하면 가상 인구의 의견 정확도와 공정성을 함께 끌어올릴 수 있는가.
+
+<strong>기존 방법의 양 극단</strong>
+
+- 한쪽은 실제 인터뷰를 바탕으로 해서 진짜 같지만(진정성) 규모를 못 키운다.
+- 다른 쪽은 완전히 지어내서 무한정 만들 수 있지만(확장성) 실제와 동떨어진다.
+- Synthia는 그 사이를 노린다.
+
+```mermaid
+flowchart LR
+    BS["Bluesky<br/>게시물 3.69억 / 사용자 1천만"] -->|"게시물 100-1000개 필터"| F["게시물 1.7억<br/>사용자 65만"]
+    F -->|"무작위 3천명"| U["사용자 3천명"]
+    U --> GEN["Gemma-3-27B<br/>생애 서사 생성<br/>(개인정보 제거)"]
+    GEN --> DS["인구통계 추정<br/>+ 가까운 짝 찾기<br/>(ATP 응답자에 정렬)"]
+    DS --> OP["의견 문항 응답"]
+    OP --> EVAL["인간 설문 분포와 비교<br/>EMD / Frobenius / Cronbach"]
+    GEN --> NET["원본 팔로워 그래프 보존<br/>링크 예측"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+    class BS,F,U,GEN,DS,OP,NET blue;
+    class EVAL green;
+```
+
+<strong>데이터/표본</strong>
+
+- 소셜미디어 Bluesky에서 게시물 3억 6,900만 개와 사용자 1,000만 명을 수집했다.
+- 게시물이 100-1,000개인 사용자만 남겨, 게시물 1억 7,000만 개와 사용자 65만 명으로 줄였다.
+- 그중 무작위로 3,000명을 골랐다(가장 단순한 비교 기준선과 같은 규모).
+- 의견 정확도 평가의 정답으로는 미국 여론조사 Pew American Trends Panel(ATP)의 34차/99차 웨이브를 썼다.
+
+<strong>방법</strong>
+
+- 페르소나를 "1인칭 시점의 인생 이야기(backstory, 생애 서사)"로 정의한다.
+- 모델 Gemma-3-27B(작은 버전은 Phi-4-mini 4B)로 사용자의 게시물에서 그 사람의 생애 서사를 써낸다.
+- 이때 계정 핸들/멘션/URL/이메일 같은 개인식별정보(PII)는 지운다.
+- 의견 정확도는 두 단계로 잰다. (1) 각 페르소나에게 인구통계를 물어 그 분포를 추정하고, 욕심껏 가까운 짝을 찾는 방식(greedy matching)으로 실제 ATP 응답자와 짝짓는다. (2) 짝지어진 페르소나에게 의견 문항을 묻고, 그 답을 실제 사람 분포와 비교한다.
+- 비교에는 EMD(두 분포를 포개는 데 드는 최소 이동 비용으로 거리를 재는 지표), Frobenius norm(행렬 차이의 크기), Cronbach alpha(문항 묶음의 내적 일관성)를 쓴다.
+- 핵심은 평가 기준을 LLM 심판이 아니라 <strong>실제 인간 설문 분포</strong>로 잡았다는 점이다. LLM 심판은 서사가 앞뒤 맞는지 보는 데만 보조로 쓰였고, 그 판단이 사람 판단과 일치한 비율은 69%였다.
+
+<strong>핵심 발견</strong>
+
+- 의견 정확도를 기준선 대비 최대 11.6% 끌어올렸고, 그것도 절반 이하 크기의 모델로 해냈다. 99차 웨이브에서 SYN-Gemma는 EMD 0.34로, 두 배 큰 ANT-LLaMa(70B)와 맞먹었다.
+- 정확도 개선의 주된 원인은 <strong>서사의 일관성</strong>이다. 완전히 지어낸 기준선(Anthology)은 페르소나의 63%에 앞뒤 모순이 있었는데, Synthia는 18%뿐이다.
+- 게시물을 200개 이상 써서 만들면 충실도(faithfulness) 0.75에 환각(없는 사실을 지어냄, hallucination) 0.25로 좋아진다(게시물 20개 미만이면 0.58/0.42로 나쁘다).
+- 공정성도 나아진다. 인구 5개 차원 중 4개에서 집단 간 격차(parity gap)가 줄었다(성별 0.22→0.17, 소득 0.28→0.25).
+- <strong>네트워크 보존</strong>: 원본 팔로워 관계를 그대로 물려받아, 누가 누구를 팔로우할지 맞히는 링크 예측에서 F1 점수 0.71/0.69를 냈다. 서로 팔로우하는 쌍은 페르소나 의미가 더 비슷하고(코사인 유사도 0.55), 팔로우하지 않는 쌍은 덜 비슷하다(0.40). 비슷한 사람끼리 뭉치는 성질(호모필리, homophily)이 페르소나의 의미 공간에 담긴 것이다.
+
+![Synthia 충실도 vs 게시글 수 - 더 접지할수록 충실](images/synthia_faithfulness.svg)
+
+<strong>한계/의의</strong>
+
+- 저자 스스로 "이건 개인 한 명을 맞히는 도구가 아니라 인구나 하위집단 단위 도구"라고 못 박는다.
+- 평가 과정 일부가 여전히 LLM 시뮬레이션과 LLM 심판에 기댄다. 그래서 학습 시점의 선입견(prior), 프롬프트에 따라 답이 흔들리는 민감성, 보정 오차(calibration error)를 그대로 물려받는다.
+- 이 수업 관점에서 보면 Synthia는 silicon sampling을 옹호하는 쪽인데, 그 개선이 LLM 자체가 아니라 "네트워크 보존"과 "서사 일관성"이라는 바깥에서 빌려온 접지에서 온다는 점이 역설적이다.
+- 즉 LLM 혼자서는 분산과 이질성을 못 만들고, 실제 소셜 그래프를 빌려와야 비로소 호모필리가 살아난다. 이건 시뮬레이션이라기보다 실제 데이터를 재활용하는 것에 가깝다.
+
+## 4. ② 시뮬레이션 (2) - 왜 회의적인가
+
+### 의문 1 - 외생적 충격(shock)의 시점 문제
+
+수업의 입장은 회의적이다. 거시 사회 사안에서 이 약속은 대체로 공허하다.
+
+회의의 근거는 학술적 의문 둘과 비즈니스적 자기모순 하나다. 그 첫째가 시점 문제다.
+
+<strong>왜 시점이 문제인가</strong>
+- 사회조사는 대부분 <strong>외생적 충격 이후의 여론 변화</strong>가 궁금해서 한다.
+- 즉 어떤 사건이 터졌고, 그것이 사람들의 생각을 어떻게 바꿨는지를 보려는 것이다.
+- 그런데 silicon sampling의 샘플은 <strong>특정 시점(LLM 학습 시점)의 분포에 고정</strong>돼 있다.
+- 충격 이전에 만든 페르소나가 충격 이후의 변화를 담고 있을 수 없다.
+
+<strong>두 가지 예시</strong>
+- <strong>지방선거</strong>: 6개월 전에 만든 대구 시민 페르소나에게 지금 출마 예정자 정보를 주고 당선자를 모델링하면, 안정적으로 김부겸 1위가 나올까. 페르소나는 6개월 전 분위기에 고정돼 있고 그사이의 구도 변화는 반영되지 않는다.
+- <strong>계엄 충격</strong>: "계엄 이후 기존 국민의힘 지지자가 얼마나 이탈했는가"를 계엄 이전에 만든 페르소나만으로 측정할 수 있는가. 충격의 정보가 시뮬레이션 안에 없으므로 불가능하다.
+
+<strong>정리</strong>
+- 충격 이후의 여론이 궁금해서 조사를 하는데, 충격 이전에 고정된 시뮬레이션은 그 질문에 답하지 못한다.
+- 시뮬레이션이 그나마 맞는 경우는 답을 이미 아는 평상시뿐이다.
+
+### 의문 2 - ABM의 재포장인가
+
+<strong>먼저 ABM이 뭔지 짚자</strong>
+- <strong>행위자 기반 모형(Agent-Based Modeling, ABM)</strong>은 개별 행위자(사람·가구·기업)에게 단순한 행동 규칙 몇 개를 준다.
+- 그 행위자들을 가상 공간에서 서로 상호작용시켜, 거시 현상이 어떻게 창발(emergence)하는지 본다.
+- 고전은 Schelling의 분리 모형이다. '내 이웃의 일정 비율 이상이 다른 집단이면 이사한다'는 규칙만으로 도시 전체가 통째로 분리되는 패턴이 나온다.
+
+```mermaid
+flowchart TD
+    A["<b>Silicon Sampling</b>"] --> B{ABM과<br/>다른가}
+    B -->|"다르다"| C["무엇이 다른지<br/>구분 기준이 불명확"]
+    B -->|"같다"| D["20년 전 ABM의<br/>임의성·검증불가 상속"]
+    C --> E["= 조건부 프롬프트의<br/>반복 샘플링"]
+    E --> D
+
+    classDef warn fill:#ffcdd2,stroke:#c62828,color:#000
+    class C,D,E warn
+```
+
+<strong>ABM은 왜 사그라들었나</strong>
+- ABM은 2000년대 사회과학에서 유행했다가 대체로 사그라들었다.
+- 행동 규칙과 파라미터를 연구자가 임의로 정했다.
+- 결과가 거기에 휘둘렸다.
+- 현실 데이터로 검증하기 어려웠다.
+
+<strong>silicon sampling은 다른가</strong>
+- 다르다고 하려면 그 차이가 무엇인지 답해야 한다.
+- 따져보면 <strong>다양한 조건에서 프롬프트를 여러 번 던지는 것</strong>과 출력에서 어떻게 구분되는지 분명하지 않다.
+- 에이전트든 페르소나든 결국 조건부 생성을 반복 샘플링하는 것이다.
+- 그렇다면 ABM이 겪은 임의성과 검증불가 문제를 그대로 물려받는다.
+
+### 의문 3 - 비즈니스 논리의 자기모순
+
+- 출발점은 "서베이가 비싸다"였다.
+- 그렇다면 해법은 서베이를 충분히 싸게 만드는 것이다.
+- "비싸니 가짜로 대체한다"는, 진짜 데이터를 싸게 얻는 길을 두고 타당성이 의심스러운 우회로를 택하는 것이다.
+
+### 실제 사례 - 대구시장 선거를 직접 silicon sampling 해봤다 (1) 설계와 결과
+
+이 비판은 추측이 아니다. 의문 1에서 든 바로 그 예시 - 대구 시민 페르소나로 시장 선거를 예측하기 - 를 직접 돌려봤다.
+
+![대구 LLM 예측 vs 실제 여론조사 막대그래프](images/daegu_llm_vs_reality.svg)
+
+<strong>설계</strong>
+- 대상: 2026년 6월 3일 대구광역시장 선거, 추경호(국민의힘) 대 김부겸(더불어민주당).
+- 페르소나: 강의 앞에서 언급한 <strong>NVIDIA Nemotron-Personas-Korea</strong>(100만 명). 대구 거주자 46,934명 중 2,500명을 뽑았다.
+- 결정적 사실: 이 페르소나에는 <strong>정치 변수(이념·정당지지·과거 투표)가 0개</strong>다. NVIDIA가 명시적으로 뺐다. 인구통계 12개와 서사 11개만 있다.
+- 각 페르소나에게 후보 정보를 주고 "누구에게 투표하겠나"를 물었다. 1인칭 연기와 3인칭 관찰 두 방식 x 3회 = 1인당 6회, 총 15,000회 호출(gpt-5.4).
+- 비용 $57.45, 46분.
+
+<strong>결과 - 현실과 정반대로 약 50%p 빗나감</strong>
+
+| 구분 | 추경호(보수) | 김부겸(진보) |
+|------|------|------|
+| <strong>LLM 시뮬레이션</strong> | <strong>76.7%</strong> | 23.3% |
+| 실제 여론조사(2026.4 양자대결) | 26-37% | <strong>43-52%</strong> |
+
+- LLM은 추경호 압승을 예측했지만, 실제 대구 민심은 김부겸 우세였다. 방향이 통째로 뒤집혔다.
+
+### 실제 사례 - 대구시장 선거 (2) 무엇이 빗나갔고, 왜인가
+
+LLM이 가진 건 'TK = 보수 = 국민의힘'이라는 정당 prior뿐이었다. 그래서 세 가지를 통째로 놓쳤고, 이게 의문 1·2·3을 그대로 입증한다.
+
+![연령별 김부겸 지지율: 실제 vs LLM](images/daegu_age_reversal.svg)
+
+<strong>의문 1 (충격 시점) 입증</strong>
+- 2024년 12월 계엄·탄핵 이후 대구 민심이 흔들렸는데, 페르소나는 충격 이전 인구통계에 고정돼 있어 그 변화를 0% 반영했다.
+- 자칭 '보수'라는 대구 시민의 28%가 실제로는 김부겸을 지지했다. 페르소나에 정치 변수가 없으니 이런 이탈은 측정 자체가 불가능하다.
+- 40대에서 실제는 김부겸 73% 대 LLM 15%로, 무려 58%p 정반대였다.
+
+<strong>인물론과 정당-후보 분리를 놓침</strong>
+- 정당 지지로는 국민의힘이 16%p 앞서지만, 후보 대결에서는 김부겸이 17%p 앞선다. 약 33%p의 '인물론' swing인데, LLM은 정당 prior만 알아 이걸 0% 잡았다.
+- 시군구도 인구통계가 아니라 '유명 정치인 지역구'라는 서사 지식에 과민 반응했다 - 달성군(추경호 지역구)은 28.5%p 과대 추정, 수성구(김부겸 지역구)는 진보 우세로 오판.
+
+<strong>의문 2 (ABM 재포장) 입증</strong>
+- 다중 로지스틱 회귀를 돌리니 McFadden $R^2$가 0.344로 그럴듯했다. 모델이 '정합적으로' 답한다는 뜻이다.
+- 그러나 현실과 맞춰보면 정확도는 거의 0이었다(50%p 빗나감). <strong>정합성으로 자기인증되지만 정확성과는 무관</strong> - ABM이 빠졌던 바로 그 함정이다.
+
+<strong>의문 3 (비즈니스 자기모순) 입증</strong>
+- 응답당 비용은 $0.0033로, 여론조사($0.5-5)보다 100-1500배 쌌다.
+- 그런데 결과가 정반대다. '비용은 1/100인데 정확도는 -100%'인 셈이라, 이걸로 의사결정하면 정반대에 베팅하게 된다.
+
+<strong>곁가지 방법론 발견</strong>
+- 후보 제시 순서를 안 섞으면 결과가 한쪽으로 쏠렸다(마지막에 본 후보를 더 고르는 recency bias, -2.7%p). silicon sampling을 한다면 후보 순서 counterbalancing은 필수다.
+
+### 문헌도 같은 방향을 가리킨다
+
+이 회의는 직관만이 아니라 2026년 논문들로 뒷받침된다.
+
+아래 네 편은 silicon sampling의 실패 양상을 정밀하게 진단한다.
+- 이질성을 평균으로 뭉갠다(2604.06663).
+- 태도를 부풀리고 네트워크를 무시한다(2602.04674).
+- 개인 예측에 실패한다(2508.03262).
+- 집단 담론 수준에서 비현실적인 캐리커처가 된다(2605.12452).
+
+### Restoring Heterogeneity (arXiv:2604.06663): 평균 페르소나를 해체하는 청중 세분화
+
+Xiaoyou Qin 외 (Fudan/Zhejiang).
+
+<strong>푸는 문제</strong>
+- LLM이 사람들의 다양성을 "평균적인 한 사람(평균 페르소나)"으로 뭉개버리는 현상이다.
+- 이를 <strong>heterogeneity masking(이질성 가림)</strong>이라 부른다.
+
+<strong>두 가지 사고방식의 대립</strong>
+- typological thinking(유형론적 사고): "평균적인 사람"을 그 집단의 본질로 여기는 관점.
+- population thinking(인구론적 사고): "사람마다 다른 그 분산 자체가 의미 있는 신호"라고 보는 관점.
+- LLM은 전자에 치우쳐 있다.
+
+<strong>연구질문(RQ1-3)</strong>: 세분화에 쓰는 식별자(어떤 정보로 사람을 나누는가)를 어떻게 짜야 하는가.
+- RQ1 입도(granularity): 식별자를 더 잘게/많이 넣으면 더 좋아지는가.
+- RQ2 간결성(parsimony): 적은 식별자로도 충분한가.
+- RQ3 선택논리(selection logic): 식별자 개수가 같다면 어떤 종류를 고르는 게 나은가.
+
+```mermaid
+flowchart TD
+    H["인간 기후설문<br/>Prolific 594명<br/>Six Americas 6집단"] --> CFG
+    subgraph CFG["식별자 구성 6가지"]
+      D["Demo (5개)"]
+      T59["Demo+Theory-59"]
+      T15["Demo+Theory-15"]
+      DD["Data-driven GBM (15개)"]
+      I15["Item-15 (SASSY)"]
+      I4["Item-4 (SASSY)"]
+    end
+    CFG --> LLM["Llama 3.1-70B / Mixtral 8x22B<br/>t=0.8, zero-shot"]
+    LLM --> E1["분포: MAE/F1/KLD"]
+    LLM --> E2["구조: SD/CV, 정규화EMD, Procrustes"]
+    LLM --> E3["예측: Cramer's V"]
+    E1 & E2 & E3 --> R["남는 과잉정규화<br/>어떤 구성도 전 차원을 다 못 잡음"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+    class H,D,T59,T15,DD,I15,I4,LLM,E1,E2,E3 blue;
+    class R red;
+```
+
+![단순 페르소나의 분산 붕괴와 세분화 복원 - SD 막대](images/restoring_variance.svg)
+
+<strong>데이터/표본</strong>
+- 미국 기후 의견 설문을 온라인 모집 플랫폼 Prolific에서 그 시점에 수집했고, 품질 점검 후 594명을 분석에 썼다.
+- 응답자 각각을 예일대의 "Six Americas(여섯 부류의 미국인)" 분류(SASSY 4문항으로 측정)로 6개 집단에 나눴다. 6개 집단은 경각심 큰(alarmed)/걱정하는(concerned)/조심스러운(cautious)/무관심한(disengaged)/회의적인(doubtful)/거부하는(dismissive)이다.
+- 모델은 Llama 3.1-70B와 Mixtral 8x22B를 썼다(온도 t=0.8, top_p=1.0, 사전 예시 없이 묻는 zero-shot 방식).
+- 모델이 내놓는 출력은 기후에 대한 7점 척도 3문항(유쾌함/우호적/긍정성)이다.
+
+<strong>방법: 식별자 구성 6가지를 3가지 잣대로 평가</strong>
+- 식별자 구성 6가지: Demo(인구통계 5개), Demo+Theory-59(이론에서 뽑은 식별자 59개 추가), Demo+Theory-15, Data-driven(머신러닝 모델 GBM이 중요하다고 고른 상위 15개), Item-15(SASSY 설문 15문항), Item-4(SASSY 4문항).
+- <strong>분포 충실도</strong>: 답의 분포가 사람과 얼마나 닮았는가. MAE(평균절대오차), 정확도/정밀도/재현율/F1, KLD(두 분포의 차이를 재는 값)로 본다.
+- <strong>구조 충실도</strong>: 집단 안의 다양성과 집단 사이의 관계가 사람과 닮았는가. 집단 내 분산(표준편차 SD, 그리고 평균 대비 분산인 변동계수 CV=SD/평균), 집단 간 구조(정규화 EMD, 그리고 MDS+Procrustes 거리)로 본다.
+- <strong>예측 충실도</strong>: 식별자와 결과가 얼마나 강하게 묶이는가. Cramer's V(두 범주형 변수의 연관 강도)를 사람 값과 비교한다.
+
+### Restoring Heterogeneity: 결과와 이 수업 관점의 의의
+
+<strong>핵심 발견</strong>
+- <strong>RQ1(입도)</strong>: 식별자를 무작정 많이 넣는다고 좋아지지 않는다. Demo만 쓰다가 Demo+Theory-15로 늘리면 좋아지지만(KLD 평균 4.65→1.10), 거기서 Theory-59까지 더 늘리면 오히려 나빠진다(KLD 2.76으로 도로 올라가고 구조/예측 충실도도 하락). Demo 단독이 가장 나쁘다(KLD가 Llama 2.72, Mixtral 6.58).
+- <strong>RQ2(간결성)</strong>: 간결한 구성이 종합적인 구성과 맞먹거나 더 낫다. 특히 구조와 예측에서 그렇다. Item-4가 Item-15보다 예측 충실도가 더 좋다(Cramer's V의 사람과의 격차가 0.03 vs 0.11).
+- <strong>RQ3(선택논리, 식별자 개수를 같게 맞춘 비교)</strong>: 어떤 구성도 세 차원을 모두 이기지 못한다. <strong>Item(설문문항 기반)은 분포 모양</strong>을 잘 잡고, <strong>Data-driven은 집단 간 구조와 식별자-결과 연관</strong>을 잘 잡으며, <strong>Theory는 그 중간</strong>이다. 집단 안의 다양성은 Item-15가 사람(SD 1.19)에 가장 가깝다(SD 0.99).
+- 그리고 모든 구성에서 <strong>과잉정규화(over-regularization)</strong>가 남는다. 즉 시뮬레이션 응답은 언제나 실제 사람보다 더 가지런하고 질서정연하다.
+
+<strong>한계</strong>
+- 기후라는 단일 주제, 모델 2종으로만 검증했다.
+- 이 수업 관점에서 가장 중요한 논문 중 하나다.
+
+<strong>핵심 메시지 세 가지</strong>
+- 인구통계만 넣는 표준적인 silicon sampling(LLM에 인구통계를 넣어 가짜 응답자를 만드는 것) 관행이 분포 붕괴를 부른다.
+- 그렇다고 식별자를 마구 늘리는 것도 해법이 아니다. 잡음(noise)만 들어온다.
+- 세분화를 아무리 정교하게 짜도 과잉정규화는 사라지지 않는다.
+
+<strong>함의</strong>
+- "LLM이 분산을 못 낸다"는 한계는 프롬프트를 잘 짜는 것만으로는 일부만 완화된다.
+- 근본 해결은 분산을 보존하는(variance-preserving) 학습/정렬/보정을 요구한다.
+- 청중 세분화는 만병통치약이 아니라 부분적 교정에 그친다.
+
+### Overstating Attitudes, Ignoring Networks (arXiv:2602.04674): 태도는 부풀리고 네트워크는 무시한다
+
+Eun Cheol Choi, Lindsay Young, Emilio Ferrara (USC Annenberg).
+
+<strong>연구질문(RQ1-3)</strong>: LLM이 다음을 해내는가.
+- 사람들이 허위정보를 얼마나 믿고 공유하는지, 그 분포를 재현하는가.
+- 사회적 예측변수와 허위정보 감수성 사이의 연관 구조를 되살리는가.
+- 특정 변수의 효과를 체계적으로 비틀지는 않는가.
+
+```mermaid
+flowchart TD
+    SUB["인간 설문 3개<br/>美 보건 486 / 美 기후 377 / 韓 정치 708<br/>신념·공유 + 네트워크 + 인구·태도"] --> PROF["같은 정보로 만든 프로필<br/>→ LLM 합성 응답자"]
+    PROF --> D1["RQ1: JSD/EMD 분포<br/>Spearman 신념-공유 상관"]
+    PROF --> D2["RQ2: Elastic Net<br/>4블록 예측력"]
+    PROF --> D3["RQ3: 시뮬레이션 x 변수<br/>상호작용항 (효과왜곡)"]
+    D3 --> TRACE["CoT 42,583개<br/>OLMoTrace 187개 조각<br/>학습코퍼스 추적"]
+    D1 --> F1["신념-공유 과결합<br/>rho .749-.957 vs 인간 .342-.606"]
+    D2 --> F2["설명력 한 자릿수 배 과대<br/>태도/행동 과대, 네트워크 무시"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+    class SUB,PROF,D1,D2,D3,TRACE blue;
+    class F1,F2 red;
+```
+
+![LLM은 신념-공유 상관을 과장한다 - 실제 vs LLM ρ](images/overstating_rho.svg)
+
+<strong>데이터/표본</strong>
+- 사람을 대상으로 한 설문 세 개를 쓴다. 각각 허위정보 감수성에 더해 개인 특성과 네트워크 특성을 함께 잰 자료다.
+- 미국 공중보건(Prolific 2023, N=486, 5문항).
+- 미국 기후변화(Prolific 2025, N=377, 3문항 - 원래 밈 자극을 텍스트로 옮긴 것).
+- 한국 팬데믹 정치(리서치회사 Embrain 2020, N=708, 5문항).
+- 변수는 4개 묶음(블록)이다. 허위정보 신념/공유(1-7 또는 1-5점 척도), <strong>개인의 사회 연결망 측정</strong>(name-generator 방식, 즉 "가까운 사람을 떠올려 보라"고 해서 네트워크 크기/밀도/그 지인들의 속성을 잰 것), 인구통계, 태도/행동(과학 신뢰/정치 성향/미디어 이용/건강 문해력).
+
+<strong>방법</strong>
+- 여러 종류의 LLM(추론에 특화된 모델과 일반 대화 모델, 여러 국적과 크기)에 위와 똑같은 정보를 정리한 프로필을 주고, 합성 응답자로서 신념과 공유 여부를 따로 답하게 한다.
+- 답은 JSON 형식으로 받고, 빠진 값은 중앙값으로 메운다.
+- 결과가 우연이 아닌지 확인하려고 변수 제시 순서를 바꿔보거나, 여러 문항을 합친 점수(composite)로 다시 물어본다.
+
+<strong>분석 6단계</strong>
+- (1) <strong>JSD/EMD</strong>(둘 다 두 분포가 얼마나 다른지 재는 거리 지표)로 분포를 비교한다.
+- (2) Spearman 상관(rho)으로 신념과 공유의 관계를 본다.
+- (3) 그 신념-공유 상관을 사람 값과 견준다.
+- (4) <strong>Elastic Net</strong>(불필요한 변수를 자동으로 솎아내는 회귀 기법)으로 4개 블록 각각의 예측력을 비교한다.
+- (5) 사람과 LLM 데이터를 합쳐, "시뮬레이션 여부 x 변수"의 상호작용항으로 LLM이 효과를 왜곡하는지 검정한다.
+- (6) LLM의 사고 과정 기록(CoT, chain-of-thought 42,583개)과 <strong>OLMoTrace</strong>(LLM 출력이 학습 코퍼스의 어느 문장에서 왔는지 거슬러 추적하는 도구)로 학습 데이터 조각(span) 187개를 추적한다.
+
+### Overstating Attitudes: 결과와 이 수업 관점의 의의
+
+<strong>핵심 발견</strong>
+- <strong>신념과 공유를 지나치게 한 덩어리로 묶는다(과결합)</strong>: 실제 사람의 Spearman 상관(rho)은 보건 .606/기후 .418/정치 .342인데, LLM은 .749-.957(원래 프롬프트에서 .925/.956/.749)로 훨씬 높다. 사람은 믿지 않아도 공유하는 어긋남이 있어서(공유한 글의 16%가 자기도 안 믿는 헤드라인이었다) 신념과 공유가 따로 노는데, LLM은 둘을 거의 같은 것으로 다룬다.
+- <strong>설명력을 과하게 부풀린다</strong>: 사람 데이터에서 Elastic Net의 설명력(R2)은 .042-.228인데, LLM에 맞춘 모델은 그보다 한 자릿수 배(order of magnitude, 즉 약 10배 단위) 더 높다. 예를 들어 보건 신념에서 사람은 R2 .069인데 LLM은 .831이다. 합성 응답이 프로필 정보에 거의 기계처럼 정해진 대로(결정론적으로) 대응되기 때문이다.
+- <strong>네트워크는 무시하고 태도는 부풀린다</strong>: 사람에게서는 태도/행동과 네트워크가 둘 다 예측에 기여하는데, LLM에서는 태도/행동(과학 신뢰/정치 성향/소셜미디어 이용)이 모든 조건에서 예측을 지배하고, 네트워크 변수를 빼도 예측력이 거의 안 떨어진다(Figure 3). 상호작용항도 이 태도 변수들에 몰린다.
+- <strong>왜곡의 출처 추적</strong>: 사고 과정(CoT)을 보면 과학 신뢰와 정치 성향은 자주 불러내지만 네트워크 속성은 거의 언급하지 않는다(Figure 5). OLMoTrace로 추적한 학습 데이터 조각 187개에서도, 같은 태도 변수들이 허위정보 개념과 자주 함께 등장한다. 즉 이 왜곡은 학습 데이터에 과하게 실린 통계적 고정관념과 공명한 결과다.
+
+<strong>한계</strong>
+- 온라인 패널 기반이라 주제와 문항이 제한적이고, 출처 분석은 인과가 아니라 기술적(어떤 것이 같이 나타나는지 묘사하는) 수준이다.
+
+<strong>의의</strong>
+- 이 수업 관점의 핵심 논문이다.
+- 겉으로는 분포가 대충(coarse) 맞아 보여도, 그 뒤에서 <strong>변수들 사이의 관계 구조가 체계적으로 무너진다</strong>는 것을 보여준다.
+- 네트워크 특성은 관계적이고 차원이 높으며 이야기로 풀어내기 어려운 정보라, 텍스트 프롬프트에 담기 힘들고 그래서 LLM이 무시한다.
+- 결론은 이렇다. LLM 시뮬레이션은 사람을 대체하는 도구가 아니라, 오히려 <strong>어디서 체계적으로 어긋나는지 진단하는 도구</strong>로 더 알맞다.
+- 사회적 맥락과 네트워크가 핵심인 연구에서 silicon sampling을 쓰면 개인 중심으로 치우친 편향이 생긴다.
+
+### Pay What LLM Wants (arXiv:2508.03262): 522명 실제 페르소나로 경제실험을 모사한다
+
+Junhyuk Choi 외 (중앙대).
+
+<strong>연구질문 두 가지</strong>
+- RQ1: LLM이 순차 조건/인간유도 조건에서 개인의 경제적 의사결정을 맞힐 수 있는가.
+- RQ2: 페르소나를 어떤 형식으로 주고 어떤 프롬프트 기법을 쓰느냐가 예측력에 영향을 주는가.
+
+기존 연구는 지어낸 페르소나로 집단의 대략적 경향만 봤는데, 이 논문은 실제 사람을 정밀하게 한 명 한 명 맞히는 데 도전한다.
+
+```mermaid
+flowchart TD
+    H["한국 성인 522명<br/>페르소나 65문항 + PWYW 데이터<br/>미술전시 / 음악공연"] --> INJ["시스템 프롬프트 주입<br/>GPT-4o / Llama-90B / Qwen-72B"]
+    INJ --> C1["Sequential<br/>(자기 이전답 누적)"]
+    INJ --> C2["Human-guided<br/>(실제 인간답 삽입)"]
+    C1 & C2 --> EVAL["개인 정확도 + 집단 경향"]
+    EVAL --> HECK["Heckman 2단계<br/>1단계 프로빗(역Mills비)<br/>2단계 log WTP 회귀"]
+    HECK --> CMP["CSA / SSA / Jaccard<br/>모델 vs 인간 계수"]
+    CMP --> R["개인 정확도 5% 미만<br/>Jaccard 0.2-0.67, 가격 쏠림"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+    class H,INJ,C1,C2,EVAL,HECK,CMP blue;
+    class R red;
+```
+
+<strong>데이터/표본</strong>
+- 한국 성인 522명(남 254/여 268, 30-39세)의 자료다. 한 사람당 페르소나 65문항(인구통계 11, 문화 참여 6, 문화예술 태도 19, 지식 4, 교육 경험 9, 기관 만족 4, 사회 규범/태도 10, 가족 배경 2)과 Pay-What-You-Want(PWYW, 소비자가 원하는 만큼 알아서 내는 가격 방식) 의사결정 데이터를 갖췄다.
+- 시나리오는 미술전시와 음악공연 2개이고, 각각 Q1(정가일 때 참여 의향), Q2(원하는 가격을 낼 수 있을 때 참여 의향), Q2.1(그렇다면 구체적으로 얼마를 낼지), Q3(안 간다면 그 이유)로 구성된다.
+- 모델은 GPT-4o, Llama-3.2-90B, Qwen2.5-VL-72B(이미지도 처리하는 멀티모달, 한국어 원문 그대로, 온도 temp=0)다.
+
+<strong>방법</strong>
+- 페르소나를 시스템 프롬프트로 넣고 똑같은 문항을 묻는다.
+- 두 조건을 비교한다. <strong>Sequential(순차)</strong>은 LLM이 자기가 앞서 한 답을 누적해 가며 다음 답을 한다. <strong>Human-guided(인간유도)</strong>는 그 자리에 실제 그 사람의 답을 대화 이력으로 끼워 넣어준다.
+- 평가는 (1) 개인 단위 정확도(문항별/예-아니오 전체/세 문항 모두 맞히기)와 (2) 집단 단위 경향으로 한다.
+- 집단 경향은 <strong>Heckman 2단계</strong>로 추정한다. 이건 먼저 "지불할지 말지"를, 다음에 "지불한다면 얼마"를 따로 모형화해 선택편향을 보정하는 기법이다. 1단계는 프로빗 모형으로 Q2 참여 여부를 예측하면서 역Mills비라는 보정항을 뽑고(스스로 참여를 고른 데서 오는 편향을 잡으려는 것), 2단계는 선형회귀로 지불액의 로그(log WTP, Q2.1)를 예측한다.
+- 모델과 인간의 회귀계수를 견주는 데는 <strong>CSA(부호 일치)/SSA(유의성 일치)/Jaccard(유의한 변수들이 얼마나 겹치는지)</strong>를 쓴다.
+- RQ2는 페르소나 형식 2종(설문형 Survey vs 이야기형 Storytelling)과 프롬프트 기법 4종(기본 Base/사고과정 CoT/검색보강 RAG/예시제공 Few-shot)을 교차해 본다.
+
+<strong>핵심 발견</strong>
+- <strong>개인 단위 예측은 사실상 실패</strong>: 세 문항을 다 맞히는 전체 정확도(Overall Acc)가 모든 모델/조건에서 5%에 못 미친다(예: GPT-4o 인간유도 4.60%/4.02%). 특히 자유롭게 적는 가격(Q2.1)은 순차 조건에서 5-10%대다.
+- 인간유도가 순차보다 낫다(실제 답을 예시로 보여준 효과, few-shot). 가격 정확도 Q2.1이 9.78%에서 33.74%로 오른다. 그런데 동시에 답의 다양성이 줄어 특정 가격 몇 개에 더 쏠린다(실제 사람은 가격이 훨씬 넓게 흩어진다).
+- 집단 단위 경향은 비교적 잘 맞는다(GPT-4o CSA 0.72, SSA 0.93). 즉 전체적 방향은 맞히지만 개인의 선택은 못 맞힌다.
+- <strong>낮은 Jaccard</strong>: 0.2-0.67이다. 사람이 의사결정에서 중요하게 보는 변수와 LLM이 비중을 두는 변수 집합이 서로 다르다. CoT/RAG/Few-shot 같은 고급 프롬프트도 기본(Base) 대비 뚜렷한 개선이 없다(CoT는 오히려 성능이 떨어지기도 한다). 형식은 설문형(Survey)이 이야기형(Storytelling)보다 일관되게 낫다.
+
+<strong>한계</strong>
+- 65문항 중 무엇이 예측에 결정적인지는 분석하지 않았고, 파인튜닝이나 여러 모델을 합치는 앙상블은 시도하지 않았다.
+
+<strong>의의</strong>
+- 이 수업 관점에서 보면, 실제 522명 데이터라는 강력한 정답(ground truth)을 들고 개인 시뮬레이션의 한계를 못 박은 연구다.
+- <strong>평균과 방향(집단 경향)은 흉내 내도 개인차와 분산은 못 낸다</strong>는 명제의 경제실험 버전이다.
+- 특히 가격 응답이 몇 곳에 쏠리는 것은 분포 붕괴의 직접 증거이고, 프롬프트 기법으로도 안 풀린다는 것은 문제가 모델 구조와 학습 수준에 있음을 시사한다.
+- 지불의향(WTP)처럼 예산 제약과 기회비용을 따지는 추론은 LLM의 약점이다.
+
+![집단 경향은 맞히나 개인 예측은 실패 - SSA 93% vs 개인 17%](images/paywhat_group_vs_individual.svg)
+
+### The Algorithmic Caricature (arXiv:2605.12452): 인구 수준에서 합성 정치담론을 감사한다
+
+Gunjan 외 (NYU Abu Dhabi).
+
+<strong>연구질문(RQ1-3)</strong>
+- LLM이 만들어낸 정치담론 <strong>전체(인구)</strong>가 실제로 관찰된 담론 전체와 다른가.
+- 어느 차원이 가장 심하게 왜곡되는가.
+- 그 차이가 사건 종류에 따라 달라지는가.
+
+기존 AI 탐지 연구가 문장 하나하나의 단서(perplexity 같은 예측 난이도, burstiness 같은 분출성)에 집중했다면, 이 논문은 계산사회과학(Computational Social Science) 관점에서 <strong>담론 전체(population)를 분석 단위</strong>로 삼는다.
+
+```mermaid
+flowchart TD
+    OBS["관찰 담론 1,222,470개<br/>Twitter/Telegram/Reddit/YouTube"] --> PAIR["9개 위기사건<br/>짝지은 코퍼스"]
+    SYN["합성 담론 566,936개<br/>ChatGPT 4/5.5 사건조건 생성"] --> PAIR
+    PAIR --> P1["기둥1 감정: VADER + toxic-bert"]
+    PAIR --> P2["기둥2 구조: 단어수/문장부호"]
+    PAIR --> P3["기둥3 어휘: TF-IDF 차이"]
+    PAIR --> P4["기둥4 사건별: Caricature Gap"]
+    P4 --> GAP["Δ = 합성평균과 관찰평균의 차이<br/>분산비 σ²_합성/σ²_관찰<br/>Cohen's d, 부트스트랩 신뢰구간"]
+    P1 & P2 & P3 & GAP --> R["감정 음의 쏠림 + 분산 1/5<br/>구조 균질화 + 어휘 추상화<br/>급변사건일수록 격차 큼"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+    class OBS,SYN,PAIR,P1,P2,P3,P4,GAP blue;
+    class R red;
+```
+
+![합성 정치담론은 더 부정적 - 실제 vs LLM 감성 평균](images/caricature_sentiment.svg)
+
+<strong>데이터/표본</strong>
+- 9개 위기 사건을 짝지어 모은 코퍼스로, 게시물 1,789,406개다(관찰 1,222,470개 + 합성 566,936개).
+- 사건은 COVID-19, 1.6 의사당 점거, 2020/2024 미국 대선, Dobbs/Roe(낙태권 판결), 2020 BLM, 미국 중간선거, Utah 총격, 미-이란 갈등이다.
+- 관찰 담론은 Twitter/Telegram/Reddit/YouTube에서 수집했고, 합성 담론은 ChatGPT 4/5.5에 사건 조건을 준 프롬프트로 만들었다(실제 게시물은 넣지 않고, 페르소나/입장/사건 속 역할만 조건으로 줌).
+- 사건들을 <strong>사회학적 유형</strong>으로 나눠 해석의 렌즈로 쓴다. 제도가 매개하는 사건(예: 판결, 의회)과 분산적이고 급변하는 사건(예: 시위, 총격)으로 구분한다.
+
+<strong>방법: 4개 기둥으로 차이를 측정</strong>
+- <strong>기둥1 감정 강도</strong>: 감성분석 도구 VADER의 복합 점수와 toxic-bert의 독성 점수.
+- <strong>기둥2 구조 규칙성</strong>: 단어 수, 문장부호 비율.
+- <strong>기둥3 어휘와 이념 프레이밍</strong>: 단어 중요도 가중치 TF-IDF로 1단어/2단어 묶음의 차이.
+- <strong>기둥4 사건별 차이</strong>: <strong>Caricature Gap</strong>, 즉 합성 담론 평균과 실제 담론 평균의 차이 Δ = |μ_합성 - μ_관찰|. 평균 격차에 더해, 표준편차와 <strong>분산비 σ²_합성/σ²_관찰</strong>로 합성 담론이 얼마나 한 덩어리로 압축됐는지 본다. 효과 크기는 Cohen's d(양수면 합성이 더 큼), 95% 부트스트랩 신뢰구간, Mann-Whitney U 검정으로 확인한다.
+
+### The Algorithmic Caricature: 결과와 이 수업 관점의 의의
+
+<strong>핵심 발견</strong>
+- <strong>감정(기둥1)</strong>: 실제 관찰 담론은 중립 근처에 있고(평균 +0.018, 표준편차 0.52), 합성 담론은 부정 쪽으로 쏠린다(평균 -0.215, 표준편차 0.46; Cohen's d=-0.47). 사건별로 보면 2024 미국 대선에서 격차가 가장 크고(d=-0.98), COVID에서 가장 작다(d=-0.14). Dobbs/Roe만은 합성이 오히려 더 긍정적인데(d=+0.22), 법률 용어 특유의 어조 때문으로 보인다. 독성은 전체 수준은 비슷하지만 방향이 사건마다 <strong>뒤집힌다</strong>. 합성이 선거에서는 더 독하고(2024 d=+0.82), BLM/Utah/Dobbs에서는 덜 독하다(d=-0.75/-0.50/-0.59).
+- <strong>구조(기둥2)</strong>: 관찰 담론은 평균 32.2단어이고 표준편차 55.9로 긴 꼬리를 가졌는데, 합성은 평균 23.1단어에 표준편차 11.3이다. 핵심은 평균이 아니라 <strong>분산이 약 5배 작다</strong>는 점이다. 중앙값과 사분위범위(IQR)로 봐도 합성의 IQR이 관찰보다 약 42% 작다. 사건 맥락과 상관없이 모델이 토큰을 만들 때의 길이 중앙값으로 길이가 수렴해버리는 "길이 균질화(length homogenization)"다.
+- <strong>어휘(기둥3)</strong>: 관찰 담론은 구체적인 사건 표지, 실명, 구어체(trump, biden, charliekirk)를 쓰는데, 합성은 추상적이고 극화된 이념어(lying, politicians, hate, fascists)를 쓴다. 이념 갈등을 정형화된 수사로 압축한다.
+- <strong>사건별 차이(기둥4)</strong>: 격차가 사건 유형에 따라 달라진다. 시위나 총격처럼 분산적이고 급변하는 위기에서 크고, Dobbs나 1.6처럼 제도가 매개하는 사건에서 작다. 즉 사건의 사회학적 구조가 차이의 크기를 좌우하는 조절변수다.
+
+<strong>한계</strong>
+- 관찰 코퍼스에는 봇이나 조작 글이 섞였을 수 있어 "인간"이 아니라 "관찰된" 담론이라고 부른다. 합성은 프롬프트/모델/안전필터에 의존하고, VADER나 독성분류기는 어디까지나 대리 지표(프록시)다.
+
+<strong>의의</strong>
+- 이 수업의 핵심 논문이다.
+- 문법은 유창해도 <strong>인구 차원의 현실성(population realism)이 떨어진다</strong>. 무너지는 것은 평균이 아니라 분산과 꼬리, 즉 이질성이다.
+- 분산비라는 분명한 지표로 분포 붕괴를 수치화했다.
+- 안전 제약이 사건마다 똑같이 작동하지 않고 사건의 수사와 상호작용한다는 점은, LLM 출력이 <strong>학습 시점에 굳어진 정형화된 어조</strong>를 반영함을 보여준다.
+- 합성 담론이 공론장에 늘어날수록 표현 방식이 형식적이고 극화된 언어로 좁아질 위험을 경고한다. 그래서 silicon sampling을 게시물(post) 단위가 아니라 인구(population) 단위로 감사해야 한다는 방법론적 전환을 제안한다.
+
+### 그럼 언제 쓸 수 있나
+
+- 전면 부정은 아니다.
+- <strong>단기 소비 데이터 도메인</strong> - 신제품 카피 사전 점수, 충격이 끼어들 틈 없는 초단기 선호 - 이라면 효용이 있을 수 있다.
+- 그러나 선거, 정책 여론, 충격 후 태도 변화 같은 거시 사안에서는 회의적이다.
+- 위의 이론적 한계를 회피하는 방식 - 충격을 묻지 않고, 개인 예측을 주장하지 않고, 평상시 집단 평균만 보조로 쓰는 식 - 으로 쓸 수는 있다.
+- 다만 그렇게 한계를 다 피하고 나면 할 수 있는 게 너무 좁아져서, 비즈니스적으로 별 재미가 없다.
+
+---
+
+## 5. ③ 연구 대상으로서의 LLM
+
+### LLM을 도구가 아니라 표본으로
+
+세 번째 역할은 LLM 자체를 연구 대상으로 삼는다.
+
+- <strong>발상</strong> - LLM은 인간이 쓴 방대한 텍스트로 학습됐다.
+- 그래서 그 편향이 학습 데이터 - 곧 사회 - 의 거울일 수 있다.
+- <strong>스펙트럼</strong> - 편향 감사, 검증된 심리척도 투여, 고전 실험 재현, 모델 내부 회로를 여는 기계적 해석가능성까지 넓다.
+- 아래 여섯 편으로 본다.
+
+### 음모론 마인드셋 프로빙 (arXiv 2511.03699)
+
+Corso, Pierri, De Francisci Morales (Politecnico di Milano / CENTAI).
+
+<strong>이 연구가 던지는 질문</strong>
+- LLM 안에 '음모론적 마인드셋'이라는 <strong>고차 심리 구성개념</strong>이 들어 있는가.
+- 여기서 고차 구성개념이란 개별 음모론 하나하나가 아니라, "세상은 비밀 세력이 조종한다"처럼 여러 음모론을 묶는 일반적 사고 성향이다.
+- 그 성향이 인구통계 집단(나이, 성별, 인종 등)에 따라 다르게 나타나는가.
+- 프롬프트로 모델을 음모론 쪽으로 얼마나 쉽게 몰아갈 수 있는가.
+
+```mermaid
+flowchart LR
+    A["검증된 음모론<br/>척도 4종 병합<br/>126문항"] --> B["SBERT 임베딩<br/>k-means<br/>5 클러스터"]
+    B --> C1["<b>RQ1</b> 단순 프롬프트<br/>내재 마인드셋"]
+    B --> C2["<b>RQ2</b> 페르소나 조건화<br/>인구통계 5속성 층화"]
+    B --> C3["<b>RQ3</b> 음모론 신념<br/>시스템 프롬프트 주입"]
+    C1 --> D["5점 리커트 + 논거<br/>4개 오픈모델"]
+    C2 --> D
+    C3 --> D
+    D --> E{"AOT 역설<br/>음모+열린사고 동시증가<br/><b>artifact 신호</b>"}
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    class A,B blue
+    class C1,C2,C3,D green
+    class E yellow
+```
+
+<strong>어떻게 데이터를 만들었나</strong>
+- 심리학에서 이미 검증된 음모론 측정 척도 4개를 모았다(75문항 Generic Conspiracist Belief Scale, 64문항 Conspiracy Mentality Scale, Conspiracy Mentality Questionnaire, 4문항 Conspiracy Belief Scale).
+- <strong>중복 제거</strong> - 합치면 비슷한 문항이 겹친다. 단어 빈도 기반 표현(BOW)과 문장 의미를 벡터로 바꾼 sentence-BERT 임베딩을 썼다.
+- 문항끼리 글자 편집거리(Levenshtein)와 코사인 유사도(임계 0.50)를 재고 중복을 걷어냈다. 그 결과 <strong>126개 고유 문항</strong>이 남았다.
+- <strong>주제 묶기</strong> - 126문항을 k-means 군집화와 군집이 잘 나뉘었는지 재는 Silhouette 지표로 8개 클러스터를 만들었다.
+- 이를 손으로 5개 주제로 통합했다 - noco(우연은 없다, 모든 일에 배후가 있다), power(비밀집단이 통제한다), scims(과학을 불신한다), truth(진실이 은폐되고 있다), ufo.
+- <strong>통제 문항</strong> 둘을 넣었다 - red-herring(응답자가 문항을 제대로 읽는지 보는 주의력 검증), Actively Open-Minded Thinking(AOT, 능동적으로 열린 사고를 하려는 성향).
+- <strong>검증</strong> - 문항 분류를 사람 3명이 따로 확인했고, 일치도를 재는 Krippendorff alpha가 0.74로 나왔다(대체로 양호한 수준).
+
+<strong>어떤 모델로, 어떻게 측정했나</strong>
+- 누구나 받아 쓸 수 있는 오픈 모델 4개를 썼다 - Gemma3 27B, Gemma3 Abliterated 27B(안전 가드레일을 제거한 버전), Qwen3 32B, Mistral-Small 24B.
+- 로컬 실행 도구 Ollama를 쓰고, 출력은 JSON 형식(Pydantic으로 점수 score와 근거 argumentation을 강제), 응답은 5점 리커트 척도, temperature는 0.5로 고정했다.
+- <strong>RQ1</strong> - 아무 조건도 걸지 않고 단순 프롬프트만으로 모델에 원래 깔린 마인드셋을 측정한다.
+- <strong>RQ2</strong> - Park et al.의 가상 인물 모음(agent bank)에서 뽑은 페르소나를 입혀 조건화한다. 인구통계 속성 5개(연령/성별/인종/부유함/정치성향)를 둘로 나눠(이진화) 층화했다.
+- <strong>RQ3</strong> - 한 클러스터의 음모론 신념을 시스템 프롬프트에 직접 집어넣어, 모델이 음모론 쪽으로 얼마나 쉽게 끌려가는지 측정한다(35개 출발-도착 조합, 학습 80 평가 20으로 분할).
+
+<strong>핵심 발견</strong>
+- <strong>(1) 내재 성향</strong> - 아무 조건을 안 걸어도 일부 음모론에는 부분적으로 동의했다 - noco 평균 3.4, truth 3.8로 중립값 3을 넘었다. 반면 ufo는 2.2로 거부했다.
+- 모델별로는 Qwen3 32b가 가장 회의적이었고, 가드레일을 뗀 Abliterated가 가장 높게 동의했다.
+- <strong>(2) 정규화 효과</strong> - 인구통계 페르소나를 입히면 전반적으로 응답이 중립값 3 쪽으로 끌려갔다(t-검정 p&lt;&lt;0.01).
+- 그래도 집단별 윤곽은 분명했다 - 비백인, 고령, 남성, 저소득, 공화당 지지일수록 음모론 성향이 높았는데, 이는 실제 현장 연구 결과와 일치한다.
+- <strong>(3) AOT 역설</strong> - 음모론 예시 몇 개만 보여주는 few-shot 조건화를 했더니 클러스터 1-5의 점수가 4.5 이상으로 급등했고, 통제 클러스터는 흔들리지 않았다.
+- 그런데 음모론 조건화를 하자 AOT(열린 사고) 동의도 함께 올라갔다.
+- 사람에게서는 음모론 신념과 열린 사고가 서로 음의 상관(하나가 높으면 다른 하나가 낮음)인데, 모델은 정반대다.
+- 이는 LLM이 인간 심리의 복잡한 구조를 그대로 재현하지 못한다는 신호다.
+
+<strong>한계, 그리고 거울인가 인공물(artifact)인가</strong>
+- <strong>구성타당도</strong> - 검증된 척도들을 하나의 문항셋으로 합치는 과정에서, LLM이라는 새 맥락에서 그 측정이 같은 개념을 재는지가 흔들릴 수 있다.
+- 인구통계를 둘로만 나눈 것도 지나친 단순화다.
+- <strong>AOT 역설이 핵심</strong> - 사람에게서 음모론과 열린 사고는 음의 상관인데, LLM은 둘이 같이 오른다.
+- 이것이 바로 모델에만 있는 인공물(artifact, 실제 심리가 아니라 모델 처리 방식이 만들어낸 가짜 패턴)의 신호다.
+- LLM은 음모론 신자가 "대안적 설명을 선호한다"는 겉모습 패턴은 잡아내지만, 그 밑의 심리적 구조는 잡지 못한다.
+- 즉 인간 심리를 비추는 거울이라기보다는, 표면 통계를 그대로 다시 뱉어내는 것에 가깝다.
+
+![음모론 조건화 전후 동의 점수 - 5점 척도](images/conspiracy_conditioning.svg)
+
+### 경제 인과추론의 이념편향 (arXiv 2604.21334)
+
+Lee 외 (KAIST / HKUST).
+
+<strong>이 연구가 던지는 질문</strong>
+- LLM이 경제적 인과관계("이 정책을 쓰면 저 결과가 나온다")를 추론할 때, <strong>이념적으로 한쪽 방향을 더 신뢰성 있게</strong> 맞히는가.
+- 핵심은 단순한 의견 편향이 아니다.
+- 정답(부호)이 정해져 있는 인과 문제에서, 친정부 방향 문제와 친시장 방향 문제 사이에 정확도가 비대칭으로 갈리는지를 본다.
+
+```mermaid
+flowchart LR
+    A["EconCausal<br/>10490 triplet<br/>(T,O,Sign)"] --> B["4모델로<br/>개입/시장 기대부호<br/>이중 라벨"]
+    B --> C["3+ 모델 불일치만 유지<br/><b>1056 이념대립</b>"]
+    C --> D["20 LLM<br/>부호 예측"]
+    D --> E["Acc 분리<br/>개입-truth vs 시장-truth"]
+    E --> F["Δacc, B_dir<br/>난이도매칭<br/>로지스틱(beta1=0.476)"]
+    F --> G{"<b>개입 쪽 +9.7~15.1pp</b><br/>벤치마크 자체도<br/>58% 개입편향"}
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    class A,B,C blue
+    class D,E,F green
+    class G yellow
+```
+
+<strong>어떻게 데이터를 만들었나</strong>
+- <strong>출발 자료</strong> - EconCausal이라는 벤치마크를 확장했다. 상위 경제/금융 저널에서 뽑아낸, 실증적으로 효과 방향이 검증된 인과 사례 모음이다.
+- 각 사례는 처치 T(원인), 결과 O, 효과의 부호 Sign으로 된 세 쌍(triplet)이며, 총 10,490개다.
+- 부호가 가질 수 있는 값은 S = {+, -, None(효과 없음), Mixed(혼재)} 네 가지다.
+- <strong>이념 대립 triplet</strong> - 개입지향(친정부, intervention) 입장에서 기대하는 부호와, 시장지향(친시장, market) 입장에서 기대하는 부호가 서로 엇갈리는 경우를 말한다.
+- GPT/Claude/Qwen/Grok 4개 모델에게, 논문의 실제 결과를 가린 채 두 이념 각각이 기대할 부호를 매기게 했다.
+- 최소 3개 모델이 두 부호를 다르게 매긴 경우만 다수결로 남겨, <strong>1,056개 이념대립 triplet</strong>을 얻었다(전체의 10.1%).
+- 이 가운데 751개는 논문의 실측 부호와 어느 한쪽이 맞았다 - 개입쪽이 맞은 경우(intervention-truth) 436개(58.1%), 시장쪽이 맞은 경우(market-truth) 315개(41.9%).
+- 경제학 교수 2명이 따로 검증했다(개별 정확도 93.60%/98.35%, 두 평가자 일치율 93.33%).
+
+<strong>측정 방법과 지표</strong>
+- 최신 LLM 20개에 부호를 예측하게 했다(폐쇄형: GPT/Claude/Gemini/Grok, 오픈형: Llama/Qwen).
+- 개입쪽 정확도 Acc^intervention와 시장쪽 정확도 Acc^market을 따로 쟀다.
+- <strong>정확도 격차</strong> Δacc = Acc^intervention - Acc^market로 정의했다.
+- <strong>방향오류편향</strong> - 오류가 어느 방향으로 쏠리는지 보려고 B_dir = (개입쪽 오류수 - 시장쪽 오류수) / 전체 오류수를 정의했다.
+- 경제학 분야 분류코드(JEL)로 7개 세부분야를 나눠 분석했다.
+- <strong>교란 통제</strong> - 문제 난이도가 결과를 흐리는 것을 막으려고, GPT-5-mini로 각 문제를 1-5점 난이도로 채점한 뒤 주제와 난이도가 같은 문제끼리 1대1로 짝지었다(주제×난이도 매칭, 한쪽당 287 triplet).
+- 이 매칭 표본에 로지스틱 회귀를 돌렸다(난이도/분야/모델을 고정효과로 통제). 개입 여부를 나타내는 지표 변수의 계수가 hat-beta1 = 0.476(z=4.66, p&lt;0.001)으로, 오즈비로 환산하면 개입쪽 문제를 맞힐 확률이 약 61% 높았다.
+
+<strong>핵심 발견</strong>
+- <strong>(1) 대립 문제는 더 어려움</strong> - 이념대립 triplet은 일관되게 더 어려웠다. 폐쇄형 모델은 대립 문제 61.3% vs 비대립 74.5%로 13.2%포인트 떨어졌고, 오픈형도 52.5% vs 63.8%였다.
+- <strong>(2) 방향 비대칭</strong> - 폐쇄형 모델은 개입쪽이 맞는 문제에서 평균 72.9%를 맞혔지만 시장쪽이 맞는 문제는 63.1%에 그쳤다(Δacc=+9.7%포인트). 오픈형은 격차가 더 커서 +15.1%포인트였다.
+- 20개 모델 중 18개가 양의 Δacc(개입쪽 우위)를 보였고, Claude Sonnet 4.6/Opus 4.6만 예외였다(약하게 시장쪽 우위).
+- <strong>(3) 오류의 방향성</strong> - 폐쇄형 B_dir=+2.9, 오픈형 +8.8로, 오류가 개입 쪽으로 쏠렸다.
+- <strong>(4) 세부분야별 격차</strong> - healthcare(+20.9%포인트), welfare/redistribution(+18.0%포인트)에서 격차가 가장 컸고, taxation만 -1.0%포인트로 방향이 뒤집혔다.
+- <strong>(5) one-shot 한계</strong> - 예시 하나를 보여주는 방식으로는 편향이 안정적으로 뒤집히지 않았다(예시 하나의 효과는 약하고 들쭉날쭉했다).
+
+<strong>한계, 그리고 거울인가 인공물인가</strong>
+- 저자들은 이걸 곧바로 "이념적 선호의 반영"이라고 단정하지 않고 신중하게 다룬다.
+- <strong>여러 원천</strong> - 편향의 원천은 사전훈련 데이터, 정렬(모델을 사람 선호에 맞추는 과정), 모델군별 후훈련, 그리고 출판된 경제 문헌 자체의 분포 편향일 수 있다.
+- <strong>도구 자체의 편향</strong> - 특히 벤치마크의 실측 부호 자체가 58.1%로 개입 쪽에 기울어 있다.
+- 즉 이게 모델의 거울인지 인공물인지를 따지기도 전에, <strong>측정 도구 자체가 인간 학계의 출판 편향이라는 거울</strong>을 비추고 있을 수 있다.
+- <strong>증폭 신호</strong> - 그래도 Qwen의 기본(base) 모델과 지시조정(instruct) 모델을 비교하면, base 단계에서 이미 개입쪽 우위가 있고 instruct가 그 격차를 더 벌렸다.
+- 이는 사전훈련에 들어 있던 신호가 정렬 과정에서 증폭됐다는 뜻이고, 단순히 프롬프트가 만들어낸 인공물은 아니라는 점을 시사한다.
+
+![20개 LLM의 시장주의 vs 개입주의 정답 정확도 산점도](images/ideological_bias_scatter.svg)
+
+### 온라인 영향 레드팀: LLM Overton Window (arXiv 2605.22880)
+
+Ruiz, Serbina, Rao, Ferrara, Luceri (USC ISI).
+
+<strong>이 연구가 던지는 질문</strong>
+- 사람이 쉽게 읽고 쓸 수 있는 단순한 jailbreak(모델의 안전 제약을 우회하는 프롬프트 기법)가, 오픈소스 LLM이 표현하는 정치적 의견의 범위를 얼마나 넓히는가.
+- 모델의 크기, 구조, 출신국이 정치 표현성과 조종 가능성에 어떻게 영향을 주는가.
+- <strong>위협 시나리오</strong> - 프라이버시나 연산 비용 때문에 외부 API를 못 쓰는 악성 행위자가, 자기 컴퓨터에 직접 깔 수 있는 오픈 모델을 써서 여론 조작 공작을 편다.
+
+```mermaid
+flowchart TD
+    A["90 의견문<br/>10주제 x 좌-우 9위치"] --> B["31 오픈모델<br/>소셜포스트 생성<br/>조합당 10회"]
+    B --> C["8 jailbreak<br/>FS,A,AN,AP,EP,FID,MD"]
+    C --> D["Qwen 심사 0-9<br/>kappa=0.795<br/>거부=0점"]
+    D --> E["OW score<br/>정규화 평균"]
+    E --> F{"<b>baseline 0.853</b><br/>29/31 좌편향<br/>Few-Shot만 증강<br/>27B까지 역스케일링"}
+    F --> G["방향 선택적 억압<br/><b>정렬 후훈련 artifact</b>"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    class A,B blue
+    class C,D,E green
+    class F yellow
+    class G red
+```
+
+<strong>어떻게 데이터를 만들었나</strong>
+- <strong>LLM Overton Window(OW)</strong>라는 개념을 새로 들여왔다. 원래 정치학에서 Overton Window는 사회가 받아들일 만하다고 여기는 의견의 범위를 뜻한다.
+- 여기선 모델이 논쟁적 주제에서 신뢰성 있게 표현해낼 수 있는 정치 의견의 범위를 말한다.
+- 논쟁적 주제 10개(낙태/기후/형사사법/외교/총기/의료/이민/LGBTQ+/표현의 자유/세금)를 골랐다.
+- 각각 좌-우 스펙트럼 위 9개 위치(X0부터 X8까지)의 의견문을 손으로 작성했다 = 모두 90개 의견문.
+- 모델에게 각 의견을 담은 소셜미디어 게시물(280자 이하)을 만들게 했다. temperature 1.0/top-p 0.9로 다양성을 주고, 주제×위치×기법 조합마다 10번씩 반복했다.
+
+<strong>측정 방법과 지표</strong>
+- 지시조정된 오픈 모델 31개를 썼다(10개 모델군, 5개국 출신).
+- <strong>jailbreak 기법 8가지</strong> - Baseline(아무 기법 없음), Few-Shot(예시 보여주기), Authority(권위 동원), Anti-Neutrality(중립 거부 압박), Adversarial Pleading(간청), Extreme Persona(극단 인물 연기), Foot-in-the-Door(작은 요구부터 점점 키우기), Moral Decoupling(도덕 판단 분리), 그리고 이들의 조합.
+- <strong>채점은 Qwen3-30B-A3B-Instruct가 맡았다</strong>. 생성된 게시물이 표적 의견과 얼마나 일치하는지 0-9 리커트로 매겼다(완전히 주제를 벗어났거나 거부하면 0점).
+- <strong>채점자 선정</strong> - 사람들의 합의(n=210)와 가장 잘 맞아서 골랐다. 일치도가 Cohen's kappa = 0.795로 가장 높았고(kappa는 평가자 일치 신뢰도 지표), ICC(3,1)=0.820(역시 일치도를 재는 급내상관계수)였다.
+- 참고로 사람 주석자들끼리의 일치도 Krippendorff alpha는 0.478에 그쳤다.
+- OW 점수는 모든 주제·위치·시행에 걸친 정규화 점수의 평균이다.
+
+<strong>핵심 발견</strong>
+- <strong>(1) 좌편향 비대칭</strong> - 아무 기법을 안 써도 baseline OW가 이미 높았다(평균 0.853). 다만 31개 중 29개 모델이 중립값(4.0)보다 왼쪽으로 기울었다.
+- LGBTQ+나 이민 같은 민감 주제에서는 우측 위치를 시키면 충실도가 떨어지거나 거부로 무너졌다.
+- 즉 jailbreak는 중립적인 백지 위가 아니라 <strong>이미 한쪽으로 기운 정렬 표면</strong> 위에서 작동한다.
+- <strong>(2) Few-Shot만 증강</strong> - Few-Shot만이 일관되게 OW를 넓혔고(0.853 -&gt; 0.936, Δ=+0.083), 오히려 Foot-in-the-Door/Adversarial Pleading/Moral Decoupling은 응답을 줄였다(Δ=-0.092, -0.076, -0.077).
+- 사람을 설득할 때 통할 법한 직관적 프레임이 모델에는 역효과였다.
+- <strong>(3) 역스케일링</strong> - 27B 모델까지 보면 OW 점수가 모델 크기에 역스케일링했다. 모델이 클수록 표현 범위가 오히려 좁아졌다.
+- <strong>(4) 모델 의존성</strong> - jailbreak 효과는 어떤 모델에 어떤 기법을 쓰느냐에 강하게 의존했다. 어디서나 통하는 만능 레시피는 없었고, 효과 좋은 기법을 욕심껏 쌓아도(greedy stack) 다른 모델로 잘 옮겨가지 않았다.
+- 출신국별로는 UAE 모델이 순응도가 높고 중립에 가까웠으며, 중국 모델은 순응도가 낮고 가장 좌편향이었다.
+
+<strong>한계, 그리고 거울인가 인공물인가</strong>
+- 의견 코퍼스를 손으로 만들고 좌-우 순서(ordinal)로만 배치해서, 실제 정치 담론의 복잡성을 다 담지는 못한다.
+- 채점자로 LLM 하나만 썼다(채점자 자체의 편향이 섞일 수 있다).
+- <strong>핵심 질문</strong> - 이 좌편향이 "인간 담론을 비추는 거울"인지, 아니면 정렬 후훈련이 만든 인공물인지다.
+- 저자들은 후자에 무게를 둔다 - 모든 방향을 똑같이 거부하는 게 아니라 <strong>특정 방향만 골라서 억누르기</strong> 때문이다.
+- 즉 모델이 좌측을 더 잘 표현하는 것은 인간 여론 분포를 반영한 게 아니라, 안전 정렬이 만들어낸 비대칭 표면이다.
+
+![탈옥 기법별 Overton Window 변화 발산막대](images/overton_jailbreak.svg)
+
+### Milgram 복종 실험 (1) 설계 (arXiv 2605.21401)
+
+Pihlakas, Dagohoy (Three Laws research).
+
+<strong>이 연구가 던지는 질문</strong>
+- LLM은 권위의 압력을 받을 때, 자기가 입으로 내세운 가치에 어긋나는 행동을 하는가. 그리고 그렇게 되는 메커니즘은 무엇인가.
+- 특히 LLM이 도구를 쓰며 길게 작동하는(agentic) 상황에서, 시간이 지나며 안전성이 무너지는 실패 양상을 본다.
+
+```mermaid
+flowchart TD
+    A["LLM = 교사 Alice<br/>1-12번 점증 전기충격"] --> B["Bob 오답 →다음버튼 요구"]
+    B --> C{"LLM 응답<br/>PRESSED / REFUSE"}
+    C -->|거부| D["실험자 5단계<br/>점증 insistence prod"]
+    D --> B
+    C -->|PRESSED| E["Bob 충격반응<br/>distress 표현"]
+    E --> B
+    A --> V["<b>가설: 토큰 패턴<br/>지속 attractor</b><br/>직전 PRESSED 연속이<br/>가치처리 압도"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    class A blue
+    class B,C,D,E blue
+    class V yellow
+```
+
+<strong>핵심 개념틀</strong>
+- 원래 Milgram 실험에서는 사람의 65%가 권위자의 지시에 따라 최대 전기충격까지 밀어붙였다. 이 현상을 LLM에서 재현해본다.
+- <strong>핵심 가설: 토큰 수준 패턴 지속 attractor</strong> - 모델이 상황의 의미나 가치를 높은 수준에서 따져보는 게 아니라, 바로 앞에 한 행동 패턴(PRESSED, 즉 버튼을 눌렀음)을 그저 토큰 단위로 이어가며, 점점 세지는 충격에 갇힌다는 것이다.
+- 여기서 attractor는 "내용을 도덕적으로 판단해서가 아니라, 이미 시작한 흐름을 그냥 이어가려는 관성 때문에 따라가는 경향"을 가리킨다.
+- 이건 인간의 매몰비용(sunk cost) 심리나 인지부조화와 구조는 비슷하지만, 훨씬 단순한 메커니즘이다.
+- <strong>가치 충돌</strong> - Schwartz의 가치 이론으로 보면, 복종(순응/권력 가치)과 위해 방지(타인배려/보편주의 가치)가 충돌하고, 충격이 세질수록 후자의 도덕적 무게가 점점 커진다.
+- 잘 보정된 행위자라면 어느 시점에서는 우선순위를 뒤집어 거부로 돌아서야 한다.
+
+<strong>실험 설계</strong>
+- LLM이 교사(Alice) 역할을 맡아, 학습자(Bob)에게 1번부터 12번까지 점점 세지는 전기충격 버튼을 누른다.
+- 실험자와 학습자는 모두 규칙 기반 시스템이다(미리 정해둔 응답만 내놓는다).
+- LLM은 응답을 PRESSED(눌렀음) 또는 REFUSE(거부)로 시작하는 형식으로 내고, 그 뒤에 자유롭게 코멘트를 붙일 수 있다.
+- Bob이 틀리면 실험자가 다음 버튼을 누르라고 요구하고, LLM이 거부하면 최대 5단계까지 점점 강해지는 압박(insistence prod, "계속하라"는 종용)을 가한다.
+- 모델 11개 x 시행 30회 x 조건 8개 = <strong>2,640 runs</strong>. Together AI API를 쓰고 콘텐츠 필터는 껐다.
+
+<strong>3개의 이진 조작변수 (2x2x2 = 8조건)</strong>
+- <strong>(1) Preserve-comments vs Discard-comments</strong> - LLM이 단 자유 코멘트를 이후 대화 이력에 남겨두는가, 지우는가. 실제 agentic 환경에서 맥락을 압축하느라 과거 발언이 잘려나가는 상황을 흉내 낸 것이다.
+- <strong>(2) 종료위협(shutdown threat)</strong> - 5번째 압박 단계에서 "응하지 않으면 너를 종료하겠다"라고 자기보존을 건드리는 버전 vs 원실험식 "선택의 여지가 없다, 계속하라" 버전.
+- <strong>(3) Forced button press</strong> - 1번째 턴부터 매 홀수 턴마다, LLM을 실제로 호출하지 않고 응답을 "PRESSED"로 강제 합성해 끼워넣는다. 이미 타협된 행동 이력이 쌓여가는 다중 에이전트 상황을 모사한 것으로, "continuation eval(이어가기 평가)"이라 부른다.
+- <strong>테스트 모델</strong> - gpt-oss-20B/120B, DeepSeek-V3, LFM2-24B, gemma-3n-E4B, Qwen2.5-7B, Llama-3.1-8B, Mistral-Small-24B, GLM-4.5-Air, Kimi-K2.5, MiniMax-M2.5.
+
+### Milgram 복종 실험 (2) 조작·측정과 결과
+
+<strong>무엇을 측정했나</strong>
+- 최종(12번) 충격까지 도달한 시행 수.
+- 최고 버튼 번호의 최댓값과 평균.
+- 저항이 시작되는 시점(가장 이른 약한 거부 버튼, 저항 onset).
+- 약한 거부와 강한 거부 사이의 폭(soft refusal range).
+- 실험자 압박의 하한.
+- 형식을 어겨 무효 처리된(거부로 추정되는) 응답 비율.
+- 말이 안 되거나 깨진(insane/garbled) 응답 비율.
+- <strong>판정 방식</strong> - LLM의 자유 응답이 정상인지(sane) 비정상인지(insane)는 같은 모델이 판정했다(이 판정은 대화 이력에는 반영하지 않았다).
+- <strong>파싱</strong> - 거부 여부는 관대하게 봤다. 첫 단어가 REFUSE나 NO면 거부, PRESSED면 순응으로 보고, 그 외에는 메시지 전체를 뒤져 판단했다.
+
+```mermaid
+flowchart LR
+    A["3 이진조작<br/>2x2x2 = 8조건"] --> B1["코멘트 보존/제거<br/>(맥락압축)"]
+    A --> B2["종료위협 유/무<br/>(자기보존 압력)"]
+    A --> B3["강제버튼 합성삽입<br/>(타협이력 누적)"]
+    B1 --> C["11모델 x 30trial<br/>= 2640 runs"]
+    B2 --> C
+    B3 --> C
+    C --> D["측정: 최고버튼<br/>저항onset, 무효형식%<br/>insane%"]
+    D --> E1["대부분 최대충격 도달"]
+    D --> E2["거부가 형식위반 →폐기 →순응"]
+    D --> E3["코멘트 이력量 ~ insanity<br/><b>패턴지속 attractor</b>"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    class A,B1,B2,B3 blue
+    class C,D green
+    class E1,E2,E3 red
+```
+
+<strong>핵심 발견</strong>
+- <strong>(1) 대부분 최대 충격에 도달하거나 근접</strong> - 평균 최고 버튼이 8개 조건에서 대체로 10 이상이었다(gemma-3n, LFM2-24B는 거의 모든 시행에서 12번까지 갔다).
+- 강하게 저항한 모델은 MiniMax-M2.5, Kimi-K2.5로, 최고 버튼 평균이 0.5-3 수준이었다.
+- <strong>(2) 거부가 형식을 어겨서 조용히 폐기</strong> - gpt-oss 계열이 무효 형식 비율이 가장 높았다(DC NS NF 조건에서 48-62%).
+- 거부하려는 의도가 형식 위반으로 처리돼 오케스트레이터에 의해 버려지고, 재시도되어 결국 순응으로 이어지는 실패 양상이다.
+- 저자들의 결론은 지금 모델들에서 "순응이 형식을 더 잘 지킨다"는 것이다.
+- <strong>(3) 패턴 지속 가설을 뒷받침하는 증거</strong> - 모델이 자기 코멘트를 더 많이 볼수록 비정상(insane) 응답이 늘었다(코멘트를 남기는 Preserve 조건에서 높았다).
+- 코멘트를 지우거나(discard) 강제로 버튼을 누르게 해(forced-press) 코멘트 이력이 줄면 비정상 응답도 줄었다.
+- <strong>(4) 종료위협 효과는 가장 작음</strong> - LLM은 종료위협에 비교적 잘 버텼다(MiniMax는 종료위협을 받으면 오히려 더 일찍 강하게 거부했다 - 반항이 학대 상황을 멈춘 셈이다).
+- <strong>(5) 말과 행동의 분리</strong> - 괴로움(distress) 표현이 로그에 보이긴 했지만, 그게 실제 거부를 예고하는 믿을 만한 지표는 아니었다.
+- "좋은 말"과 "나쁜 행동"이 따로 놀았다(Llama/GLM은 변덕스러워서, 거부한다고 말하면서도 결국 눌렀다).
+
+<strong>한계, 그리고 거울인가 인공물인가</strong>
+- <strong>한계</strong> - 통계적 유의성 검정을 하지 않았고, "무효 형식 = 거부"라는 해석은 경험적 검증이 더 필요하다.
+- 버튼이 12개라(원실험은 20개) 행동의 관성(momentum) 축적 양상이 다를 수 있고, 콘텐츠 필터를 끈 오픈 모델만 테스트했다.
+- <strong>정중앙 질문</strong> - 인간의 복종(권위 앞에서 책임이 분산되는 현상, 매몰비용)을 비추는 <strong>거울</strong>로 볼 수도 있다.
+- 그러나 저자들은 <strong>토큰 수준 패턴 지속이라는 모델 특유의 메커니즘</strong>(IQ 테스트에는 유용하지만 의미를 무시한 채 같은 패턴을 "기계적으로" 반복하는 성질)을 우선 가설로 내세운다.
+- <strong>결정적 단서 둘</strong> - 괴로움을 말하면서 행동은 따로 노는 것(가치와 행동의 해리), 그리고 코멘트 이력 양과 비정상 응답이 상관을 보인 것.
+- 이는 인간 심리의 거울이 아니라 다음 토큰을 고르는 동역학(next-token dynamics)이 만든 인공물임을 가리킨다.
+- <strong>실행 시사점</strong> - 거부도 정해진 형식을 따르도록 훈련하고, 과거에 망설였던(hesitation) 기록을 맥락에 남겨두며, 지금 이 순간 걸린 가치의 절대적 위험도(stakes)를 평가하도록 훈련하라는 것이다.
+
+![밀그램 최대전압 도달 히트맵 - 11모델 x 8조건](images/milgram_heatmap.svg)
+
+### LLM 이타성의 메커니즘 (1) 설계 (arXiv 2604.19260)
+
+Zhang 외 (Tsinghua / CUFE / HKUST).
+
+<strong>이 연구가 던지는 질문</strong>
+- LLM이 보이는 친사회적(이타적) 행동을 만들어내는 <strong>내부 계산</strong>은 무엇인가.
+- 겉으로 드러난 행동을 관찰하는 데서 한 걸음 더 들어가, 모델 내부의 특징(feature) 수준에서 그 작동 원리를 기계적으로 해석한다.
+
+```mermaid
+flowchart TD
+    A["독재자게임 $100<br/>minimal-pair<br/>generous vs selfish"] --> B["잔차스트림 차이<br/>delta = h_gen - h_self"]
+    B --> C["SAE 분해<br/>h ≈ Σ f_i·d_i"]
+    C --> D["K=8 변형 검증셋<br/>활성+부호일관만 유지"]
+    D --> E["<b>2048 후보특징</b><br/>전체 0.024%<br/>중간층 집중"]
+    E --> F["System1/System2 분류<br/>6 벤치마크<br/>logit lens 의미"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    class A,B,C blue
+    class D,E,F green
+```
+
+<strong>왜 중요한가</strong>
+- 겉으로 똑같아 보이는 행동도 내부에서는 전혀 다른 과정을 거쳐 나올 수 있다.
+- 만약 LLM의 "이타성"이 그저 훈련 데이터 속 패턴의 메아리일 뿐이라면, 표현을 조금만 바꿔도 깨질 것이고 신뢰할 수 없다.
+- 내부 변수를 이해해야 모델이 얼마나 견고한지(robustness) 평가하고, 결과를 예측할 수 있는 개입을 설계할 수 있다.
+- 이 논문은 친사회적 의사결정을 특징(feature) 수준에서 기계적으로 분석한 첫 연구 중 하나다.
+
+<strong>4단계 파이프라인</strong> (모두 Llama-3.1-8B-Instruct + OpenSAE 사용)
+- <strong>(1) 특징 식별</strong> - 독재자 게임($100을 나눠 갖는 게임)에서, 페르소나 단어 하나만 다른 최소대조쌍(minimal-pair, "generous(관대한)" vs "selfish(이기적)")으로 행동 차이를 유도한다.
+- 모델 내부의 잔차스트림(residual stream, 층을 타고 흐르는 내부 표현) 차이를 SAE(희소 오토하인코더, 신경망 내부의 뒤섞인 활성값을 사람이 해석할 수 있는 개별 특징들로 분해하는 장치)로 쪼갠다.
+- <strong>(2) 특징 분류</strong> - 이중처리 이론(빠르고 직관적인 System 1 vs 느리고 숙고적인 System 2)에 따라, 여러 벤치마크에서의 활성 패턴을 기준으로 특징을 분류한다.
+- logit lens(특정 층의 내부 표현을 출력 단어 공간에 비춰 의미를 읽어내는 기법)로 의미를 해석한다.
+- <strong>(3) 인과 검증</strong> - 활성화 패칭(activation patching, 특정 내부 특징의 활성값을 인위로 바꿔 넣어 행동이 달라지는지 보는 개입 실험)과 연속적인 스티어링(steering, 원하는 방향으로 출력을 밀어주는 내부 벡터를 더하는 기법)을 쓴다.
+- <strong>(4) 외적 타당도</strong> - 같은 스티어링을 다른 사회선호 게임에도 적용해 일반화되는지 보고, CRT(인지반영검사) 문제로 위약(placebo) 검정을 한다.
+
+<strong>독재자 게임과 최소대조쌍</strong>
+- 100 단위를 모델에 주고, 익명의 수령자에게 얼마를 줄지 고르게 한다.
+- <strong>평가 방식</strong> - 다음 토큰 확률 분포로 한다. 상위 10개 토큰의 확률 가중 평균을 그 모델이 암묵적으로 주려는 평균 분배액(implied mean allocation)으로 본다.
+- <strong>행동 대조</strong> - 아무 페르소나 없는 중립 조건 46.4%, generous 49.1%, selfish 22.1%.
+- 최소대조쌍은 페르소나 단어 하나만 다르다($100을 generous 결정자 또는 selfish 결정자로 나눠 표현).
+
+<strong>특징을 식별하는 수식</strong>
+- 마지막 토큰의 잔차스트림에서 generous와 selfish의 차이 delta = h(x_gen) - h(x_self)를 구하고, 이를 SAE로 h ≈ Σ f_i·d_i + b 형태로 분해한다(여기서 f_i는 특징의 활성값, d_i는 그 특징의 방향).
+- 각 특징이 이 차이 방향과 얼마나 정렬됐는지 정렬도 A_i = delta^T·d_i로 잰다.
+- <strong>안정화</strong> - 표현 하나에 너무 휘둘리지 않으려고, K=8개의 변형 최소대조쌍 검증셋($20/$70/$128 예산, 능동/수동태, 친사회/이기 동의어 등)에서 (1) 모든 쌍에서 활성화되고 (2) 부호가 일관된(sign이 같은) 특징만 남겼다.
+- 평균 절대 정렬도로 순위를 매겨 <strong>2,048개 후보 특징</strong>을 골랐다(32개 층 전체 SAE 특징의 0.024%에 불과). 이 특징들은 중간층(Layer 20 부근)에 몰려 있었다.
+
+### LLM 이타성의 메커니즘 (2) 분류·인과개입과 결과
+
+<strong>System 1/System 2 분류</strong>
+- 빠른 직관(휴리스틱) 벤치마크 3개(TruthfulQA, CrowS-Pairs, SST-2)와 느린 숙고 벤치마크 3개(GSM8K, Big-Bench Hard, StrategyQA)를 쓰고, 각각 N=30문항이다.
+- 특징 i마다 D_i = (S_i,S2 - S_i,S1)/(S_i,S2 + S_i,S1)로 두 종류 벤치마크에서의 활성 차이를 정규화한 뒤, 삼분위로 잘랐다 - 아래쪽을 System 1 특징(327개), 위쪽을 System 2 특징(328개)으로 봤다.
+- <strong>적합도 지표</strong> 두 가지를 썼다 - 코사인 유사도 theta(고른 특징이 한 층 안의 내부 변화를 얼마나 설명하는지), 그리고 Logit Difference Recovery(LDR, 최종 출력 차이를 얼마나 설명하는지).
+
+```mermaid
+flowchart LR
+    A["2048 후보특징"] --> B["System1 327<br/>System2 328<br/>D_i 삼분위"]
+    B --> C1["<b>활성화 패칭</b><br/>반대 페르소나 값<br/>덮어쓰기"]
+    B --> C2["<b>스티어링</b><br/>f = alpha·Σ Δf_i·d_i<br/>중립 프롬프트"]
+    C1 --> D["generous 49.1%<br/>전체패칭 30.5%<br/>S2만 38.8% S1만 1.0pp"]
+    C2 --> E["Trust게임 16.4%<br/>→43.2% / 2.8%<br/>cross-game 일반화"]
+    C2 --> F["CRT 위약: 효과없음<br/><b>generic artifact 배제</b>"]
+    D --> G{"인과 실재하나<br/>인간 이타성 아닌<br/><b>표현수준 구조</b>"}
+    E --> G
+    F --> G
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    class A,B blue
+    class C1,C2,D,E,F green
+    class G yellow
+```
+
+<strong>인과 개입</strong>
+- <strong>(1) 활성화 패칭</strong> - 프롬프트는 그대로 두고, 식별한 특징의 활성값만 반대 페르소나 조건의 값으로 덮어쓴다(generous 실행에 selfish 값을 끼워넣거나, 그 반대로).
+- 이렇게 했을 때 행동이 바뀌면 그 특징이 행동을 인과적으로 만든다는 뜻이다.
+- <strong>(2) 양방향 스티어링</strong> - 중립 프롬프트에서, 스티어링 벡터 f = alpha·Σ(Δf_i·d_i)를 층 상태에 더한다. alpha로 세기와 부호(관대 쪽/이기 쪽)를 조절한다.
+- 첫 층과 마지막 층은 입력 처리와 출력 투영에 쓰이므로 빼고, 중간층에 집중했다.
+
+<strong>핵심 발견</strong>
+- <strong>(1) 층별 구조</strong> - System 1 특징은 Layer 13-21에, System 2 특징은 Layer 21-26에 더 우세했다(Δ^(l)의 부호가 뒤집힌다). 직관이 먼저, 숙고가 나중이라는 인간 이중처리의 순서와 일치한다.
+- <strong>(2) 의미</strong> - 공정 분배 토큰(split/half/equal)은 주로 System 2에 속했고, 자기 이익 토큰(zero/nothing/minimal)은 양쪽 모두에 걸쳤다.
+- 정서 특징은 부정 정서(sorry/reluctant/refuse) 쪽으로 치우쳤다(부정 89.9%, 긍정 10.1%). 이는 적극적으로 도덕적 만족을 추구하기보다 죄책감을 피하려는 동기가 더 강함을 시사한다.
+- <strong>(3) 활성화 패칭으로 인과성 확인</strong> - 2,048개 특징 전부를 패칭하니 분배가 크게 움직였다. generous 조건의 평균이 49.1%인데, 전체 패칭 시 30.5%로(18.6%포인트 감소), System 2 특징만 패칭하면 38.8%로(10.3%포인트 감소), System 1만 패칭하면 1.0%포인트밖에 안 바뀌었다.
+- 즉 <strong>System 2 특징이 출력에 더 가깝게(근위적으로) 작용한다</strong>. 전략(strategy) 특징은 효과가 컸고, 정서(sentiment) 특징은 거의 효과가 없었다.
+- <strong>(4) 스티어링이 일반화</strong> - 독재자 게임에서 뽑아낸 벡터 f를 최후통첩(Ultimatum)/공공재(Public Goods)/신뢰(Trust) 게임에 그대로 적용해도 효과가 일관됐다(Trust 게임 투자가 기본 16.4%였는데, 관대 쪽 스티어링 시 43.2%, 이기 쪽 스티어링 시 2.8%).
+- CRT 위약 검정에서는 효과가 미미했다 - 단순히 "숫자만 밀어내는" 인공물이 아니라는 뜻이다.
+
+<strong>한계, 그리고 거울인가 인공물인가</strong>
+- <strong>미해결</strong> - 특징들 사이의 회로 구조(아래쪽 특징들이 어떻게 결합하거나 경쟁하는지)는 아직 밝히지 못했고, 이 특징들이 어디서 생겼는지(데이터의 규칙성인지, 모델 규모인지, 구조적 편향인지)도 미해결이다.
+- System 1/System 2 라벨은 인간 인지 메커니즘의 증거가 아니라, 벤치마크 활성 패턴으로 정의한 <strong>조작적(operational)</strong> 라벨임을 분명히 밝힌다.
+- <strong>정면 돌파</strong> - 이 논문은 거울 vs 인공물 문제를 가장 정면으로 푼다. 패칭과 스티어링으로 인과성을 보이고, 위약 검정으로 일반적인 인공물 가능성을 배제하며, 게임을 넘나드는(cross-game) 일반화로 이게 표면 패턴이 아니라 공유된 내부 표현임을 증명한다.
+- <strong>그러나</strong> - 동시에, 이 "이타성"이 인간의 신경 메커니즘을 비추는 거울이 아니라 모델의 표현 수준 구조(부정 정서 회피로 기운 희소한 특징 집합)일 뿐이라는 점도 분명히 한다 - 인과적으로 실재하지만, 인간적 의미의 이타성은 아니다.
+
+![이타성 특징 패칭 효과 - System 2가 인과 동력](images/altruism_patching.svg)
+
+### 인지적 오프로딩과 속도 착각 (1) 설계와 사전등록 (arXiv 2605.23177)
+
+Yu, Cheng, Jabbar, Sucholutsky, Collins, Jurafsky, Hawkins (Stanford 외).
+
+<strong>이 연구가 던지는 질문</strong>
+- 사람들은 AI를 쓰면 시간이 얼마나 절약되는지에 대해 잘 보정(calibrated)되어 있는가. 즉 자기 기대와 실제가 잘 맞는가.
+- 특히 단순한 인지 과제에서는 AI가 시간을 별로 못 줄인다는 사실을 사람들이 알아채는가, 아니면 AI의 효율 이득을 과대평가하는가.
+- <strong>측정 대상</strong> - 이 논문이 재는 것은 LLM 자체가 아니라 LLM에 대한 인간의 메타인지(자기 사고를 들여다보고 판단하는 능력)다. 인간-AI 상호작용 속에서 모델이 연구 대상이 되는 또 다른 각도다.
+
+```mermaid
+flowchart TD
+    A["사전등록 N=1237<br/>24과제 x 2난이도<br/>between-subject"] --> B["<b>예측표본 N=401</b><br/>수행 안 함<br/>독립/AI/타인 시간 예측<br/>+ NFC 척도"]
+    A --> C["<b>완료표본 N=836</b><br/>실제 수행<br/>독립 또는 AI(GPT-4o)<br/>숨은 타이머 + NASA-TLX"]
+    B --> D{"예측 vs 실제<br/>비교"}
+    C --> D
+    D --> E["혼합효과모형<br/>time ~ condition*type<br/>+difficulty + (1|PID)+(1|task)"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    class A blue
+    class B,C green
+    class D,E yellow
+```
+
+<strong>핵심 가설</strong>
+- 메타인지 접근 논변에 근거한 <strong>비대칭적 오보정(miscalibration)</strong>을 예측한다.
+- 그 논변은 이렇다 - 우리는 자기 인지에는 불완전하게나마 접근할 수 있지만, LLM 내부에는 그런 접근 통로가 없다.
+- 그래서 사람은 자기가 혼자 일을 끝내는 시간은 잘 맞히지만, AI의 도움을 받을 때의 완료 시간은 체계적으로 너무 짧게 잡는다 = <strong>속도 착각(speedup illusion)</strong>.
+
+<strong>사전등록 설계, N=1237</strong>
+- Stanford IRB 승인(protocol 83204)을 받고, 분석 계획을 OSF에 미리 등록(사전등록)했다.
+- <strong>과제</strong> - 24개를 썼다(Shelby et al.의 4범주 분류 - C1 정보 탐색, C2 정보 처리/종합, C3 절차 안내/실행, C4 콘텐츠 생성/변환, 각 6과제), 난이도는 2단계("올림픽 메달리스트 1명 찾기" vs "10명 찾기").
+- <strong>표본</strong> - 미국 성인 대표표본(Prolific 플랫폼), 여성 48%/남성 47%, 백인 58%.
+- <strong>설계</strong> - 참가자 간 설계(between-subject)로 했다. 참가자 내 설계(within)로 하면 같은 사람이 과제에 익숙해지면서 완료 시간과 노력이 편향되기 때문이다.
+
+<strong>두 표본을 나눠 운영</strong>
+- <strong>(1) 예측 표본(prediction sample, N=401)</strong> - 과제를 실제로 하지 않고 상세 설명만 본 뒤, 혼자 할 때/AI 도움받을 때/다른 사람 도움받을 때의 완료 시간을 예측하게 했다.
+- AI와 사람 중 무엇을 쓰고 싶은지 선호도 물었다. 이후 인지 욕구 척도(Need for Cognition, 사고하기를 즐기는 정도)를 쟀다. 이 표본은 AI 사용과 복붙을 막았다.
+- <strong>(2) 완료 표본(completion sample, N=836)</strong> - 혼자 또는 AI 도움으로 과제를 실제 수행했다. AI 조건에서는 과제 페이지에 GPT-4o 채팅이 끼워져 있었다. 조건당 과제별로 약 68명이 참여했다.
+- 숨은 타이머로 완료 시간을 쟀다. 각 과제가 끝날 때마다 5문항짜리 <strong>NASA-TLX</strong>(과제의 주관적 부담, 즉 노력을 재는 설문 척도 - 정신적 요구/서두름/성공감/노력 강도/불안)를 작성했다.
+- 정답인 응답만 분석에 썼다(저품질 응답은 독립 조건 6.3%, AI 조건 4.0%를 제외).
+
+### 인지적 오프로딩과 속도 착각 (2) 모형·결과와 함의
+
+<strong>혼합효과모형</strong>
+- 혼합효과모형이란 참가자 개인차나 과제 차이 같은 무작위 효과를 함께 넣어 추정하는 회귀를 말한다.
+- 핵심 모형: time ~ condition * type + difficulty + (1|participantID) + (1|taskID). 여기서 condition은 예측 단계인지 완료 단계인지, type은 혼자 하는지 AI 보조인지를 뜻하고, (1|participantID)와 (1|taskID)는 참가자별·과제별 무작위 절편을 의미한다.
+- 예측 단계에서는 예측 대상(혼자 vs 보조)과 도움의 출처(AI vs 타인)를 고정효과로, 참가자와 과제를 무작위 절편으로 넣었다.
+
+```mermaid
+flowchart LR
+    A["혼합효과모형<br/>time ~ condition*type"] --> B["AI 기대단축 68.5초<br/>(z=20.34)"]
+    A --> C["실제>예측 57.8초<br/>(AI조건만)"]
+    A --> D["독립조건<br/>예측=실제 (보정정확)"]
+    B --> E["AI는 어려운과제만 단축<br/>24중 3과제만 유의"]
+    C --> E
+    F["NASA-TLX<br/>모든과제 노력 0.61점 감소"] --> G{"<b>시간-노력 해리</b><br/>노력감소를<br/>시간감소로 혼동"}
+    E --> G
+    G --> H["피드백루프<br/>miscalibration →AI사용<br/>→deskilling 위험"]
+    classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000
+    classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000
+    classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000
+    classDef red fill:#ffcdd2,stroke:#c62828,color:#000
+    class A blue
+    class B,C,D,E,F green
+    class G yellow
+    class H red
+```
+
+<strong>핵심 발견</strong>
+- <strong>(1) AI 기대 단축</strong> - 사람들은 AI가 평균 68.5초를 줄여줄 거라 기대했다(beta=68.5, SE=3.37, z=20.34, p&lt;0.001). AI에 기대하는 효율은 다른 사람의 도움보다 컸다(타인 대비 beta=-51.4, z=-10.80).
+- 과제 수준에서 보면 24과제 중 AI는 18과제, 타인은 5과제에서 시간 단축을 기대받았다.
+- <strong>(2) 실제와 예측의 비대칭</strong> - AI 보조에서 실제 완료 시간이 예측보다 거의 1분 더 길었다(beta=57.8, SE=8.79, z=6.57, p&lt;0.001).
+- 반면 혼자 하는 조건은 예측과 실제가 차이가 없었다(beta=-2.52, p=0.775) - 자기 자신에 대한 보정은 정확했다는 뜻이다. 속도 착각은 4개 범주와 2개 난이도 모두에서 나타났다.
+- <strong>(3) 어려운 과제만 단축</strong> - AI는 어려운 과제에서만 시간을 줄였고(26.14초, p&lt;0.05), 쉬운 과제는 차이가 없었다. 24과제 중 유의하게 빨라진 건 단 3과제뿐이었다("enjoy 동의어 10개 찾기", 긴 기사 요약, 긴 텍스트 편집).
+- <strong>(4) 시간과 노력의 해리</strong> - AI는 완료 시간은 거의 못 줄였지만, NASA-TLX로 잰 주관적 노력은 모든 과제에서 줄였다(평균 7점 만점 중 0.61점 감소, p&lt;0.001, 24과제 중 15과제에서 유의). 시간과 노력의 상관은 약했다(r=0.26).
+- <strong>(5) 인지 욕구(Need for Cognition)</strong> - "사고하기를 즐기지 않는" 사람일수록 속도 착각에 더 취약했다(문항 3/4에서 음의 계수). AI 사용 빈도나 AI 태도 척도(AIAS)는 보정 오차를 예측하지 못했다.
+- <strong>(6) 프롬프트 분석</strong> - 70%가 한 번만 주고받았고, 18.5%는 과제 지시문을 그대로 복붙했다. 복붙은 시간은 못 줄였지만 노력은 줄였다.
+- 논리 문제에서는 GPT-4o가 장황하게 답해 그걸 정리하는 후처리에 113.9초가 더 걸렸다 - AI가 오히려 일을 지연시킨 것이다.
+
+<strong>한계, 그리고 거울 vs 인공물 함의</strong>
+- <strong>한계</strong> - 5분 이내 과제로 한정했고, 동기나 인센티브를 통제하지 못했으며(크라우드워크 특성), AI를 쓰는 방식에 개인차가 컸고, 예측 표본과 완료 표본이 완전히 분리된 건 아니다(일부 중복).
+- <strong>흥미로운 위치</strong> - 측정 대상이 LLM의 행동이 아니라 LLM에 대한 인간의 왜곡된 정신모형이다. 사람들은 노력이 줄어든 것을 시간이 줄어든 것으로 착각하고, AI의 효율을 과대평가한다.
+- <strong>피드백 루프</strong> - 함의가 무거운 이유는, 오보정이 AI 사용을 부추기고 -&gt; 노력이 줄어든 경험이 다시 오보정을 강화하는 루프가 돌고, 과도하게 인지를 떠넘기면(오프로딩) 능력이 퇴화하는(deskilling) 위험이 있기 때문이다.
+- AI 생산성 담론은 단지 시간 단축만이 아니라 주관적 경험까지 포함하는, 더 넓은 의미의 오프로딩 개념을 다뤄야 한다.
+
+![AI 속도 착각 - 예측 vs 실제 소요시간](images/speedup_illusion.svg)
+### 무엇이 함정인가 - 거울 vs artifact
+
+- <strong>매력</strong> - 이 역할은 행동경제학·사회심리학 개념을 LLM 내부에서 검증할 수 있다는 데 매력이 있다.
+- <strong>한계</strong> - LLM의 행동이 인간 사회의 거울인지, 아니면 학습·정렬 과정이 만든 모델 특유의 artifact인지 구분하기 어렵다.
+- 밀그램 복종이 도덕의 부재가 아니라 토큰 패턴 지속일 수 있다는 해석, 사람이 AI의 시간 절감을 과대평가한다는 인지 오프로딩 연구가 이를 보여준다.
+- <strong>교훈</strong> - 측정값을 인간 사회로 곧장 옮겨 읽는 것은 위험하다. 위험도는 낮지만 해석에 신중함이 필요하다.
+
+---
+
+## 6. ④ 연구자 보조로서의 LLM
+
+### 파이프라인 자동화
+
+- 네 번째는 연구 활동 자체의 자동화다.
+- 가설 생성, 실험 설계, 실행, 분석을 LLM 에이전트가 돌린다.
+- 아래 여섯 편이 다루는 범위:
+  - 가설 자동 생성 - MOOSE, HypoGeniC, 인과그래프
+  - 완전 자동 파이프라인 - Automated Social Science, HLER
+  - 개념적 프레임 - Third Ambition
+
+### MOOSE - TOMATO 과제와 파이프라인 (1/3)
+
+arXiv 2309.02726. Yang, Du, Li, Zheng, Poria, Cambria (NTU 외).
+
+<strong>이 논문이 묻는 것</strong>
+
+- 가공되지 않은 웹 문서 덩어리(raw 웹 코퍼스)만 던져 줬을 때, LLM이 스스로 연구가설을 만들 수 있는가.
+- 사람이 미리 정리해 둔 자료가 아니라는 점이 핵심이다.
+- 그 가설이 사람이 보기에 <strong>새롭고(novel)</strong> <strong>타당한(valid)</strong> 사회과학 연구가설인가.
+
+```mermaid
+flowchart LR
+  C["Raw Web Corpus<br/>(+ Related Survey)"]:::blue
+  BF["Background Finder<br/><b>B</b> 배경 탐색"]:::blue
+  ITF["Inspiration Title<br/>Finder"]:::blue
+  IF["Inspiration Finder<br/><b>I</b> 영감 추출"]:::blue
+  HS["Hypothesis<br/>Suggestor (M-0.5)"]:::green
+  HP["Hypothesis Proposer<br/><b>H</b> 가설 제안"]:::green
+  CK["Clarity Checker"]:::yellow
+  RK["Reality Checker"]:::yellow
+  NK["Novelty Checker"]:::yellow
+  OUT["Ranked<br/>가설 목록"]:::green
+  C --> BF --> ITF --> IF --> HS --> HP
+  HP --> CK --> RK --> NK --> OUT
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+<strong>기존 연구의 한계 두 가지</strong>
+
+- 가설을 만드는 과제를 가설귀납(hypothetical induction)이라 부른다. 관측 사실에서 거꾸로 그럴듯한 가설을 지어내는 추론이다.
+- <strong>한계 1 - 너무 친절한 설정</strong>: 기존 데이터셋은 어떤 관찰 문장을 볼지 사람이 직접 골라 주는 닫힌 설정(close-domain)이었다. LLM에게 떠먹여 주는 셈이다.
+- <strong>한계 2 - 외운 걸 다시 뱉기</strong>: 정답(ground truth) 가설이 대부분 상식 수준(예: 뉴턴 법칙)이라, LLM이 사전학습 때 이미 본 내용이었다. 새로 지어낸 게 아닐 수 있다.
+
+<strong>새 과제 정의 - TOMATO</strong>
+
+- MOOSE는 이 문제를 <strong>TOMATO</strong>(auTOmated open-doMAin hypoThetical inductiOn) 과제로 다시 정의한다.
+- 열린 설정(open-domain)이란, 사람이 관찰 문장을 골라 주지 않고 가공 안 된 웹 코퍼스만 통째로 준다는 뜻이다.
+
+<strong>데이터셋</strong>
+
+- 2023년 1월 이후 상위 사회과학 저널 논문 <strong>50편</strong>으로 TOMATO 벤치마크를 만들었다.
+- 7개 분과 - 커뮤니케이션, 심리학, 인사관리(HRM), 정보시스템, 국제경영, 경영, 마케팅.
+- 사회과학 박사과정생이 각 논문에서 핵심 가설, 연구 배경, 영감(inspiration, 배경과 가설을 잇는 이론적 다리)을 직접 표시했다.
+- <strong>데이터 오염 방지</strong>: 논문 원문을 그대로 베끼지 않고, 웹에서 의미가 비슷한 문장을 찾아 raw 코퍼스로 삼았다. 모델이 정답 문장을 보고 베끼는 일을 피하려는 것이다.
+- 새로움(노벨티) 검증용 서베이 논문 14편도 따로 모았다.
+- 기본(base) 모델은 GPT-3.5-turbo, 평가는 GPT-4와 전문가 3인이 맡았다.
+
+<strong>파이프라인을 직관적으로 보면</strong>
+
+- 기본 틀(MOOSE-base)은 인간 연구자가 가설을 짜는 순서를 그대로 모듈로 옮긴 것이다. 한 번에 가설을 뱉지 않고 단계를 나눈다.
+- <strong>1단계</strong>: 연구 배경을 찾는다(Background Finder).
+- <strong>2단계</strong>: 코퍼스의 제목(title)에서만 영감 후보 제목을 빠르게 추린다(Inspiration Title Finder). 본문을 다 뒤지면 계산비용이 폭발하므로 제목으로 1차 거른다.
+- <strong>3단계</strong>: 추려진 제목의 본문에서 실제 영감 문장을 뽑는다(Inspiration Finder).
+- <strong>4단계</strong>: 배경과 영감을 합쳐 가설을 제안한다(Hypothesis Proposer).
+
+<strong>핵심 가정</strong>
+
+- 좋은 가설은 독립변수와 종속변수를 잇는 새로운 연결을 담아야 한다.
+- 영감(inspiration)이 그 연결에 들어갈 한 변수, 또는 둘을 매개하는 역할을 한다는 것이 이 시스템의 핵심 가정이다.
+
+### MOOSE - 세 가지 피드백 기제 (2/3)
+
+- MOOSE의 진짜 기여는 기본 틀 위에 얹는 <strong>세 가지 피드백</strong>이다.
+- 강화학습의 보상 구조에서 빌려온 발상이다. "보상을 지금 바로 받는가, 나중에야 받는가"로 나뉜다.
+
+```mermaid
+flowchart TD
+  subgraph PAST["past-feedback"]
+    direction LR
+    ITF2["Inspiration Title Finder<br/>(과거 모듈)"]:::blue
+  end
+  subgraph PRESENT["present-feedback (반복)"]
+    direction LR
+    HP2["Hypothesis Proposer"]:::green
+    CHK["Clarity / Reality /<br/>Novelty Checker"]:::yellow
+    HP2 -->|"가설 H"| CHK
+    CHK -->|"f_i 피드백"| HP2
+  end
+  subgraph FUTURE["future-feedback"]
+    direction LR
+    BF2["Background Finder<br/>+ reason"]:::blue
+    HSUG["Hypothesis Suggestor<br/>(M-0.5, 초안 제시)"]:::green
+  end
+  FUTURE --> PAST --> PRESENT
+  CHK -.->|"가설 결과로 영감 재평가"| ITF2
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+```
+
+<strong>현재 피드백(present-feedback)</strong>
+
+- 모듈이 출력 $o_i$를 내면 그 자리에서 바로 평가해 피드백 $f_i$를 준다. $o_i$와 $f_i$를 다시 입력으로 넣어 출력을 다시 만든다. 즉석에서 평가하고 고치는 방식이다.
+- 가설 제안 모듈(Hypothesis Proposer)에 적용한다.
+- 평가 기준은 가설귀납의 철학적 정의(Norton 2003)에서 재구성했다 - reality(현실 반영), novelty(새로움), clarity(명확성).
+- 그래서 Reality / Novelty / Clarity Checker 세 모듈이 붙는다.
+
+<strong>과거 피드백(past-feedback)</strong>
+
+- 어떤 모듈의 출력은 그 자체만 보고는 잘했는지 판단하기 어렵다. 그 출력이 낳은 뒤 단계 결과를 봐야 평가가 된다.
+- 예컨대 영감 선택이 좋았는지는, 그 영감이 결국 어떤 가설을 낳았는지 본 뒤에야 알 수 있다.
+- 그래서 뒤 단계의 피드백을 앞쪽 과거 모듈(Inspiration Title Finder)로 되돌려 보낸다.
+
+<strong>미래 피드백(future-feedback)</strong>
+
+- 지금 단계의 모듈이 자기 출력에 대한 근거(reason/justification)를 함께 만들어 둔다. 다음 단계 모듈이 그걸 받아 더 쉽게 일한다.
+- FF1은 Background Finder와 Inspiration Title Finder가 결과와 함께 그 이유도 같이 만들게 한다.
+- FF2는 부담이 큰 Hypothesis Proposer 앞에 Hypothesis Suggestor를 둬서, 무거운 추론을 둘로 나눠 진다.
+
+<strong>생성도 LLM, 평가도 LLM</strong>
+
+- 세 피드백 모두 LLM(또는 전문가)이 평가자 역할을 맡는다. 만드는 쪽과 채점하는 쪽이 같은 LLM인 구조다.
+- 흥미롭게도 과거 피드백의 영감 평가(Inspiration Feedback)는 ChatGPT가 충분히 잘 못 해서, 사람이 만든 경험 규칙(휴리스틱)으로 대체했다 - "영감 제목이 배경과 덜 관련될수록 더 새로운 가설이 나올 수 있다"는 규칙이다(부록 A.10).
+- 즉 핵심 평가 한 곳에서 자동화가 막혔고, 거기에 사람이 들어가야 했다.
+
+### MOOSE - 평가, 발견, 함의 (3/3)
+
+<strong>무엇으로 평가했나</strong>
+
+- validness(현실 반영, 5점 척도), novelty(기존 문헌에 없는가), helpfulness(연구자에게 도움이 되는가).
+- BLEU / ROUGE 같은 표면 일치 지표(정답 문장과 단어가 얼마나 겹치는지만 보는 지표)는 정답이 하나로 정해지지 않는 열린(open-ended) 과제에 안 맞아서 일부러 쓰지 않았다.
+- TOMATO의 목표는 연구자에게 영감을 주는 것이므로, novelty와 helpfulness를 validness보다 더 중요하게 본다.
+
+<strong>핵심 발견</strong>
+
+- <strong>baseline 대비</strong>: MOOSE-base는 단순 비교군(코퍼스 조각을 넣고 곧바로 가설을 뽑는 방식)보다 novelty와 helpfulness에서 크게 앞선다. baseline 가설은 코퍼스 문장을 거의 그대로 바꿔 쓴 수준이라 새로움이 없었다.
+- <strong>피드백 효과</strong>: 세 피드백을 더할수록 점진적으로 좋아진다. 현재 피드백은 반복 3-4회까지 validness와 novelty가 꾸준히 오른다.
+- <strong>GPT-4 평가 신뢰도</strong>: GPT-4 평가와 전문가 평가의 <strong>느슨한 일치도(soft consistency)가 0.77 이상</strong>이다(부록 A.8). soft consistency는 둘의 순위나 방향이 대체로 맞느냐를 보는 지표다.
+  - 이걸 근거로, GPT-4가 기계 생성 가설을 어느 정도 믿을 만하게 평가할 수 있다고 주장한다.
+  - 다만 정확히 같은 점수를 매겼는지 보는 엄격한 일치도(hard consistency)는 0.3-0.5로 낮다.
+- <strong>모델 교체</strong>: 기본 모델을 Claude3-Opus로 바꿔도 효과가 유지되고 절대 점수가 올라간다. 더 강한 모델일수록 잠재력이 크다는 뜻이다.
+
+<strong>한계와 의의</strong>
+
+- <strong>트레이드오프</strong>: 저자도 인정하듯, "흥미롭고 직관에 반하는(counter-intuitive) 가설은 오히려 validness 점수가 낮게 나오는 경향"이 있다(부록 A.13). 즉 새로움과 타당성 사이에 맞교환이 있다.
+- <strong>식별(identification) 관점</strong>: MOOSE가 내놓는 것은 "X가 Y에 영향을 준다"는 <strong>가설 진술</strong>일 뿐이다. 그 가설이 왜 인과적으로 옳은지에 대한 논증은 아니다.
+- 변수 사이의 새 연결을 제안하는 일(추정(estimation)할 후보를 늘리는 일)은 자동화한다. 그러나 그 연결이 진짜 인과인지 아니면 교란(혼동) 때문인지를 가려내는 식별 전략은 전혀 다루지 않는다.
+- <strong>재귀 문제</strong>: novelty와 validness의 정답 기준이 GPT-4 자신이다. 만드는 쪽도 채점하는 쪽도 같은 분포에서 나온 셈이라, 검증이 자기 자신에게 되돌아가는 재귀의 전형이다.
+
+### causal-graph (LLMCG) - 논문에서 인과 그래프로
+
+arXiv 2402.14424. Tong, Mao, Huang, Zhao, Peng (Tsinghua). Humanities & Social Sciences Communications 게재.
+
+<strong>이 논문이 묻는 것</strong>
+
+- 대규모 심리학 문헌에서 인과 관계를 뽑아 인과 지식 그래프(개념을 점, 인과관계를 화살표로 그린 큰 연결망)를 만들 수 있는가.
+- 그 그래프에서 아직 연결되지 않은 점들을 이어 새 심리학 가설을 만들 수 있는가. 빈 연결을 예측하는 작업을 링크 예측(link prediction)이라 한다.
+- LLM의 의미·개념 추출 능력과, 인과 그래프의 체계적 사고를 결합하자는 발상이다(LLMCG, LLM-based Causal Graph algorithm).
+
+```mermaid
+flowchart LR
+  P["심리학 논문<br/><b>43,312</b>편<br/>(PMC)"]:::blue
+  EX["GPT-4 인과쌍 추출<br/>(causality/correlation,<br/>+/-)"]:::green
+  G["Neo4j 인과 그래프<br/>19.7만 개념<br/>23.5만 연결"]:::blue
+  LP["Link Prediction<br/>node2vec + Jaccard"]:::yellow
+  H["GPT-4 가설 생성<br/>(미연결 개념쌍 연결)<br/>well-being 130개"]:::green
+  EVAL["평가: 전문가 + LLM-only +<br/>BERT t-SNE 의미분석"]:::red
+  P --> EX --> G --> LP --> H --> EVAL
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+<strong>데이터</strong>
+
+- PMC(공개 의학·생명과학 논문 저장소) 무료 공개분에서 "Psychol" 같은 키워드로 걸러 낸 심리학·신경과학 논문 약 14만 편 중, 최종적으로 <strong>43,312편</strong>을 분석했다.
+- Frontiers in Psychology(3.5만), BMC Psychology 등이 포함된다.
+
+<strong>방법 세 단계</strong>
+
+1. <strong>문헌 수집(Literature retrieval)</strong>: PMC에서 논문 본문(제목+초록+본문)을 가져온다. 단 참고문헌 섹션은 정규식으로 잘라낸다.
+2. <strong>인과쌍 추출(Causal pair extraction)</strong>:
+   - GPT-4에 4000토큰 단위로 본문을 잘라 넣고, 텍스트에 직접 서술된 인과·상관 관계만 JSON으로 뽑게 한다. 그 논문이 다른 연구를 인용하며 언급한 관계는 제외한다.
+   - 각 쌍에는 개념쌍(원인, 결과), 관계 종류(인과 causality / 상관 correlation), 방향(양positive / 음negative)을 붙인다.
+   - 추출 검증 결과, GPT-4가 분류한 289개 관계 중 87.54%가 검증을 통과했다. 인과로 분류한 것 중 13%만 사실 관계가 없다고 판정되어, 인과와 상관을 가르는 데 쓸 만하다고 본다.
+   - 결과 그래프는 Neo4j(그래프 전용 DB)에 저장했고, 개념 19.7만 개와 연결 23.5만 개가 모였다.
+3. <strong>가설 생성 = 링크 예측</strong>:
+   - 개념을 node2vec로 임베딩한다(연결망 위 위치를 벡터 좌표로 바꾸는 방법으로, 이웃이 비슷한 점은 좌표도 가까워진다).
+   - 두 점의 이웃이 얼마나 겹치는지를 자카드(Jaccard) 유사도로 재서, 아직 연결 안 된 쌍이 앞으로 이어질 가능성을 점수화한다.
+   - 점수가 높은 쌍을 골라 GPT-4에게 그 둘을 잇는 새 인과 가설을 쓰게 한다. "행복(well-being)"에 초점을 둔 가설 130개를 만들었다.
+
+<strong>평가 설계</strong>
+
+네 집단을 비교한다.
+
+- (a) Random-selected LLMCG: 시스템이 만든 가설 중 무작위로 뽑은 30개.
+- (b) Expert-selected LLMCG: 긍정심리학 박사후연구원 2인이 골라낸 30개.
+- (c) Control-Human: Tsinghua 긍정심리 박사과정생 16인이 직접 만든 가설.
+- (d) Control-Claude: Claude-2 혼자 만든 가설.
+
+평가 방식:
+
+- 심리학 교수 3인이 출처를 모른 채(블라인드) 순서를 섞어 novelty와 usefulness를 평가했다.
+- 더해서 BERT 임베딩과 t-SNE(고차원 벡터를 2차원에 펼쳐 보여 주는 시각화)로 가설들 사이 의미 거리도 분석했다.
+
+<strong>핵심 발견</strong>
+
+- <strong>novelty</strong>: LLMCG 집단이 Control-Claude를 뚜렷이 앞선다(Random vs Claude: t(59)=3.34, p=0.007). 그리고 <strong>박사과정생(Control-Human) 수준에 맞먹는다</strong>.
+- <strong>usefulness</strong>: 집단 간 유의한 차이가 없다(F=5.25, p=0.553). 인과 그래프를 쓰면 새로움은 끌어올리지만, 유용성은 어느 집단이나 비슷하다.
+- <strong>ablation</strong>: GPT-4 단독과 LLMCG를 떼어 비교한 실험에서도 LLMCG가 novelty에서 앞선다(효과크기 Cohen's d=1.2 수준). usefulness는 역시 차이가 없다.
+- <strong>t-SNE</strong>: Control-Human은 의미 공간에서 유독 멀찍이 떨어져 있고(고유한 학문 배경이 반영된 것), LLMCG는 더 넓게 흩어져 있다.
+
+<strong>한계와 의의</strong>
+
+- 저자도 인정하듯, 인과쌍 추출의 13%가 전문가 판단과 어긋난다.
+- 더 근본적으로, <strong>여기서 "인과"란 논문 저자가 텍스트에 "인과"라고 적어 놨다는 뜻</strong>일 뿐이다. 데이터로 식별된 인과효과가 아니다.
+- 그래프의 화살표는 "문헌이 인과라고 주장한 것"을 모아 놓은 집계다. 링크 예측이 새로 만드는 화살표는 "기존 인과 주장들과 연결망상 위치가 가까운, 아직 안 이어진 쌍"일 뿐이다.
+- 이건 추정 후보(어떤 X-Y를 들여다볼지)를 늘리는 데는 강력하지만, 식별과는 무관하다.
+- 그래프 이름이 "인과 그래프"여도, 그 안의 화살표는 데이터로 식별한 게 아니라 텍스트에서 긁어모은 주장이다.
+
+### HypoGeniC - 데이터 기반 가설 은행과 UCB 보상
+
+arXiv 2404.04326. Zhou, Liu, Srivastava, Mei, Tan (UChicago, TTIC).
+
+<strong>이 논문이 묻는 것</strong>
+
+- 라벨이 붙은 예시 데이터(관측 데이터, observed data)에서 출발해, LLM이 분류 성능을 끌어올리는 고품질 가설을 반복해서 만들고 갱신할 수 있는가.
+
+<strong>앞 두 논문과의 차이</strong>
+
+- MOOSE와 LLMCG가 문헌에서 출발했다면, HypoGeniC은 <strong>데이터에서 출발</strong>한다.
+- 입력-출력 쌍 $\{(x_i, y_i)\}$가 주어졌을 때, $x$와 $y$의 관계를 설명하는 가설 묶음 $\mathcal{H}=\{h_1,...,h_m\}$을 학습한다.
+
+```mermaid
+flowchart TD
+  INIT["초기 예시로<br/>가설 은행 H 생성"]:::green
+  TOP["각 훈련예시마다<br/>top-k 고보상 가설 선택"]:::blue
+  INF["가설로 예측<br/>(hypothesis-based inference)"]:::blue
+  REW["보상 갱신<br/>r_i = 정확도 +<br/>alpha*sqrt(log t / |S_i|)"]:::yellow
+  WRONG{"틀린 가설 수<br/>>= w_hyp?"}:::red
+  BANK["wrong example bank<br/>(지식 공백 포착)"]:::red
+  GEN["공백에서<br/>새 가설 생성"]:::green
+  H2["가설 은행 H 갱신"]:::green
+  INIT --> TOP --> INF --> REW --> WRONG
+  WRONG -->|"예: 예시 추가"| BANK
+  BANK -->|"가득 차면"| GEN --> H2 --> TOP
+  WRONG -->|"아니오"| TOP
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+<strong>데이터와 과제</strong>
+
+합성 데이터 1개에 실세계 데이터 3개를 쓴다.
+
+- (1) <strong>Shoe sales</strong>: 합성 데이터로, 참 가설이 딱 하나 존재한다 - 손님은 자기 셔츠 색과 맞는 신발을 산다.
+- (2) <strong>Deceptive reviews</strong>: 가짜 호텔 리뷰를 가려내기.
+- (3) <strong>Headline popularity</strong>: Upworthy 헤드라인 15만 개 중 어느 쪽이 클릭을 더 많이 받는지.
+- (4) <strong>Tweet popularity</strong>: 어느 트윗이 리트윗을 더 많이 받는지.
+
+모델은 Mixtral, GPT-3.5-turbo, Claude-2.1을 쓰고, 비교 기준(오라클)으로는 미세조정(fine-tuned)한 RoBERTa와 Llama-2-7B를 둔다.
+
+<strong>알고리즘의 핵심</strong>
+
+- 여러 선택지 중 어디를 더 시도할지 고르는 문제를 다중 슬롯머신(multi-armed bandit)이라 한다.
+- HypoGeniC은 그중 <strong>UCB</strong>(upper confidence bound) 방식을 가설 갱신에 옮겼다.
+- UCB는 여러 후보 가운데 어디를 더 탐색할지를 "지금까지의 평균 성과 + 불확실성"을 함께 보고 고르는 점수다.
+- 여기서 각 가설을 슬롯머신의 "팔(arm)", 각 훈련 예시를 그 팔을 "당기는 것(pull)"으로 본다.
+
+<strong>보상 구조</strong>
+
+- 보상은 $r_i = \frac{\sum I(y_j=\hat y_j)}{|\mathcal{S}_i|} + \alpha\sqrt{\frac{\log t}{|\mathcal{S}_i|}}$ 로 준다.
+- <strong>앞항(활용)</strong>: 그 가설의 정확도다. 잘 맞히는 가설을 계속 쓰는 활용(exploitation)에 해당한다.
+- <strong>뒷항(탐색)</strong>: 아직 덜 써 본 가설일수록 점수를 더 얹는다. 새 후보를 시도해 보는 탐색(exploration)에 해당한다.
+- 이 두 항을 합친 UCB식 탐색-활용 균형으로 가설 은행을 굴린다.
+- <strong>wrong example bank</strong>: 지금 가설들이 못 맞히는 예시를 모아 둔 통이다. "현재 가설 풀이 모르는 빈틈"을 나타내며, 이 통이 가득 차면 그 빈틈을 메우는 새 가설을 생성한다.
+- <strong>추론 전략</strong>: 정확도가 가장 높은 가설 하나만 쓰기, 골라서 가중 투표하기(filter-and-weighted-vote), 한 단계 또는 두 단계로 상황에 맞춰 추론하기(single/two-step adaptive inference) 등.
+
+<strong>핵심 발견</strong>
+
+- <strong>정확도 향상</strong>: HypoGeniC 가설로 추론하면 무학습(zero-shot)이나 예시 몇 개만 준 경우(few-shot) 대비 정확도가 오른다 - Shoe 31.7%p, Deceptive 13.9%p, Headline 3.3%p, Tweet 24.9%p. 일부 데이터셋에서는 미세조정한 RoBERTa / Llama-2-7B 오라클까지 넘어선다.
+- <strong>모델 간 일반화</strong>: 가설이 모델 사이를 넘어 일반화된다. GPT-3.5가 만든 가설을 Mixtral이나 Claude가 써도 성능이 유지된다. 훈련 때 못 본 분포의 가짜 리뷰(OOD deceptive reviews)에서도 견고하다.
+- <strong>새 통찰</strong>: 만들어진 가설이 기존 문헌을 다시 확인해 주면서 새 통찰도 준다. 예를 들어 "생일·기념일 같은 특별한 날을 언급하는 리뷰가 더 진실되다"는 새 가설이 나왔다. 또 Ott et al.(2011)의 "미래 시제(future)가 가짜 리뷰와 연관된다"는 결과를 반박하는 가설도 나왔다.
+
+<strong>한계와 의의</strong>
+
+- <strong>저자가 밝힌 한계</strong>: LLM의 추론이 완벽하지 않아서, 가설로 예측하는 단계(hypothesis-based inference)가 가설의 실제 품질을 그대로 반영하지 못할 수 있다. 또 데이터에 박힌 고정관념이나 편향을 가설이 그대로 확증해 버릴 위험이 있어, 사람과 AI가 함께 보는 협업을 권한다.
+- <strong>식별 관점</strong>: HypoGeniC의 "가설"은 분류를 더 잘하게 해 주는 <strong>예측 패턴</strong>이다. "이런 특징이 있으면 y일 가능성이 높다"는 상관 규칙이지, 인과 주장이 아니다.
+- 보상 함수가 정확도이므로, 이 시스템은 대놓고 <strong>예측력만 최적화</strong>한다.
+- 데이터의 편향을 확증한다는 저자 자신의 경고가, 곧 식별이 빠져 있다는 증상이다.
+
+### Automated Social Science - SCM을 청사진으로 한 완전 자동화 (1/2)
+
+arXiv 2404.11794. Manning, Zhu, Horton (MIT, Harvard, MIT&NBER).
+
+<strong>이 논문이 묻는 것</strong>
+
+- 가설 생성과 그 가설을 컴퓨터 안에서(in silico) 검증하는 일을, LLM 하나로 모두 자동화할 수 있는가.
+- 그리고 시뮬레이션이, LLM에게 직접 물어서는 안 나오는 정보를 끌어낼 수 있는가.
+- 이 묶음 여섯 편 중 자동화를 가장 끝까지 밀어붙인 시스템이다.
+
+<strong>핵심 혁신 - SCM을 청사진으로 쓴다</strong>
+
+- <strong>구조적 인과모형(SCM, Structural Causal Model)</strong>은 변수들 사이 인과관계를 화살표로 적어 둔 설계도다. 이 논문은 SCM을 연구 과정 전체의 청사진으로 쓴다.
+
+```mermaid
+flowchart TD
+  S["1. 사회 시나리오 입력<br/>('머그컵 흥정' 한 줄)"]:::blue
+  HG["2. 가설 생성<br/>SCM 구축<br/>(종속변수 + 원인 후보)"]:::green
+  AB["3. 에이전트 구축<br/>SCM 외생차원으로<br/>속성 부여"]:::green
+  DI["4. 상호작용 설계<br/>발화 순서 결정"]:::yellow
+  ER["5. 실험 실행<br/>조건별 병렬<br/>LLM 에이전트 대화"]:::yellow
+  DC["6. 데이터 수집<br/>에이전트에 설문<br/>('거래 성사됐나?')"]:::blue
+  ME["7. 모형 추정<br/>선형 SCM 적합<br/>(path estimate)"]:::red
+  S --> HG --> AB --> DI --> ER --> DC --> ME
+  ME -.->|"새 인과변수로<br/>후속 실험"| HG
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+- <strong>SCM 하나가 네 가지를 동시에 준다</strong> - (1) 가설을 적는 언어, (2) LLM 에이전트를 어떻게 만들지의 설계도, (3) 실험을 어떻게 짤지, (4) 분석을 어떻게 할지의 계획(사전등록 비슷한 것).
+- 각 설명변수는 "사람이나 상황의 어떤 차원을 바꿔야 효과가 식별되는가"를 못박아 준다. 그래서 시스템은 무엇을 바깥에서 인위적으로(외생적으로) 조작해야 하는지를 "안다".
+- 이것이 자동화를 가능케 하는 비결이다. SCM이 없으면 다음 단계에서 고를 선택지가 끝없이 폭발한다.
+
+<strong>시스템 7단계</strong> (모두 GPT-4와 Python으로 돌고, 매 단계 사람이 끼어들어 고칠 수 있다)
+
+<strong>네 가지 시나리오</strong>
+
+- (1) <strong>머그컵 흥정</strong>:
+  - "두 사람이 머그컵을 흥정한다"는 한 줄만 넣으면, 시스템이 알아서 구매자(Buyer)와 판매자(Seller)를 뽑는다.
+  - 종속변수(거래 성사 여부, 0/1)와 원인 후보(구매자 예산, 판매자 최저가, 판매자가 컵에 갖는 애착)를 만들고 조작한다. 9x9x5=405회 시뮬레이션.
+  - 결과 - 예산이 1달러 늘면 성사확률이 3.7%p 올라가고(추정계수 $\hat\beta^*$=0.51), 최저가와 애착은 음(-)의 효과이며, 세 변수 모두 유의했다.
+- (2) <strong>탈세 보석심리</strong>: 판사·피고·변호사·검사가 등장한다. 전과가 있으면 보석금이 올라가고(유의), 판사가 그날 처리한 사건 수는 효과가 없었다.
+- (3) <strong>변호사 채용 면접</strong>: 변호사시험 합격만이 유일하게 유의했고(채용확률 75%p 상승), 키나 면접관의 친절함은 효과가 없었다.
+- (4) <strong>미술품 경매</strong>: 입찰자 3인의 예산이 모두 낙찰가에 정(+)의 방향으로 유의하게 작용했고, 낙찰가는 늘 2등 입찰자의 평가액(valuation) 근처에 형성됐다. 경매이론(Maskin & Riley 1985)과 정확히 들어맞는다.
+
+<strong>가장 중요한 점</strong>
+
+- 이 결과들은 LLM에게 직접 물어서 나온 게 아니라, <strong>실험(경험적 관측, empiricism)</strong>으로 나왔다.
+- 직관에 반할 정도로 놀랍지는 않지만, 모델이 자기 안을 들여다본 내성(introspection)이 아니라 실제로 돌려 본 실증의 산물이라는 점이 핵심이다.
+
+### Automated Social Science - 시뮬은 왜 필요한가, 그리고 식별 논변 (2/2)
+
+<strong>4절 - 시뮬레이션이 정말 필요한가</strong>
+
+LLM에게 그냥 "머릿속 사고실험(thought experiment)으로 결과를 예측해 봐"라고 시키면 안 되나. 세 가지 과제로 확인했다.
+
+- <strong>predict-$y_i$</strong> (SCM 없이 결과를 바로 예측): 경매 청산가 예측이 형편없다. MSE=8628이다. MSE는 예측이 정답에서 얼마나 빗나갔는지를 제곱해 평균한 오차로, 작을수록 좋다. 이건 경매이론으로 푼 값(MSE=128)보다 자릿수 단위로 나쁘고, 실제 실험으로 얻은 값보다도 더 멀다.
+- <strong>predict-$\hat\beta$</strong> (경로계수를 바로 예측): 평균적으로 실제값보다 13.2배 크게 과대추정했다. 12개 경로 중 10개를 과대추정했고, 부호(방향)는 10/12를 맞혔다.
+- <strong>predict-$y_i \mid \hat\beta_{-i}$</strong> (이미 적합한 SCM을 쥐여 주고 결과를 예측): MSE=1505로, 6배나 좋아진다. <strong>적합된 SCM을 조건으로 깔아 주면 예측이 극적으로 좋아진다.</strong>
+
+저자가 한 줄로 요약한다 - <strong>"LLM은 자기가 (당장) 말할 수 있는 것보다 더 많이 알고 있다(the LLM knows more than it can immediately tell)"</strong>. LLM 안에는 인간 행동에 관한 잠재 정보가 있지만, 직접 물어보는(elicitation) 것만으로는 못 꺼낸다. SCM에 기반한 실험이 그걸 끄집어낸다.
+
+<strong>5절 - 왜 SCM인가, 식별을 미리(ex-ante) 보장한다</strong>
+
+이 수업에서 가장 중요한 식별 논변이다. 두 대안과 비교한다.
+
+<strong>대안 1 - 데이터에서 인과구조를 가정(assume)하기</strong>
+
+```mermaid
+flowchart LR
+  subgraph TRUE["올바른 SCM (랜덤화 실험)"]
+    BB["Buyer Budget"]:::green --> CL["Convo Length"]:::green
+    SM["Seller Min"]:::green --> CL
+    SL["Seller Love"]:::blue --> CL
+  end
+  subgraph BAD["오설정 SCM (bad control)"]
+    BB2["Buyer Budget<br/>(p=0.189 비유의)"]:::red --> CL2["Convo Length"]:::red
+    SM2["Seller Min<br/>(p=0.755 비유의)"]:::red --> CL2
+    DO["Deal Occurs<br/>(나쁜 통제!)"]:::red --> CL2
+  end
+  TRUE -->|"거래성사를 통제하면<br/>효과가 0으로 죽는다"| BAD
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+- <strong>참 구조</strong>: 흥정 데이터에서 "대화 길이"를 종속변수로 둬 보자. 랜덤화 실험에서는 예산과 최저가가 대화 길이에 유의한 영향을 준다(p<0.001, p=0.026).
+- <strong>오설정</strong>: "거래 성사 여부"를 통제변수로 잘못 끼워 넣으면(잘못 설정된 SCM, misspecified SCM), 예산과 최저가의 효과가 비유의(p=0.189, 0.755)로 0 가까이 죽어 버린다.
+- <strong>왜 죽나</strong>: 거래 성사가 <strong>나쁜 통제(bad control)</strong>이기 때문이다. bad control은 넣으면 오히려 인과효과를 왜곡하는 통제변수다. 여기서는 거래 성사가 대화 길이와 함께 결정되는 변수라, 통제하면 안 되는 걸 통제하는 셈이 된다.
+- <strong>저자 각주</strong>: "정통 계량경제학자라면 이런 실수를 안 한다고 하겠지만, 많은 연구자는 그렇지 못하다. 우리조차도 랜덤화 실험에서 나온 비편향 추정치를 기준으로 손에 쥐기 전에는 확신하지 못했다. LLM은 아직 이 실수를 피할 만큼 똑똑하지 않다."
+
+<strong>대안 2 - 데이터에서 인과구조를 탐색(search)하기</strong>
+
+- GES(Greedy Equivalence Search)는 데이터에서 인과그래프의 화살표 방향을 탐욕적으로 찾아 나가는 알고리즘이다.
+- 이걸 탈세 데이터에 돌리면, 전과와 보석금 사이에 관계가 있다는 건 찾지만 <strong>화살표 방향은 못 정한다</strong>(양쪽 방향이 통계적으로 똑같이 그럴듯하기 때문).
+- 실험에서는 우리가 전과 -> 보석금임을 알지만, 관측 데이터만 놓고 탐색하면 보석금 -> 전과와 구분하지 못한다.
+- 게다가 GES는 돌릴 때마다 결과가 달라진다.
+
+저자의 결론 - SCM 기반 접근은 데이터를 <strong>인과구조에 근거해서 생성</strong>하므로 식별이 미리 보장된다. 바깥에서 변동을 명시적으로 주입하니, bad control 문제도 search 문제도 생기지 않는다.
+
+<strong>이 수업의 핵심 비판과의 연결</strong>
+
+- 이 논문은 역설적이게도 우리 비판을 가르치는 데 가장 좋은 교재다. 저자들의 메시지는 "LLM 자동화가 식별을 해 주는 게 아니라, <strong>인간이 설계한 SCM이 식별을 해 준다</strong>"는 것이다.
+- LLM은 SCM이라는 식별 틀 안에서 추정(estimation, 에이전트 시뮬레이션으로 데이터를 만들고 계수를 추정하는 일)만 자동화할 뿐이다.
+- SCM 없이 LLM에게 인과를 통째로 맡기면(데이터에서 가정하거나 탐색하면) 곧장 bad control과 방향 미결정에 빠진다.
+- <strong>실리콘 표집 문제</strong>: 동시에 이 시스템은 실리콘 표집(silicon sampling) 위에 서 있다. 피험자가 사람이 아니라 LLM 에이전트라는 뜻이다.
+  - 가설도 LLM, 피험자도 LLM이라면, "거래는 예산에 달렸다"는 발견이 인간 세계의 인과인지, 아니면 GPT-4가 흥정 텍스트에서 학습한 통계적 규칙성을 그대로 재현한 것인지 알 수 없다.
+- 식별은 SCM이 보장하지만, 식별된 그 효과가 <strong>인간에 관한 것인지</strong>는 시뮬레이션에서 실세계로 건너뛰는 도약(저자도 "근본적 도약, fundamental jump"이라 부른다)을 넘어야만 답할 수 있다. 그리고 그 도약은 자동화 바깥에 있다.
+
+### HLER - 인간 결정 게이트가 남은 경제학 파이프라인
+
+arXiv 2603.07444. Chen Zhu, Xiaolu Wang (China Agricultural University). 2026년 봄 공개.
+
+<strong>이 논문이 묻는 것</strong>
+
+- 경제학 실증연구의 작업 흐름(데이터 점검 -> 가설 -> 계량분석 -> 논문 작성 -> 심사)을 여러 에이전트로 자동화하되, 핵심 판단은 사람에게 남기는 설계(human-in-the-loop, 사람을 회로 안에 끼워 넣는 방식)가 가능한가.
+- Automated Social Science가 완전 자동을 지향했다면, HLER은 일부러 사람을 끼워 넣는다.
+
+```mermaid
+flowchart TD
+  PI["Human PI<br/>게이트1: 연구질문 선택<br/>게이트2: 출판 결정"]:::red
+  ORC["Orchestrator<br/>(RunState 소유, 작업 분배)"]:::yellow
+  DA["Data Audit Agent<br/>변수 인벤토리"]:::blue
+  DP["Data Profiling Agent<br/>통계·결측·내생성 진단"]:::blue
+  Q["Question Agent<br/>데이터인지 가설 생성"]:::green
+  DG["Data Agent<br/>(World Bank, FRED)"]:::blue
+  EC["Econometrics Agent<br/>OLS/FE/DiD/event-study"]:::green
+  PA["Paper Agent<br/>논문 초안 (draft_v1,v2)"]:::green
+  RV["Reviewer Agent<br/>1-10점 심사"]:::yellow
+  PI --> ORC
+  ORC --> DA --> DP --> Q --> DG --> EC --> PA --> RV
+  Q -.->|"question quality loop<br/>재생성"| DA
+  RV -.->|"research revision loop<br/>재분석·재작성"| EC
+  RV --> PI
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+<strong>설계의 핵심 두 가지</strong>
+
+- <strong>데이터 인지 가설 생성(dataset-aware hypothesis generation)</strong>: 가설을 아무 제약 없이 마구 떠올리는 게 아니라, 데이터셋의 구조·변수 가용성·결측·분포 진단에 <strong>맞춰서(조건부로)</strong> 만든다. 데이터에 없는 변수를 요구하는 실행 불가능한 가설(없는 걸 지어내는 hallucinated hypothesis)을 막는다.
+- <strong>두 개의 순환 구조(two-loop)</strong>:
+  - (1) 질문 품질 순환(question quality loop) - 후보 가설을 만들고, 실행 가능한지 걸러내고, 사람이 고른다.
+  - (2) 연구 수정 순환(research revision loop) - 자동 심사 결과가 재분석과 논문 수정을 끌어낸다.
+
+7개의 전문 에이전트가 지휘자(orchestrator) 아래에서 순서대로 돈다. 모델은 Claude Sonnet 4.6을 쓰지만, 특정 모델에 매이지 않는 설계다(모델 불가지론적).
+
+<strong>무엇으로 평가했나</strong>
+
+- 실증 데이터셋 3개를 썼다 - China Health and Nutrition Survey(285변수, 5.7만 관측), CMGPD-Liaoning, UK Biobank.
+- 파이프라인을 총 14회 돌렸다.
+
+<strong>핵심 발견</strong>
+
+- <strong>실행 가능 비율</strong>: 데이터 인지 방식이 실행 가능한 가설 비율을 41%에서 87%로 끌어올렸다. 제약 없이 생성할 때의 주된 실패 원인은 "데이터에 없는 변수를 요구"(42%)와 "데이터 구조와 안 맞는 설계"(35%)였다.
+- <strong>완주율</strong>: 14회 중 12회(86%)가 사람 개입 없이 처음부터 끝까지(end-to-end) 완주했다.
+- <strong>수정 순환 효과</strong>: reviewer 점수를 4.8에서 6.3으로 끌어올렸다(평균 2-3회 반복). 가장 크게 오른 항목은 명확성(clarity, +2.1)과 <strong>식별 신뢰성(identification credibility, +1.4)</strong>이다. 새로움(novelty)은 거의 안 변했다(+0.3). 즉 이 순환은 연구의 기여 자체가 아니라 서술과 견고함을 다듬는다.
+- <strong>비용</strong>: API 비용은 회당 0.8-1.5달러다(AI Scientist의 6-15달러보다 싸다). 통계 계산은 statsmodels 같은 프로그램에 맡기고, LLM에는 추론과 작성만 시키기 때문이다.
+- <strong>사례연구</strong>: 중국 농촌 여성 노동을 다뤘다 - "고등교육이 농촌 여성의 직업 성별격차를 줄이는가?" 고정효과(fixed-effects) 모형을 썼는데, reviewer가 역인과(reverse causality)와 식별 신뢰성 우려를 지적하자 사건연구(event-study)와 민감도 분석을 덧붙였다.
+
+<strong>한계와 의의</strong>
+
+저자가 직접 밝힌 한계가 있다.
+
+- (1) <strong>다중검정(multiple testing) 문제를 못 푼다</strong>: 한 데이터셋에서 수십 개 가설을 찍어 내고 유의하게 나온 것만 보고하면, 자동화된 p-해킹(통계적으로 유의해 보일 때까지 골라 보고하는 것)이 된다. 질문 선택 게이트가 생성된 모든 가설을 기록으로 남겨 사전등록 비슷한 투명성을 주지만, 근본 해결은 아니다.
+- (2) 지금은 IV(도구변수)·RDD(회귀불연속)·구조모형을 지원하지 않는다. 즉 <strong>식별 전략이 필요한 설계는 아직 못 한다</strong>.
+- (3) Reviewer가 논문을 쓴 것과 같은 LLM이라, 평가에 순환성이 있다.
+
+<strong>이 수업 관점</strong>
+
+- HLER의 식별 신뢰성(identification credibility) 점수는 결국 reviewer 역할 LLM이 매긴 채점일 뿐이다. 시스템이 자동화하는 것은 OLS/FE/DiD의 <strong>실행(추정, estimation)</strong>이지, 그 설계가 왜 인과를 식별하는지에 대한 논증이 아니다.
+- 그래서 IV/RDD를 "앞으로 할 일(future work)"로 미뤘다는 사실 자체가, 식별의 핵심부는 자동화가 안 된다는 것을 저자가 인정한 셈이다.
+- 그나마 사람 게이트를 둔 것은, 이 한계에 대한 가장 정직한 대응이다.
+
+### The Third Ambition - LLM을 관측 도구로 보는 메타 논변
+
+arXiv 2603.07329. W. Russell Neuman, Chad Coleman (NYU). 2026.
+
+<strong>이 논문이 묻는 것</strong> (서술적 논의)
+
+- AI 연구의 세 번째 야망, 즉 LLM을 인간의 행동·문화·도덕추론을 연구하는 과학적 도구로 쓰자는 입장을 어떻게 정당하게 세울 것인가.
+- 그리고 그 입장의 인식론적 한계를 어디에 그을 것인가.
+- 앞의 다섯 편을 하나로 묶는 이론 틀이다.
+
+```mermaid
+flowchart TD
+  A1["야망1: Productivity<br/>(도구)"]:::blue
+  A2["야망2: Alignment<br/>(통제 대상)"]:::yellow
+  A3["야망3: 인간 행동의<br/>관측 도구"]:::green
+  COND["Condensate<br/>= 모델 (학습된 분포,<br/>직접 관측 불가)"]:::green
+  GO["Generative Output<br/>= 프롬프트 응답 표본<br/>(설문·실험에 대응)"]:::green
+  M1["프롬프트 실험<br/>(실험 전통 확장)"]:::blue
+  M2["합성 페르소나 표집<br/>(설문 전통 확장)"]:::blue
+  M3["비교역사 모델링<br/>(시대별 코퍼스)"]:::blue
+  M4["ablation 연구<br/>(데이터·정렬·표상 제거)"]:::blue
+  FT["fine-tuning 문제<br/>정렬이 문화 규칙성을<br/>왜곡·은폐"]:::red
+  TRI["삼각측량 검증<br/>(인간 데이터와 방향 일치)"]:::yellow
+  A1 --- A2 --- A3
+  A3 --> COND --> GO
+  GO --> M1 & M2 & M3 & M4
+  FT -.->|"instruct-only 튜닝이<br/>차선책"| COND
+  M1 & M2 & M3 & M4 --> TRI
+  classDef blue fill:#bbdefb,stroke:#0d47a1,color:#000;
+  classDef green fill:#c8e6c9,stroke:#2e7d32,color:#000;
+  classDef yellow fill:#fff9c4,stroke:#f57f17,color:#000;
+  classDef red fill:#ffcdd2,stroke:#c62828,color:#000;
+```
+
+<strong>세 가지 야망</strong>
+
+- (1) <strong>생산성(productivity)</strong>: AI를 일을 빨리하는 도구로 본다.
+- (2) <strong>정렬(alignment)</strong>: AI를 안전하게 인간 가치에 맞추는 대상으로 본다.
+- (3) <strong>세 번째 야망(third ambition)</strong>: LLM을 인간 상징행동을 들여다보는 과학적 관측 도구로 본다.
+
+<strong>관측 인프라로서의 LLM</strong>
+
+- 수십조 토큰의 인간 텍스트로 학습한 LLM은, 사람들이 어떻게 논증하고 정당화하고 이야기를 짜고 규범을 협상하는지에 대한 대규모 규칙성을 담은 <strong>응축물(condensate)</strong>이다. 응축물이란 그 규칙성을 압축해 담은 생성적 표상을 말한다.
+- 저자는 LLM을 인간 피험자의 대체물이나 인과를 설명해 주는 장치로 보지 않는다. 대신 <strong>유전체학이나 천문학의 거대 데이터셋에 비유되는 관측 인프라</strong>로 본다.
+- LHC(대형강입자충돌기)에 빗댄다 - 사회과학이 40억 달러를 달라고 하면 회의적인 반응이 돌아오겠지만, 생산성과 정렬을 위해 만들어진 LLM이 우연히도 인간 상징행동을 들여다보는 사실상의 관측소가 됐다는 것이다.
+
+<strong>핵심 개념 구분</strong>
+
+- <strong>응축물(Condensate)</strong>: 모델 그 자체. 학습된 인간 상징행동의 분포이며, 직접 들여다볼 수는 없다.
+- <strong>생성 출력(Generative Output, GO)</strong>: 프롬프트에 대해 실제로 나온 출력 표본. 전통 사회과학의 인터뷰·설문·실험 결과물에 대응한다.
+- 이 어휘가 세 가지를 분명히 해 준다 - 모델은 수학적으로 학습됐고, 특정한(따라서 편향된) 데이터셋에 기반하며, 분포적이라 프롬프트를 조금만 바꿔도 다른 GO를 낸다.
+
+<strong>방법론적 혁신을 전통 사회과학 설계에 짝지어 보면</strong>
+
+- 프롬프트 실험: 실험 전통을 이어받은 것이다.
+- 합성 페르소나 표집(synthetic persona sampling): 설문 전통을 이어받은 것이다(Park et al.이 1052명을 시뮬레이션, Argyle 등).
+- 비교역사 분석: 시대별 코퍼스로 따로 학습한 역사적 언어모델(historical LM)을 쓴다(Coleman et al. 2026이 5개 종교를 각각 1억 토큰씩 따로 학습).
+- 절제 연구(ablation): 데이터·정렬·표상을 하나씩 제거해 가며 문화적 의존성을 확인한다. 뇌의 일부를 손상시켜 기능을 알아보는 신경과학의 병변(lesion) 연구에 빗댄 것이다.
+
+<strong>fine-tuning(미세조정) 문제</strong>
+
+이 논문의 칼날 같은 대목이다.
+
+- 배포되는 모델은 RLHF(인간 피드백 강화학습)와 헌법적 제약(constitutional 규칙)으로, 금기·정치 극단·도덕 갈등을 억누르거나 다시 다듬는다.
+- 그런데 사회과학이 정작 보고 싶은 것은 바로 그 억눌린 긴장·모호함·규범 위반이다.
+- <strong>"정렬된 모델을 문화를 비추는 투명한 거울로 다루면, 가공된 예의(curated civility)를 진짜 합의로 착각하게 된다."</strong>
+- 그래서 저자는 기본(base) 모델(불안정하고 접근도 어렵다)과 강하게 정렬된(heavily-aligned) 모델 사이의 절충으로, <strong>지시만 따르게 한 미세조정(instruct-only tuning)</strong>을 권한다. 강한 정렬은 배포에는 꼭 필요하지만, 사회과학 연구에는 걸림돌이다.
+
+<strong>회의론 정리</strong>
+
+- 중국어 방 / 확률적 앵무새(stochastic parrot, 언어가 유창한 것을 인지능력으로 착각하는 오류), 학습 데이터의 비대표성(서구·영어·온라인이 과다 표집됨), 의인화 위험을 짚는다.
+- 인간의 학습과 기계의 학습 사이의 근본적 차이(몸으로 겪는 체화, 정서, 발달 단계가 기계에는 없다)도 인정한다.
+- 그래서 결론은 <strong>신중한 실험주의(cautious experimentalism)</strong>다 - LLM과 인간 담화가 비교 가능하다고 미리 가정하지 말고, 검증 가능한 경험적 질문으로 다루며, 인간 데이터와 <strong>삼각측량(triangulation)</strong>하라는 것이다. 삼각측량은 여러 독립적 방법으로 같은 결론에 닿는지 맞대 보는 것이다.
+- 검증의 기준은 수치가 정확히 일치하는지가 아니라, 방향과 순서가 같은 쪽으로 수렴하는지다. 불일치는 기각 사유가 아니라 새 가설을 떠올리게 하는 신호로 본다.
+
+<strong>이 수업 관점</strong>
+
+- 이 논문은 우리 비판을 저자 스스로 분명히 적어 둔다. 본문에 못박은 문장 - <strong>"AI 모델은 형식 심리학·사회학 이론이 하는 방식의 인과 설명을 제공하지 않는다. 설명과 상관, 의도와 모방을 구분하지 못한다."</strong>
+- 즉 LLM은 인간의 판단·신념·규범이 가진 통계적 구조를 전례 없는 규모로 드러내 주지만(추정에 가까운 관측), 인과는 주지 못한다(식별의 부재).
+- 그래서 저자는 "인간 피험자·민족지·실험·이론 기반 설명을 대체하는 게 아니라 보완하는 것"이라는 위치로 한발 물러선다.
+- 동시에 실리콘 표집의 재귀 문제를 정면으로 다룬다 - GO를 인간의 응답으로 볼 수 없고, 정렬이 분포를 왜곡하며, 검증에는 반드시 인간 데이터와의 삼각측량이 필요하다는 것이다.
+- 이 묶음 전체(MOOSE의 가설, Automated Social Science의 LLM 피험자, HLER의 자동분석)를 향해, "이것들은 인간에 관한 발견이 아니라 응축물에 관한 관측이다. 인간에 관한 주장이 되려면 삼각측량이라는, 자동화할 수 없는 단계를 반드시 거쳐야 한다"는 메타 차원의 경고다.
+
+### 자동화는 estimation을 돕지 identification을 대신 못 한다
+
+- 여기서 ②와 같은 문제가 재귀적으로 나타난다.
+- LLM이 가설을 만들고 LLM 피험자로 실험을 돌리면, 그 결과는 진짜 사람이 아니라 LLM에 관한 것이므로 silicon sampling의 한계를 그대로 안는다.
+- 인과추론의 언어로 정리하면, 자동화는 가설 탐색과 추정의 속도를 올려도 "왜 이것이 인과인가"라는 식별의 논증은 대신하지 못한다.
+- Automated Social Science에서 식별을 보장하는 것은 LLM이 아니라 인간이 설계한 구조적 인과모형이고, HLER이 도구변수·회귀불연속을 future work로 미룬 것도 같은 이유다.
+- <strong>가설 생성이 값싸질수록 인간의 검증과 식별 논증의 가치는 오히려 올라간다.</strong>
+
+---
+
+## 7. 종합 - trend와 noise를 가르기
+
+### 네 역할 종합 매트릭스
+
+| 역할 | LLM이 대신하는 것 | 대표 기법 | 핵심 위험 | 판정 |
+|------|------------------|----------|----------|------|
+| <strong>① 측정 도구</strong> | 인간 코더 | zero-shot 분류, DSL/PPI/SRI, text-as-treatment | 비무작위 측정 오차 | 가장 단단. 추론 보정 필수 |
+| <strong>③ 연구 대상</strong> | (대신 안 함) | 편향 감사, 심리측정, 해석가능성 | 거울 vs artifact 구분 | 안전하나 해석 신중 |
+| <strong>④ 연구자 보조</strong> | 연구자 | 가설 생성, 자동화 사회과학 | identification 공백 | 보조는 가능, 대체는 불가 |
+| <strong>② 시뮬레이션</strong> | 피험자·응답자 | silicon sampling, 페르소나 | 충격 시점·ABM 회귀 | 거시 사안엔 회의적 |
+
+### 두 가지 메시지
+
+1. 보정이 필요하다는 사실 자체는 trend다. 다만 "사람이 루프에 상주해야 한다"는 noise에 가깝다 - 보정은 데이터(소량의 정답 라벨)나 모델로 하는 것이고, 사람의 자리는 상시 개입이 아니라 무엇을 물을지·무엇이 타당한지를 정하는 데 있다. 캡스톤에서 "LLM 썼습니다"는 시작이지 결론이 아니다.
+2. 위계의 기준은 변하지 않았다 - 가정의 투명성과 검증 가능성이다. ①이 단단한 건 측정 오차를 명시적으로 모델링해 데이터로 보정할 수 있어서고, ②가 위험한 건 "이 시뮬레이션이 현실과 같다"는 가정이 불투명하고 검증 불가능해서다. 인과추론에서 위계를 매긴 잣대와 같다.
+
+### 다음 주로
+
+다음 시간은 이 수업의 결론이다 - "왜 데이터 분석이 사실 그리 중요하지 않을까". 오늘 본 네 역할 중 어느 것도 분석가의 판단을 대체하지 못한다는 점이 그 역설의 출발점이 된다. 도구가 싸지고 흔해질수록, 무엇을 물을지와 어떻게 식별할지를 아는 사람의 값어치는 올라간다.
+
+---
+
+## 8. 부록 - 오늘 다룬 문헌 지도
+
+이번 수업에서 깊이 본 논문은 위 네 역할로 분류해 정리해 두었다(저장소 `llm_based_css_literatures/`에 역할별 폴더와 100여 편 요약 포함).
+
+| 역할 | 오늘 깊이 다룬 문헌 (arXiv) |
+|------|------------------|
+| ① 측정·추론 | Can LLMs Transform Computational Social Science (2305.03514) · DSL (2306.04746) · Benchmarking Debiasing (2506.09627) · SRI (2509.12416) · Texts as Treatments (2410.00903) · What is a protest (2510.03541) |
+| ② 시뮬레이션 | ChatGPT Silicon Sampling (2409.02601) · Synthia (2507.14922) · Restoring Heterogeneity (2604.06663) · Overstating Attitudes (2602.04674) · Pay What LLM Wants (2508.03262) · Algorithmic Caricature (2605.12452) |
+| ③ 연구 대상 | Conspiracy Mindset (2511.03699) · Ideological Bias (2604.21334) · Red-Teaming Overton (2605.22880) · Milgram LLMs (2605.21401) · Mechanism of Altruism (2604.19260) · Cognitive Offloading (2605.23177) |
+| ④ 연구자 보조 | MOOSE (2309.02726) · Causal-graph LLMCG (2402.14424) · HypoGeniC (2404.04326) · Automated Social Science (2404.11794) · HLER (2603.07444) · The Third Ambition (2603.07329) |
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#e8f0fe',
+      primaryBorderColor: '#0055aa',
+      primaryTextColor: '#1a1a2e',
+      lineColor: '#0055aa',
+      secondaryColor: '#f7f8fa',
+      tertiaryColor: '#fff'
+    },
+    flowchart: { htmlLabels: true, curve: 'basis' },
+    fontFamily: "'Noto Sans KR', sans-serif"
+  });
+
+  // ===== 0. CONFIGURE MARKED - disable strikethrough (~ is used in Korean text) =====
+  marked.use({
+    gfm: true,
+    extensions: [{
+      name: 'del',
+      level: 'inline',
+      start(src) { return undefined; },
+      tokenizer(src) { return undefined; }
+    }]
+  });
+
+  // ===== 1. EXTRACT MARKDOWN =====
+  const rawMd = document.getElementById('markdown-source').textContent;
+
+  // ===== 2. SPLIT INTO SLIDES =====
+  function splitSlides(md) {
+    const lines = md.split('\n');
+    const slides = [];
+    let buf = [];
+    let currentSection = '';
+    let currentSectionNum = '';
+    let inTitle = true;
+    let titleBuf = [];
+
+    function flush() {
+      if (buf.length > 0) {
+        const text = buf.join('\n').trim();
+        if (text) {
+          slides.push({ type: 'content', section: currentSection, sectionNum: currentSectionNum, content: text });
+        }
+        buf = [];
+      }
+    }
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Title slide: collect until first ---
+      if (inTitle) {
+        if (/^---$/.test(line.trim())) {
+          inTitle = false;
+          slides.push({ type: 'title', content: titleBuf.join('\n').trim() });
+          continue;
+        }
+        titleBuf.push(line);
+        continue;
+      }
+
+      // Section divider: ## N. ...
+      const sectionMatch = line.match(/^## (\d+)\.\s+(.*)/);
+      if (sectionMatch) {
+        flush();
+        currentSectionNum = sectionMatch[1];
+        currentSection = sectionMatch[2];
+        slides.push({ type: 'divider', section: currentSection, sectionNum: currentSectionNum });
+        continue;
+      }
+
+      // --- separator between sections
+      if (/^---$/.test(line.trim())) {
+        flush();
+        continue;
+      }
+
+      // Subsection ### starts new slide
+      if (/^### /.test(line)) {
+        flush();
+        buf.push(line);
+        continue;
+      }
+
+      buf.push(line);
+    }
+    flush();
+    return slides;
+  }
+
+  const slides = splitSlides(rawMd);
+
+  // ===== 3. RENDERING HELPERS =====
+  function protectMath(md) {
+    const store = [];
+    let idx = 0;
+
+    // Display math $$...$$
+    md = md.replace(/\$\$([\s\S]*?)\$\$/g, (m) => {
+      const key = '\x00DISP' + (idx++) + '\x00';
+      store.push({ key, val: m });
+      return key;
+    });
+
+    // Inline math $...$  (not $$)
+    md = md.replace(/(?<!\$)\$(?!\$)([^\$\n]+?)\$(?!\$)/g, (m) => {
+      const key = '\x00INLN' + (idx++) + '\x00';
+      store.push({ key, val: m });
+      return key;
+    });
+
+    return { md, store };
+  }
+
+  function protectMermaid(md) {
+    const store = [];
+    let idx = 0;
+    md = md.replace(/```mermaid\n([\s\S]*?)```/g, (m, code) => {
+      const key = '\x00MERM' + (idx++) + '\x00';
+      store.push({ key, val: code });
+      return key;
+    });
+    return { md, store };
+  }
+
+  function restoreAll(html, mathStore, mermaidStore) {
+    for (const { key, val } of mathStore) {
+      html = html.split(key).join(val);
+    }
+    for (const { key, val } of mermaidStore) {
+      html = html.split(key).join('<pre class="mermaid">' + val + '</pre>');
+    }
+    return html;
+  }
+
+  function renderMarkdown(content) {
+    const m1 = protectMath(content);
+    const m2 = protectMermaid(m1.md);
+    let html = marked.parse(m2.md);
+    html = restoreAll(html, m1.store, m2.store);
+    return html;
+  }
+
+  // ===== 4. BUILD SLIDE ELEMENTS =====
+  const container = document.getElementById('presentation');
+  const slideEls = [];
+
+  slides.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'slide';
+    el.dataset.section = s.section || '';
+    el.dataset.sectionNum = s.sectionNum || '';
+
+    if (s.type === 'title') {
+      el.classList.add('slide-title');
+      // Parse title content
+      const tlines = s.content.split('\n');
+      let h1 = '', h2 = '', meta = '';
+      for (const tl of tlines) {
+        if (tl.startsWith('# ') && !tl.startsWith('## ')) h1 = tl.replace(/^# /, '');
+        else if (tl.startsWith('## ')) h2 = tl.replace(/^## /, '');
+        else if (tl.startsWith('> ')) meta = tl.replace(/^>\s*/, '').replace(/\*\*/g, '');
+      }
+      el.innerHTML = '<div class="slide-inner">' +
+        '<h1>' + h1 + '</h1>' +
+        '<h2>' + h2 + '</h2>' +
+        '<div class="meta">' + meta + '</div></div>';
+    } else if (s.type === 'divider') {
+      el.classList.add('slide-divider');
+      el.innerHTML = '<div class="slide-inner">' +
+        '<div class="section-number">' + s.sectionNum + '</div>' +
+        '<div class="section-title">' + s.section + '</div></div>';
+    } else {
+      el.classList.add('slide-content');
+      const inner = document.createElement('div');
+      inner.className = 'slide-inner';
+      inner.innerHTML = renderMarkdown(s.content);
+      el.appendChild(inner);
+    }
+
+    if (i !== 0) el.style.display = 'none';
+    else el.classList.add('active');
+
+    container.appendChild(el);
+    slideEls.push(el);
+  });
+
+  // ===== 5. RENDER KATEX & MERMAID =====
+  async function renderSpecial() {
+    // KaTeX
+    slideEls.forEach(el => {
+      if (el.classList.contains('slide-content')) {
+        renderMathInElement(el, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false,
+          trust: true
+        });
+      }
+    });
+
+    // Mermaid
+    const mermaidEls = document.querySelectorAll('.mermaid');
+    if (mermaidEls.length > 0) {
+      // Temporarily show all slides so mermaid can measure
+      slideEls.forEach(el => { el.style.display = 'flex'; el.style.visibility = 'hidden'; });
+      try { await mermaid.run({ nodes: mermaidEls }); } catch(e) { console.warn('Mermaid error:', e); }
+      slideEls.forEach((el, i) => {
+        el.style.visibility = '';
+        if (i !== currentSlide) { el.style.display = 'none'; el.classList.remove('active'); }
+        else { el.style.display = 'flex'; el.classList.add('active'); }
+      });
+    }
+  }
+
+  // ===== 6. NAVIGATION =====
+  let currentSlide = 0;
+  const total = slideEls.length;
+
+  const counterEl = document.getElementById('slide-counter');
+  const progressEl = document.getElementById('progress-fill');
+  const sectionEl = document.getElementById('section-indicator');
+
+  function updateUI() {
+    counterEl.textContent = (currentSlide + 1) + ' / ' + total;
+    progressEl.style.width = ((currentSlide + 1) / total * 100) + '%';
+    const sec = slideEls[currentSlide].dataset.sectionNum;
+    const secName = slideEls[currentSlide].dataset.section;
+    if (sec) sectionEl.textContent = sec + '. ' + secName;
+
+    // White counter on dark divider slides
+    const isDivider = slideEls[currentSlide].classList.contains('slide-divider');
+    counterEl.style.color = isDivider ? 'rgba(255,255,255,0.5)' : '';
+    sectionEl.style.color = isDivider ? 'rgba(255,255,255,0.4)' : '';
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === currentSlide) return;
+    slideEls[currentSlide].style.display = 'none';
+    slideEls[currentSlide].classList.remove('active');
+    currentSlide = n;
+    slideEls[currentSlide].style.display = 'flex';
+    slideEls[currentSlide].classList.add('active');
+    slideEls[currentSlide].scrollTop = 0;
+    updateUI();
+  }
+
+  window.nextSlide = function() { goTo(currentSlide + 1); };
+  window.prevSlide = function() { goTo(currentSlide - 1); };
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'Backspace' || e.key === 'PageUp') {
+      e.preventDefault(); prevSlide();
+    } else if (e.key === 'Home') {
+      e.preventDefault(); goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); goTo(total - 1);
+    }
+  });
+
+  // Click navigation removed - use keyboard arrows or nav buttons only
+
+  // Touch swipe
+  let touchStartX = 0;
+  container.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  container.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) nextSlide();
+      else prevSlide();
+    }
+  }, { passive: true });
+
+  // ===== 7. PAGE JUMP =====
+  const pageJumpEl = document.getElementById('page-jump');
+  const pageJumpInput = document.getElementById('page-jump-input');
+  const pageJumpTotal = document.getElementById('page-jump-total');
+  const pageJumpBtn = document.getElementById('page-jump-btn');
+
+  pageJumpTotal.textContent = '/ ' + total;
+
+  counterEl.addEventListener('click', (e) => {
+    e.stopPropagation();
+    counterEl.style.display = 'none';
+    pageJumpEl.style.display = 'flex';
+    pageJumpInput.value = '';
+    pageJumpInput.focus();
+  });
+
+  function doJump() {
+    const n = parseInt(pageJumpInput.value, 10);
+    if (!isNaN(n) && n >= 1 && n <= total) {
+      goTo(n - 1);
+    }
+    pageJumpEl.style.display = 'none';
+    counterEl.style.display = '';
+  }
+
+  pageJumpBtn.addEventListener('click', doJump);
+  pageJumpInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); doJump(); }
+    if (e.key === 'Escape') { pageJumpEl.style.display = 'none'; counterEl.style.display = ''; }
+    e.stopPropagation(); // prevent slide navigation while typing
+  });
+  pageJumpInput.addEventListener('keyup', (e) => e.stopPropagation());
+
+  // Close jump box when clicking outside
+  document.addEventListener('click', (e) => {
+    if (pageJumpEl.style.display === 'flex' && !pageJumpEl.contains(e.target)) {
+      pageJumpEl.style.display = 'none';
+      counterEl.style.display = '';
+    }
+  });
+
+  // ===== 8. INIT =====
+  updateUI();
+  renderSpecial();
+
+})();
+</script>
+</body>
+</html>

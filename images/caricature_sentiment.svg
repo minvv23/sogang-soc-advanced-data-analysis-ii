@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="820" height="480" fill="#ffffff" rx="8"/>
+  <text x="410" y="32" text-anchor="middle" font-size="22" font-weight="700" fill="#222">합성 정치담론은 더 부정적이다 - 실제 vs LLM 감성 평균</text>
+  <text x="410" y="54" text-anchor="middle" font-size="14" fill="#666">평균 VADER 감성 (-1 부정 ~ +1 긍정), Algorithmic Caricature Table 4</text>
+
+  <line x1="90" y1="80" x2="90" y2="400" stroke="#adb5bd" stroke-width="2"/>
+  <!-- y(v)=180 - v*400 ; range +0.25(top80) .. -0.5(bottom380); zero=180 -->
+  <g font-size="12" fill="#999">
+    <line x1="90" y1="80" x2="790" y2="80" stroke="#e9ecef"/><text x="82" y="84" text-anchor="end">+0.25</text>
+    <line x1="90" y1="180" x2="790" y2="180" stroke="#999" stroke-width="1.5"/><text x="82" y="184" text-anchor="end">0</text>
+    <line x1="90" y1="280" x2="790" y2="280" stroke="#e9ecef"/><text x="82" y="284" text-anchor="end">-0.25</text>
+    <line x1="90" y1="380" x2="790" y2="380" stroke="#e9ecef"/><text x="82" y="384" text-anchor="end">-0.50</text>
+  </g>
+
+  <!-- 전체 center180: obs +0.018 y=172.8 ; syn -0.215 y=266 -->
+  <rect x="115" y="172.8" width="60" height="7.2" fill="#2e7d32" rx="2"/>
+  <rect x="185" y="180" width="60" height="86" fill="#c62828" rx="2"/>
+  <text x="180" y="420" text-anchor="middle" font-size="14" font-weight="700" fill="#333">전체</text>
+  <!-- 2024 대선 center380: obs +0.067 y=153.2 ; syn -0.412 y=344.8 -->
+  <rect x="315" y="153.2" width="60" height="26.8" fill="#2e7d32" rx="2"/>
+  <rect x="385" y="180" width="60" height="164.8" fill="#c62828" rx="2"/>
+  <text x="380" y="420" text-anchor="middle" font-size="14" font-weight="700" fill="#333">2024 미대선</text>
+  <text x="415" y="362" text-anchor="middle" font-size="12" font-weight="700" fill="#c62828">d=-0.98</text>
+  <!-- COVID center560: obs +0.078 y=148.8 ; syn +0.015 y=174 -->
+  <rect x="495" y="148.8" width="60" height="31.2" fill="#2e7d32" rx="2"/>
+  <rect x="565" y="174" width="60" height="6" fill="#c62828" rx="2"/>
+  <text x="560" y="420" text-anchor="middle" font-size="14" font-weight="700" fill="#333">코로나</text>
+  <text x="595" y="166" text-anchor="middle" font-size="12" fill="#666">d=-0.14</text>
+  <!-- Dobbs center720: obs +0.053 y=158.8 ; syn +0.154 y=118.4 (syn 더 긍정) -->
+  <rect x="655" y="158.8" width="60" height="21.2" fill="#2e7d32" rx="2"/>
+  <rect x="725" y="118.4" width="60" height="61.6" fill="#c62828" rx="2"/>
+  <text x="720" y="420" text-anchor="middle" font-size="14" font-weight="700" fill="#333">Dobbs 판결</text>
+  <text x="755" y="110" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">유일하게 +</text>
+
+  <rect x="280" y="446" width="18" height="18" fill="#2e7d32" rx="3"/><text x="304" y="460" font-size="15" fill="#333">실제 담론</text>
+  <rect x="470" y="446" width="18" height="18" fill="#c62828" rx="3"/><text x="494" y="460" font-size="15" fill="#333">LLM 합성 담론</text>
+</svg>

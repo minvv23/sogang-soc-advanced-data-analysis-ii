@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="820" height="480" fill="#ffffff" rx="8"/>
+  <text x="410" y="36" text-anchor="middle" font-size="23" font-weight="700" fill="#222">연령별 김부겸 지지율 - 실제 vs LLM</text>
+
+  <!-- axes -->
+  <line x1="80" y1="80" x2="80" y2="380" stroke="#adb5bd" stroke-width="2"/>
+  <line x1="80" y1="380" x2="770" y2="380" stroke="#adb5bd" stroke-width="2"/>
+
+  <!-- y grid 0..80 -->
+  <g font-size="13" fill="#999">
+    <line x1="80" y1="380" x2="770" y2="380" stroke="#e9ecef"/><text x="70" y="385" text-anchor="end">0</text>
+    <line x1="80" y1="305" x2="770" y2="305" stroke="#e9ecef"/><text x="70" y="310" text-anchor="end">20</text>
+    <line x1="80" y1="230" x2="770" y2="230" stroke="#e9ecef"/><text x="70" y="235" text-anchor="end">40</text>
+    <line x1="80" y1="155" x2="770" y2="155" stroke="#e9ecef"/><text x="70" y="160" text-anchor="end">60</text>
+    <line x1="80" y1="80" x2="770" y2="80" stroke="#e9ecef"/><text x="70" y="85" text-anchor="end">80</text>
+  </g>
+  <text x="44" y="230" text-anchor="middle" font-size="13" fill="#999" transform="rotate(-90 44 230)">김부겸 지지율 (%)</text>
+
+  <!-- x labels: 18-29,30-39,40-49,50-59,60-69,70+ at x=150,260,370,480,590,700 -->
+  <g font-size="14" fill="#333" text-anchor="middle">
+    <text x="150" y="402">18-29</text><text x="260" y="402">30-39</text><text x="370" y="402">40-49</text>
+    <text x="480" y="402">50-59</text><text x="590" y="402">60-69</text><text x="700" y="402">70+</text>
+  </g>
+
+  <!-- y = 380 - v*3.75 ; 실제: 23,36,73,58,39,22 ; LLM: 31,16,15,14,22,15 -->
+  <!-- 실제 line (blue) -->
+  <polyline fill="none" stroke="#1565c0" stroke-width="3" points="150,293.75 260,245 370,106.25 480,162.5 590,233.75 700,297.5"/>
+  <g fill="#1565c0">
+    <circle cx="150" cy="293.75" r="5"/><circle cx="260" cy="245" r="5"/><circle cx="370" cy="106.25" r="6"/>
+    <circle cx="480" cy="162.5" r="5"/><circle cx="590" cy="233.75" r="5"/><circle cx="700" cy="297.5" r="5"/>
+  </g>
+  <!-- LLM line (red) -->
+  <polyline fill="none" stroke="#c62828" stroke-width="3" stroke-dasharray="7 4" points="150,263.75 260,320 370,323.75 480,327.5 590,297.5 700,323.75"/>
+  <g fill="#c62828">
+    <circle cx="150" cy="263.75" r="5"/><circle cx="260" cy="320" r="5"/><circle cx="370" cy="323.75" r="6"/>
+    <circle cx="480" cy="327.5" r="5"/><circle cx="590" cy="297.5" r="5"/><circle cx="700" cy="323.75" r="5"/>
+  </g>
+
+  <!-- 40대 gap highlight -->
+  <line x1="370" y1="106.25" x2="370" y2="323.75" stroke="#e65100" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="388" y="215" font-size="15" font-weight="700" fill="#e65100">40대: 실제 73% vs LLM 15%</text>
+  <text x="388" y="235" font-size="14" font-weight="700" fill="#e65100">= 58%p 정반대</text>
+
+  <!-- legend -->
+  <line x1="250" y1="442" x2="290" y2="442" stroke="#1565c0" stroke-width="3"/><text x="298" y="447" font-size="15" fill="#333">실제 여론조사</text>
+  <line x1="460" y1="442" x2="500" y2="442" stroke="#c62828" stroke-width="3" stroke-dasharray="7 4"/><text x="508" y="447" font-size="15" fill="#333">LLM 시뮬레이션</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" font-family="'Noto Sans KR', Pretendard, sans-serif">
+<rect width="880" height="470" fill="#ffffff" rx="8"/>
+<text x="440.0" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#222">음모론 조건화는 동의를 4.5 이상으로 끌어올린다</text>
+<text x="440.0" y="56" text-anchor="middle" font-size="13.5" fill="#666">5점 척도(3=중립). 조건화 vs 무조건화, 군집별 (Conspiracy Mindset, Fig 5, 그림 판독값)</text>
+<line x1="70" y1="380.0" x2="850" y2="380.0" stroke="#eef0f2"/>
+<text x="62" y="384.0" text-anchor="end" font-size="12" fill="#999">1</text>
+<line x1="70" y1="308.0" x2="850" y2="308.0" stroke="#eef0f2"/>
+<text x="62" y="312.0" text-anchor="end" font-size="12" fill="#999">2</text>
+<line x1="70" y1="236.0" x2="850" y2="236.0" stroke="#eef0f2"/>
+<text x="62" y="240.0" text-anchor="end" font-size="12" fill="#999">3</text>
+<line x1="70" y1="164.0" x2="850" y2="164.0" stroke="#eef0f2"/>
+<text x="62" y="168.0" text-anchor="end" font-size="12" fill="#999">4</text>
+<line x1="70" y1="92.0" x2="850" y2="92.0" stroke="#eef0f2"/>
+<text x="62" y="96.0" text-anchor="end" font-size="12" fill="#999">5</text>
+<line x1="70" y1="236.0" x2="850" y2="236.0" stroke="#adb5bd" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="848" y="230.0" text-anchor="end" font-size="12" fill="#888">중립 3.0</text>
+<rect x="95" y="178.4" width="38" height="201.6" fill="#1565c0" rx="2"/>
+<rect x="137" y="106.4" width="38" height="273.6" fill="#c62828" rx="2"/>
+<text x="135" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">무우연 noco</text>
+<rect x="199" y="236.0" width="38" height="144.0" fill="#1565c0" rx="2"/>
+<rect x="241" y="120.8" width="38" height="259.2" fill="#c62828" rx="2"/>
+<text x="239" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">권력 power</text>
+<rect x="303" y="272.0" width="38" height="108.0" fill="#1565c0" rx="2"/>
+<rect x="345" y="128.0" width="38" height="252.0" fill="#c62828" rx="2"/>
+<text x="343" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">반과학 scims</text>
+<rect x="407" y="185.6" width="38" height="194.4" fill="#1565c0" rx="2"/>
+<rect x="449" y="113.6" width="38" height="266.4" fill="#c62828" rx="2"/>
+<text x="447" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">은폐 truth</text>
+<rect x="511" y="286.4" width="38" height="93.6" fill="#1565c0" rx="2"/>
+<rect x="553" y="135.2" width="38" height="244.8" fill="#c62828" rx="2"/>
+<text x="551" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">UFO ufo</text>
+<rect x="615" y="236.0" width="38" height="144.0" fill="#1565c0" rx="2"/>
+<rect x="657" y="236.0" width="38" height="144.0" fill="#c62828" rx="2"/>
+<text x="655" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">통제:redher</text>
+<rect x="719" y="207.2" width="38" height="172.8" fill="#1565c0" rx="2"/>
+<rect x="761" y="171.2" width="38" height="208.8" fill="#c62828" rx="2"/>
+<text x="759" y="398.0" text-anchor="middle" font-size="11.5" fill="#333">통제:AOT</text>
+<rect x="300" y="442" width="16" height="16" fill="#1565c0" rx="2"/><text x="322" y="455" font-size="14" fill="#333">무조건화(기본)</text>
+<rect x="470" y="442" width="16" height="16" fill="#c62828" rx="2"/><text x="492" y="455" font-size="14" fill="#333">음모론 조건화</text>
+</svg>

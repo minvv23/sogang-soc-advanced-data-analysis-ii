@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="780" height="400" fill="#ffffff" rx="8"/>
+  <text x="390" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#222">기존 방법은 왜 다 부족한가 - 네 추정량 비교</text>
+  <text x="390" y="56" text-anchor="middle" font-size="14" fill="#666">DSL만 세 조건을 모두 만족한다 (Design-based Supervised Learning, Table 1)</text>
+
+  <!-- column headers -->
+  <g font-size="15" font-weight="700" fill="#fff">
+    <rect x="40" y="78" width="220" height="46" fill="#0055aa" rx="4"/>
+    <rect x="268" y="78" width="160" height="46" fill="#0055aa" rx="4"/>
+    <rect x="436" y="78" width="160" height="46" fill="#0055aa" rx="4"/>
+    <rect x="604" y="78" width="136" height="46" fill="#0055aa" rx="4"/>
+  </g>
+  <g font-size="15" font-weight="700" fill="#fff" text-anchor="middle">
+    <text x="150" y="106">방법</text>
+    <text x="348" y="106">비편향?</text>
+    <text x="516" y="106">정직한 CI?</text>
+    <text x="672" y="100">대리라벨</text>
+    <text x="672" y="116">활용(효율)?</text>
+  </g>
+
+  <!-- rows -->
+  <!-- SO -->
+  <g font-size="15">
+    <rect x="40" y="130" width="220" height="56" fill="#fdecea" rx="4"/>
+    <text x="52" y="156" font-weight="700" fill="#333">SO (순진: 라벨 그대로)</text>
+    <text x="52" y="176" font-size="12" fill="#888">측정오차가 그대로 새어듦</text>
+    <text x="348" y="165" text-anchor="middle" font-size="22" fill="#c62828">✗</text>
+    <text x="516" y="165" text-anchor="middle" font-size="22" fill="#c62828">✗</text>
+    <text x="672" y="165" text-anchor="middle" font-size="22" fill="#2e7d32">✓</text>
+  </g>
+  <!-- GSO -->
+  <g font-size="15">
+    <rect x="40" y="192" width="220" height="56" fill="#fff8e1" rx="4"/>
+    <text x="52" y="218" font-weight="700" fill="#333">GSO (정답만 사용)</text>
+    <text x="52" y="238" font-size="12" fill="#888">대리라벨을 통째로 버림</text>
+    <text x="348" y="227" text-anchor="middle" font-size="22" fill="#2e7d32">✓</text>
+    <text x="516" y="227" text-anchor="middle" font-size="22" fill="#2e7d32">✓</text>
+    <text x="672" y="227" text-anchor="middle" font-size="22" fill="#c62828">✗</text>
+  </g>
+  <!-- SL -->
+  <g font-size="15">
+    <rect x="40" y="254" width="220" height="56" fill="#fdecea" rx="4"/>
+    <text x="52" y="280" font-weight="700" fill="#333">SL (지도학습 예측)</text>
+    <text x="52" y="300" font-size="12" fill="#888">강한 가정 + 정규화 편향</text>
+    <text x="348" y="289" text-anchor="middle" font-size="20" fill="#e65100">△</text>
+    <text x="516" y="289" text-anchor="middle" font-size="22" fill="#c62828">✗</text>
+    <text x="672" y="289" text-anchor="middle" font-size="22" fill="#2e7d32">✓</text>
+  </g>
+  <!-- DSL -->
+  <g font-size="15">
+    <rect x="40" y="316" width="700" height="58" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" rx="4"/>
+    <text x="52" y="343" font-weight="700" fill="#1b5e20">DSL (설계기반 지도학습)</text>
+    <text x="52" y="363" font-size="12" fill="#388e3c">π를 알고, 이중강건 가짜 종속변수</text>
+    <text x="348" y="353" text-anchor="middle" font-size="24" font-weight="700" fill="#2e7d32">✓</text>
+    <text x="516" y="353" text-anchor="middle" font-size="24" font-weight="700" fill="#2e7d32">✓</text>
+    <text x="672" y="353" text-anchor="middle" font-size="24" font-weight="700" fill="#2e7d32">✓</text>
+  </g>
+</svg>

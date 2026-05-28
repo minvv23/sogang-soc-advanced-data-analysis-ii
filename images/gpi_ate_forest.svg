@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" font-family="'Noto Sans KR', Pretendard, sans-serif">
+<rect width="820" height="400" fill="#ffffff" rx="8"/>
+<text x="410.0" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#222">텍스트 처치의 인과효과(ATE) - 방법별 점추정과 95% 신뢰구간</text>
+<text x="410.0" y="56" text-anchor="middle" font-size="14" fill="#666">군경력이 후보 호감도(0-100점)에 주는 효과 (GPI / Imai-Nakamura, Table 1)</text>
+<line x1="300" y1="320" x2="770" y2="320" stroke="#adb5bd" stroke-width="2"/>
+<line x1="312.7" y1="90" x2="312.7" y2="320" stroke="#f1f3f5"/>
+<text x="312.7" y="340" text-anchor="middle" font-size="12" fill="#999">-10</text>
+<line x1="376.2" y1="90" x2="376.2" y2="320" stroke="#f1f3f5"/>
+<text x="376.2" y="340" text-anchor="middle" font-size="12" fill="#999">0</text>
+<line x1="439.7" y1="90" x2="439.7" y2="320" stroke="#f1f3f5"/>
+<text x="439.7" y="340" text-anchor="middle" font-size="12" fill="#999">10</text>
+<line x1="503.2" y1="90" x2="503.2" y2="320" stroke="#f1f3f5"/>
+<text x="503.2" y="340" text-anchor="middle" font-size="12" fill="#999">20</text>
+<line x1="566.8" y1="90" x2="566.8" y2="320" stroke="#f1f3f5"/>
+<text x="566.8" y="340" text-anchor="middle" font-size="12" fill="#999">30</text>
+<line x1="630.3" y1="90" x2="630.3" y2="320" stroke="#f1f3f5"/>
+<text x="630.3" y="340" text-anchor="middle" font-size="12" fill="#999">40</text>
+<line x1="693.8" y1="90" x2="693.8" y2="320" stroke="#f1f3f5"/>
+<text x="693.8" y="340" text-anchor="middle" font-size="12" fill="#999">50</text>
+<line x1="757.3" y1="90" x2="757.3" y2="320" stroke="#f1f3f5"/>
+<text x="757.3" y="340" text-anchor="middle" font-size="12" fill="#999">60</text>
+<line x1="376.2" y1="90" x2="376.2" y2="320" stroke="#495057" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="376.2" y="84" text-anchor="middle" font-size="12" fill="#495057">효과 0</text>
+<text x="290" y="135" text-anchor="end" font-size="14" font-weight="700" fill="#333">GPI (내부표현 활용)</text>
+<line x1="388.3" y1="130" x2="430.7" y2="130" stroke="#2e7d32" stroke-width="3"/>
+<line x1="388.3" y1="123" x2="388.3" y2="137" stroke="#2e7d32" stroke-width="3"/>
+<line x1="430.7" y1="123" x2="430.7" y2="137" stroke="#2e7d32" stroke-width="3"/>
+<circle cx="407.0" cy="130" r="7" fill="#2e7d32"/>
+<text x="407.0" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">4.852</text>
+<text x="442.7" y="135" font-size="12" fill="#2e7d32">그럴듯: +5점</text>
+<text x="290" y="205" text-anchor="end" font-size="14" font-weight="700" fill="#333">Outcome model + BERT</text>
+<line x1="348.8" y1="200" x2="349.3" y2="200" stroke="#c62828" stroke-width="3"/>
+<line x1="348.8" y1="193" x2="348.8" y2="207" stroke="#c62828" stroke-width="3"/>
+<line x1="349.3" y1="193" x2="349.3" y2="207" stroke="#c62828" stroke-width="3"/>
+<circle cx="349.1" cy="200" r="7" fill="#c62828"/>
+<text x="349.1" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">-4.277</text>
+<text x="361.3" y="205" font-size="12" fill="#c62828">부호가 반대</text>
+<text x="290" y="275" text-anchor="end" font-size="14" font-weight="700" fill="#333">DML + BERT</text>
+<line x1="590.4" y1="270" x2="742.6" y2="270" stroke="#c62828" stroke-width="3"/>
+<line x1="590.4" y1="263" x2="590.4" y2="277" stroke="#c62828" stroke-width="3"/>
+<line x1="742.6" y1="263" x2="742.6" y2="277" stroke="#c62828" stroke-width="3"/>
+<circle cx="666.5" cy="270" r="7" fill="#c62828"/>
+<text x="666.5" y="256" text-anchor="middle" font-size="13" font-weight="700" fill="#c62828">45.708</text>
+<text x="754.6" y="275" font-size="12" fill="#c62828">비현실적: 45.7</text>
+<text x="410" y="372" text-anchor="middle" font-size="13" fill="#999">GPI만 그럴듯한 양(+)의 유의효과. BERT 기반은 음수이거나 척도를 벗어남.</text>
+</svg>

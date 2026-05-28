@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 580" font-family="'Noto Sans KR', Pretendard, sans-serif">
+  <rect width="760" height="580" fill="#ffffff" rx="8"/>
+  <text x="380" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#222">LLM의 네 가지 역할 - 두 축으로 보기</text>
+
+  <!-- quadrant frame: x 130..690 (center 410), y 80..500 (center 290) -->
+  <rect x="130" y="80" width="560" height="420" fill="#fafafa" stroke="#dee2e6" stroke-width="1.5" rx="6"/>
+  <line x1="410" y1="80" x2="410" y2="500" stroke="#adb5bd" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="130" y1="290" x2="690" y2="290" stroke="#adb5bd" stroke-width="1.5" stroke-dasharray="5 4"/>
+
+  <!-- axis labels -->
+  <text x="410" y="528" text-anchor="middle" font-size="15" font-weight="700" fill="#0055aa">아래로 갈수록: LLM이 '수단(도구)'</text>
+  <text x="410" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#0055aa">위로 갈수록: LLM이 '표적(연구 대상)'</text>
+  <text x="120" y="295" text-anchor="end" font-size="13" font-weight="700" fill="#666" transform="rotate(-90 120 295)">인간을 모사</text>
+  <text x="700" y="295" text-anchor="start" font-size="13" font-weight="700" fill="#666" transform="rotate(-90 700 295)">세계를 측정·발견</text>
+
+  <!-- 3 연구대상 : top-left (표적 + 인간모사) -->
+  <rect x="160" y="110" width="230" height="120" fill="#bbdefb" stroke="#0d47a1" stroke-width="2" rx="8"/>
+  <text x="275" y="140" text-anchor="middle" font-size="17" font-weight="700" fill="#0d47a1">③ 연구 대상</text>
+  <text x="275" y="165" text-anchor="middle" font-size="13" fill="#333">모델 자체를 해부</text>
+  <text x="275" y="184" text-anchor="middle" font-size="13" fill="#333">편향 감사·심리측정·해석</text>
+  <text x="275" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#2e7d32">위험 낮음 (해석 신중)</text>
+
+  <!-- 2 시뮬레이션 : bottom-left (수단 + 인간모사) -->
+  <rect x="160" y="350" width="230" height="120" fill="#ffcdd2" stroke="#c62828" stroke-width="2" rx="8"/>
+  <text x="275" y="380" text-anchor="middle" font-size="17" font-weight="700" fill="#c62828">② 시뮬레이션</text>
+  <text x="275" y="405" text-anchor="middle" font-size="13" fill="#333">응답자·사회·시장 모사</text>
+  <text x="275" y="424" text-anchor="middle" font-size="13" fill="#333">Silicon Sampling</text>
+  <text x="275" y="450" text-anchor="middle" font-size="12" font-weight="700" fill="#c62828">위험 높음 (거시 사안 회의적)</text>
+
+  <!-- 1 측정 : bottom-right upper -->
+  <rect x="430" y="320" width="240" height="80" fill="#c8e6c9" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <text x="550" y="348" text-anchor="middle" font-size="17" font-weight="700" fill="#2e7d32">① 측정 도구</text>
+  <text x="550" y="372" text-anchor="middle" font-size="13" fill="#333">텍스트·이미지를 변수로</text>
+  <text x="550" y="390" text-anchor="middle" font-size="12" font-weight="700" fill="#2e7d32">가장 단단 (보정 전제)</text>
+
+  <!-- 4 연구자 보조 : bottom-right lower -->
+  <rect x="430" y="410" width="240" height="80" fill="#fff9c4" stroke="#f57f17" stroke-width="2" rx="8"/>
+  <text x="550" y="438" text-anchor="middle" font-size="17" font-weight="700" fill="#b26a00">④ 연구자 보조</text>
+  <text x="550" y="462" text-anchor="middle" font-size="13" fill="#333">가설 생성·자동화</text>
+  <text x="550" y="480" text-anchor="middle" font-size="12" font-weight="700" fill="#b26a00">보조 가능, 대체 불가</text>
+
+  <text x="555" y="200" text-anchor="middle" font-size="13" fill="#adb5bd">(표적 + 측정: 거의 비어 있음)</text>
+</svg>
